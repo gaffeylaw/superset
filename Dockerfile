@@ -27,7 +27,7 @@ RUN mkdir -p /home/superset/logs/superset/
 
 RUN pip3 --default-timeout=100 install superset_tddv
 
-RUN echo "export PATH=/home/supperset/.local/bin:$PATH > /etc/profile"
+ENV PATH ~/.local/bin:$PATH
 
 ENV LC_ALL C.UTF-8
 
