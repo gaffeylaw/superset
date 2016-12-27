@@ -29,6 +29,7 @@ PACKAGE_FILE = os.path.join(PACKAGE_DIR, 'package.json')
 with open(PACKAGE_FILE) as package_file:
     VERSION_STRING = json.load(package_file)['version']
 
+
 ROW_LIMIT = 50000
 SUPERSET_WORKERS = 2
 
@@ -44,14 +45,14 @@ SECRET_KEY = '\2\1thisismyscretkey\1\2\e\y\y\h'  # noqa
 
 # The SQLAlchemy connection string.
 SQLALCHEMY_DATABASE_URI = 'sqlite:///' + os.path.join(DATA_DIR, 'superset.db')
-# SQLALCHEMY_DATABASE_URI = 'mysql://myapp@localhost/myapp'
+# SQLALCHEMY_DATABASE_URI = 'mysql+pymysql://root:root@localhost/superset'
 # SQLALCHEMY_DATABASE_URI = 'postgresql://root:password@localhost/myapp'
 
 # The limit of queries fetched for query search
 QUERY_SEARCH_LIMIT = 1000
 
 # Flask-WTF flag for CSRF
-CSRF_ENABLED = True
+WTF_CSRF_ENABLED = True
 
 # Whether to run the web server in debug mode or not
 DEBUG = False
@@ -129,7 +130,7 @@ BABEL_DEFAULT_FOLDER = 'babel/translations'
 LANGUAGES = {
     'en': {'flag': 'us', 'name': 'English'},
     # 'fr': {'flag': 'fr', 'name': 'French'},
-    # 'zh': {'flag': 'cn', 'name': 'Chinese'},
+    'zh': {'flag': 'cn', 'name': 'Chinese'},
 }
 # ---------------------------------------------------
 # Image and file configuration
@@ -147,6 +148,7 @@ IMG_UPLOAD_URL = '/static/uploads/'
 
 CACHE_DEFAULT_TIMEOUT = None
 CACHE_CONFIG = {'CACHE_TYPE': 'null'}
+# CACHE_CONFIG = {'CACHE_TYPE': 'redis','CACHE_DEFAULT_TIMEOUT':30,'CACHE_KEY_PREFIX':'caravel_','CACHE_REDIS_HOST':'localhost','CACHE_REDIS_PORT':6379,'CACHE_REDIS_DB':1,'CACHE_REDIS_URL':'redis://root@localhost:6379/1',}
 
 # CORS Options
 ENABLE_CORS = False
