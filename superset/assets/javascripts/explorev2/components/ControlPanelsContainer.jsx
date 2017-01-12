@@ -86,9 +86,6 @@ class ControlPanelsContainer extends React.Component {
     if (this.props.form_data.viz_type === 'filter_box') {
       flag_prompt = true;
     }
-    console.log('container...')
-    console.log(this.props.form_data)
-    console.log(this.props.form_data.promptColStyles)
     return (
       <Panel>
         {this.props.alert &&

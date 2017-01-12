@@ -35,7 +35,6 @@ export default class PromptBaseStyle extends React.Component {
     return (
       <div>
         <div className="col-lg-12" style={{ marginTop: '10px' }}>
-          <hr style={{ height: '1px', border: 'none', borderTop: '1px solid #555555' }} />
           <span style={{ fontSize: '14px' }}>字段样式:</span>
           <div style={{ marginTop: '10px' }}>
             {colStylesDiv}

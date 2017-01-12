@@ -40,7 +40,6 @@ class PromptStyleModal extends React.Component {
             />
           </div>
         </Modal.Body>
-
         <Modal.Footer>
         </Modal.Footer>
       </Modal>

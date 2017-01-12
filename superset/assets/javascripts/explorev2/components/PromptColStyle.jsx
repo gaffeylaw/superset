@@ -45,7 +45,7 @@ export default class PromptColStyle extends React.Component {
             autosize={false}
             onChange={this.changeField.bind(this, this.props.promptColStyle)}
           />
-          <div className="col-lg-5">
+          <div className="col-lg-6">
             <input
               type="text"
               onChange={this.changeWidth.bind(this, this.props.promptColStyle)}
@@ -54,6 +54,8 @@ export default class PromptColStyle extends React.Component {
               placeholder="长度"
             />
           </div>
+        </div>
+        <div className="row space-1" style={{ marginTop: '5px' }}>
           <Select
             className="col-lg-6"
             multi={false}
@@ -64,7 +66,6 @@ export default class PromptColStyle extends React.Component {
             autosize={false}
             onChange={this.changeMulti.bind(this, this.props.promptColStyle)}
           />
-
           <div className="col-lg-1">
             <Button
               id="remove-button"
