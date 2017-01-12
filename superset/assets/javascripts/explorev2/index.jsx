@@ -221,7 +221,7 @@ function parsePromptColStyles(form_data) {
 }
 
 function getPromptColStyles(form_data, datasource_type) {
-  if (form_data.viz_type === 'filter_box') {
+  if (datasource_type === 'table') {
     return parsePromptColStyles(form_data);
   }
   return null;

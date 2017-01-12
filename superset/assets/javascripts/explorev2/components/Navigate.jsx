@@ -7,7 +7,7 @@ const propTypes = {
   actions: React.PropTypes.object.isRequired,
   form_data: React.PropTypes.object.isRequired,
   navigate: React.PropTypes.object.isRequired,
-  slices: React.PropTypes.object.isRequired,
+  slices: React.PropTypes.array.isRequired,
 };
 
 export default class Navigate extends React.Component {
