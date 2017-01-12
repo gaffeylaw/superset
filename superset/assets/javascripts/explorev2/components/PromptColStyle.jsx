@@ -14,7 +14,10 @@ export default class PromptColStyle extends React.Component {
     super(props);
     this.state = {
       fieldChoices: this.props.form_data.groupby,
-      multiChoices: [{key: 'false',value: 'false'},{key: 'true',value: 'true'}],
+      multiChoices: [
+        { key: 'false', value: 'false' },
+        { key: 'true', value: 'true' },
+      ],
     };
   }
   changeField(promptColStyle, col) {

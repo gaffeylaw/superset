@@ -1,8 +1,7 @@
-import $ from 'jquery';
+/* eslint camel-case: 0 */
 import React from 'react';
-import { Modal, Button } from 'react-bootstrap';
+import { Modal } from 'react-bootstrap';
 import { connect } from 'react-redux';
-import shortid from 'shortid';
 import PromptBaseStyle from './PromptBaseStyle';
 
 const propTypes = {

@@ -57,7 +57,7 @@ class FilterBox extends React.Component {
         }
         const options = choices.map((s) => ({ value: s, label: s }));
         return (
-          <div className="m-b-5" style={{ float: 'left',paddingLeft: '15px' }}>
+          <div className="m-b-5" style={{ float: 'left', paddingLeft: '15px' }}>
             {field.replace('__', '')}
             <Select.Creatable
               options={options}
@@ -91,7 +91,7 @@ class FilterBox extends React.Component {
         return d.metric;
       });
       return (
-        <div key={filter} className="m-b-5" style={{ width: `${styles.width}`,float: 'left',paddingLeft: '15px' }}>
+        <div key={filter} className="m-b-5" style={{ width: `${styles.width}`, float: 'left', paddingLeft: '15px' }}>
           {filter}
           <Select
             placeholder={`Select [${filter}]`}
