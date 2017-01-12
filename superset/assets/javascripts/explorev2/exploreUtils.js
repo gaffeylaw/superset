@@ -70,6 +70,18 @@ function formatNavigates(navigates) {
   return params;
 }
 
+function formatPromptColStyles(promptColStyles) {
+  const params = {};
+  for (let i = 0; i < promptColStyles.length; i++) {
+    const promptColStyle = promptColStyles[i];
+    params[`promptColStyle_id_${i + 1}`] = promptColStyle.id;
+    params[`promptColStyle_field_${i + 1}`] = promptColStyle.field;
+    params[`promptColStyle_multi_${i + 1}`] = promptColStyle.multi;
+    params[`promptColStyle_width_${i + 1}`] = promptColStyle.width;
+  }
+  return params;
+}
+
 export function getParamObject(form_data, datasource_type, saveNewSlice) {
   const data = {
     // V2 tag temporarily for updating url
@@ -99,6 +111,8 @@ export function getParamObject(form_data, datasource_type, saveNewSlice) {
   Object.assign(data, compareParams);
   const navigateParams = formatNavigates(form_data.navigates);
   Object.assign(data, navigateParams);
+  const promptColStyleParams = formatPromptColStyles(form_data.navigates);
+  Object.assign(data, promptColStyleParams);
   return data;
 }
 

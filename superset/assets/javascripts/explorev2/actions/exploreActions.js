@@ -158,6 +158,26 @@ export function changeNavigate(navigate, field, value) {
   return { type: CHANGE_NAVIGATE, navigate, field, value };
 }
 
+export const CHANGE_FLOAT_STYLE = 'CHANGE_FLOAT_STYLE';
+export function changeFloatStyle(style, field, value) {
+  return { type: CHANGE_FLOAT_STYLE, style, field, value };
+}
+
+export const ADD_PROMPT_COL_STYLE = 'ADD_PROMPT_COL_STYLE';
+export function addPromptColStyle(promptColStyle) {
+  return { type: ADD_PROMPT_COL_STYLE, promptColStyle };
+}
+
+export const REMOVE_PROMPT_COL_STYLE = 'REMOVE_PROMPT_COL_STYLE';
+export function removePromptColStyle(promptColStyle) {
+  return { type: REMOVE_PROMPT_COL_STYLE, promptColStyle };
+}
+
+export const CHANGE_PROMPT_COL_STYLE = 'CHANGE_PROMPT_COL_STYLE';
+export function changePromptColStyle(promptColStyle, field, value) {
+  return { type: CHANGE_PROMPT_COL_STYLE, promptColStyle, field, value };
+}
+
 export const SET_FIELD_VALUE = 'SET_FIELD_VALUE';
 export function setFieldValue(datasource_type, key, value, label) {
   return { type: SET_FIELD_VALUE, datasource_type, key, value, label };
