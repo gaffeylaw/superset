@@ -124,7 +124,7 @@ function tableVis(slice) {
           nextFltIndex = flt.length + 1;
         }
         const col = colArr[i].col;
-        const val = colArr[i].val;
+        const val = (colArr[i].title === '') ? colArr[i].val : colArr[i].title;
         const nextFlt = '&flt_col_' + nextFltIndex + '=' + col + '&flt_op_' + nextFltIndex +
             '=in&flt_eq_' + nextFltIndex + '=' + val;
         newUrl += nextFlt;
@@ -342,8 +342,9 @@ function tableVis(slice) {
                     for (let j = 0; j < groupby.length; j++) {
                       const ele = this.parentNode.childNodes[j];
                       colArr.push({
-                        val: ele.title,
+                        val: ele.textContent,
                         col: groupby[j],
+                        title: ele.title,
                       });
                     }
                     url = addFilter(url, colArr);
