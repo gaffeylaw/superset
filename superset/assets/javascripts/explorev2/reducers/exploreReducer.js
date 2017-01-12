@@ -256,6 +256,7 @@ export const exploreReducer = function (state, action) {
         newFormData.slice_id = state.viz.form_data.slice_id;
         newFormData.slice_name = state.viz.form_data.slice_name;
         newFormData.viz_type = state.viz.form_data.viz_type;
+        newFormData.slices = state.viz.form_data.slices;
       }
       if (action.key === 'viz_type') {
         newFormData.previous_viz_type = state.viz.form_data.viz_type;
