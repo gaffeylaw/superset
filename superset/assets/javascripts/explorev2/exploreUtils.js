@@ -111,7 +111,7 @@ export function getParamObject(form_data, datasource_type, saveNewSlice) {
   Object.assign(data, compareParams);
   const navigateParams = formatNavigates(form_data.navigates);
   Object.assign(data, navigateParams);
-  const promptColStyleParams = formatPromptColStyles(form_data.navigates);
+  const promptColStyleParams = formatPromptColStyles(form_data.promptColStyles);
   Object.assign(data, promptColStyleParams);
   return data;
 }

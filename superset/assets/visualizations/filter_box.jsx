@@ -16,6 +16,7 @@ const propTypes = {
   filtersChoices: React.PropTypes.object,
   onChange: React.PropTypes.func,
   showDateFilter: React.PropTypes.bool,
+  filtersStyles: React.PropTypes.array,
 };
 
 const defaultProps = {
@@ -30,6 +31,8 @@ class FilterBox extends React.Component {
     this.state = {
       selectedValues: props.origSelectedValues,
     };
+    console.log("FilterBox.....");
+    console.log(props);
   }
   changeFilter(filter, options) {
     let vals = null;
@@ -69,6 +72,8 @@ class FilterBox extends React.Component {
     }
     const filters = Object.keys(this.props.filtersChoices).map((filter) => {
       const data = this.props.filtersChoices[filter];
+      console.log("filtersChoices.....");
+      console.log(data);
       const maxes = {};
       maxes[filter] = d3.max(data, function (d) {
         return d.metric;
@@ -120,6 +125,24 @@ function filterBox(slice) {
     $.getJSON(url, (payload) => {
       const fd = payload.form_data;
       const filtersChoices = {};
+      const filtersStyles = [];
+      for (let i = 0; i < 10; i++) {
+        if (form_data[`promptColStyle_id_${i}`]) {
+          filtersStyles.push({
+            id: form_data[`promptColStyle_id_${i}`],
+            field: form_data[`promptColStyle_field_${i}`],
+            multi: form_data[`promptColStyle_multi_${i}`],
+            width: form_data[`promptColStyle_width_${i}`],
+          });
+        }
+        /* eslint no-param-reassign: 0 */
+        delete form_data[`promptColStyle_id_${i}`];
+        delete form_data[`promptColStyle_field_${i}`];
+        delete form_data[`promptColStyle_multi_${i}`];
+        delete form_data[`promptColStyle_width_${i}`];
+      }
+      console.log("filter_box.....");
+      console.log(fd);
       // Making sure the ordering of the fields matches the setting in the
       // dropdown as it may have been shuffled while serialized to json
       payload.form_data.groupby.forEach((f) => {
@@ -131,6 +154,7 @@ function filterBox(slice) {
           onChange={slice.setFilter}
           showDateFilter={fd.date_filter}
           origSelectedValues={slice.getFilters() || {}}
+          filtersStyles={filtersStyles}
         />,
         document.getElementById(slice.containerId)
       );
