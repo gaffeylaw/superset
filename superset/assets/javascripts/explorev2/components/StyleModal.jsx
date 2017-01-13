@@ -24,6 +24,7 @@ const defaultProps = {
   styles: [],
   baseStyle: null,
   colStyles: [],
+  compares: [],
   navigates: [],
 };
 

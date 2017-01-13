@@ -9,7 +9,7 @@ require('./Components.css');
 const propTypes = {
   name: PropTypes.string.isRequired,
   choices: PropTypes.array,
-  value: PropTypes.oneOfType([PropTypes.string, PropTypes.number, PropTypes.array]).isRequired,
+  value: PropTypes.oneOfType([PropTypes.string, PropTypes.number, PropTypes.array]),
   label: PropTypes.string,
   description: PropTypes.string,
   onChange: PropTypes.func,

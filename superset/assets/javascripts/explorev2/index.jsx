@@ -200,6 +200,36 @@ function getNavigates(form_data, datasource_type) {
 bootstrappedState.viz.form_data.navigates =
   getNavigates(bootstrappedState.viz.form_data, bootstrapData.datasource_type);
 
+function parsePromptColStyles(form_data) {
+  const promptColStyles = [];
+  for (let i = 0; i < 10; i++) {
+    if (form_data[`promptColStyle_id_${i}`]) {
+      promptColStyles.push({
+        id: form_data[`promptColStyle_id_${i}`],
+        field: form_data[`promptColStyle_field_${i}`],
+        multi: form_data[`promptColStyle_multi_${i}`],
+        width: form_data[`promptColStyle_width_${i}`],
+      });
+    }
+    /* eslint no-param-reassign: 0 */
+    delete form_data[`promptColStyle_id_${i}`];
+    delete form_data[`promptColStyle_field_${i}`];
+    delete form_data[`promptColStyle_multi_${i}`];
+    delete form_data[`promptColStyle_width_${i}`];
+  }
+  return promptColStyles;
+}
+
+function getPromptColStyles(form_data, datasource_type) {
+  if (datasource_type === 'table') {
+    return parsePromptColStyles(form_data);
+  }
+  return null;
+}
+
+bootstrappedState.viz.form_data.promptColStyles =
+  getPromptColStyles(bootstrappedState.viz.form_data, bootstrapData.datasource_type);
+
 const store = createStore(exploreReducer, bootstrappedState,
   compose(applyMiddleware(thunk))
 );
