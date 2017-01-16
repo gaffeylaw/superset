@@ -120,7 +120,8 @@ function tableVis(slice) {
     };
     function create(elm, parent, fn) {
       const element = document.createElement(elm);
-      fn && fn(element);parent && parent.appendChild(element);
+      fn && fn(element);
+      parent && parent.appendChild(element);
       return element;
     }
     function addListener(element, e, fn) {
@@ -135,7 +136,7 @@ function tableVis(slice) {
     }
     const Class = function (properties) {
       const eleClass = function () {
-        return (arguments[0] !== null && this.init && typeof(this.init) == 'function') ?
+        return (arguments[0] !== null && this.init && typeof(this.init) === 'function') ?
         this.init.apply(this, arguments) : this;
       };
       eleClass.prototype = properties;
@@ -185,8 +186,8 @@ function tableVis(slice) {
         const obj = ['dialogcontainter', 'dialogtitle', 'dialogtitleinfo', 'dialogtitleico',
         'dialogbody', 'dialogbottom'];
         for (let i = 0; i < obj.length; i++) {
-          obj[i] = create('div', null, function(e) {
-            let elm = e;
+          obj[i] = create('div', null, function (e) {
+            const elm = e;
             elm.className = obj[i];
             return elm;
           });
@@ -214,9 +215,9 @@ function tableVis(slice) {
         this.optDragobj.style.width = this.Width + 'px';
         this.optDragobj.style.left = this.Left + 'px';
         this.optDragobj.style.zIndex = this.Zindex;
-        this.optBody.style.height =
-        this.Height - this.Titleheight-parseInt(CurrentStyle(this.optBody).paddingLeft) * 2 + 'px'; 
-        /// 添加事件
+        this.optBody.style.height = this.Height
+        - this.Titleheight - parseInt(CurrentStyle(this.optBody).paddingLeft) * 2 + 'px';
+        // 添加事件
         addListener(this.optDragobj, 'mousedown', BindAsEventListener(this, this.Start, true));
         addListener(this.optCancel, 'mouseover', Bind(this, this.Changebg,
         [this.optCancel, '0px 0px', '-21px 0px']));
@@ -253,7 +254,7 @@ function tableVis(slice) {
           this.optDragobj.setCapture();
         } else {
           e.preventDefault();
-          addListener(window, "blur", this.optFS);
+          addListener(window, 'blur', this.optFS);
         }
         addListener(document, 'mousemove', this.optFM);
         addListener(document, 'mouseup', this.optFS);
@@ -261,27 +262,28 @@ function tableVis(slice) {
       Move: function (e) {
         window.getSelection ? window.getSelection().removeAllRanges() :
         document.selection.empty();
-        const iX = e.clientX - this.optX, iY = e.clientY - this.optY;
+        const iX = e.clientX - this.optX;
+        const iY = e.clientY - this.optY;
         this.optDragobj.style[this.optCss.x] = (this.optIsdrag ? Math.max(iX, 0) :
         Math.max(iX, this.Minwidth)) + 'px';
         this.optDragobj.style[this.optCss.y] = (this.optIsdrag ? Math.max(iY, 0) :
         Math.max(iY, this.Minheight)) + 'px';
         if (!this.optIsdrag) {
-          this.optBody.style.height = Math.max(iY - this.Titleheight, 
+          this.optBody.style.height = Math.max(iY - this.Titleheight,
           this.Minheight - this.Titleheight) -
           2 * parseInt(CurrentStyle(this.optBody).paddingLeft) + 'px';
         }
       },
-        Stop: function () {
-          removeListener(document, 'mousemove', this.optFM);
-          removeListener(document, 'mouseup', this.optFS);
-          if (isIE) {
-            removeListener(this.optDragobj, 'losecapture', this.optFS);
-            this.optDragobj.releaseCapture();
-          } else {
-            removeListener(window, 'blur', this.optFS);
-          }
-        },
+      Stop: function () {
+        removeListener(document, 'mousemove', this.optFM);
+        removeListener(document, 'mouseup', this.optFS);
+        if (isIE) {
+          removeListener(this.optDragobj, 'losecapture', this.optFS);
+          this.optDragobj.releaseCapture();
+        } else {
+          removeListener(window, 'blur', this.optFS);
+        }
+      },
     });
     function creat(title, url) {
       let modals;
