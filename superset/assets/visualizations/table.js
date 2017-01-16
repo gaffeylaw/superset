@@ -338,13 +338,23 @@ function tableVis(slice) {
     }
 
 
-    function GetQueryString(url, name) {
+    function GetQueryString(url, name, result) {
+      let search = url;
+      let resultCopy = result.concat();
       const reg = new RegExp('(^|&)' + name + '=([^&]*)(&|$)');
-      const r = url.substring(url.indexOf('?')).substr(1).match(reg);
-      if (r != null) {
-        return unescape(r[2]);
+      const r = search.substring(search.indexOf('?')).substr(1).match(reg);
+      if (r != undefined && r != null) {
+        const target = unescape(r[2]);
+        if (r != null && target != null && target != '') {
+          search = search.replace(name + '=' + target + '&', '');
+          resultCopy.push(target);
+          return GetQueryString(search, name, resultCopy);
+        } else {
+          return resultCopy;
+        }
+      } else {
+        return resultCopy;
       }
-      return null;
     }
 
 
@@ -534,15 +544,16 @@ function tableVis(slice) {
                   let url = slc.url;
                   const title = slc.title;
                   if (url != null) {
-                    const standlone = GetQueryString('standalone');
-                    if (standlone === null) {
+                    const standalone = GetQueryString(url, 'standalone',[]);
+                    const groupby = GetQueryString(url, 'groupby', []);
+                    if (standalone === null || standalone.length === 0) {
                       if (url.indexOf('standalone') !== -1) {
                         url = url.replace(/standalone=/, 'standalone=true');
                       } else {
                         url += '&standalone=true';
                       }
                     }
-                    const groupby = fd.groupby;
+                    // const groupby = fd.groupby;
                     const colArr = [];
                     for (let j = 0; j < groupby.length; j++) {
                       const ele = this.parentNode.childNodes[j];
