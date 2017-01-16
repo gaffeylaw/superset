@@ -13,6 +13,8 @@ export function defaultFormData(vizType = 'table', datasourceType = 'table') {
     colStyles: [],
     compares: [],
     navigates: [],
+    promptColStyles: [],
+    slices: [],
   };
   const sections = sectionsToRender(vizType, datasourceType);
   sections.forEach((section) => {

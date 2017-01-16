@@ -10,6 +10,7 @@ export const fieldTypes = [
   'SelectMultipleSortableField',
   'TextAreaFeild',
   'TextField',
+  'MenuField',
 ];
 const D3_FORMAT_DOCS = 'D3 format syntax: https://github.com/d3/d3-format';
 

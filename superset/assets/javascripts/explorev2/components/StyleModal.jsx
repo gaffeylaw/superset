@@ -13,17 +13,18 @@ const propTypes = {
   actions: React.PropTypes.object.isRequired,
   form_data: React.PropTypes.object.isRequired,
   styles: React.PropTypes.array.isRequired,
-  baseStyle: React.PropTypes.Object,
+  baseStyle: React.PropTypes.object.isRequired,
   colStyles: React.PropTypes.array.isRequired,
-  compares: React.PropTypes.Object,
+  compares: React.PropTypes.array.isRequired,
   navigates: React.PropTypes.array.isRequired,
-  slices: React.PropTypes.object.isRequired,
+  slices: React.PropTypes.array.isRequired,
 };
 
 const defaultProps = {
   styles: [],
   baseStyle: null,
   colStyles: [],
+  compares: [],
   navigates: [],
 };
 

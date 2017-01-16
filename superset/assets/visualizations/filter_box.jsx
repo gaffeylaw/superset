@@ -16,6 +16,7 @@ const propTypes = {
   filtersChoices: React.PropTypes.object,
   onChange: React.PropTypes.func,
   showDateFilter: React.PropTypes.bool,
+  filtersStyles: React.PropTypes.array,
 };
 
 const defaultProps = {
@@ -56,7 +57,7 @@ class FilterBox extends React.Component {
         }
         const options = choices.map((s) => ({ value: s, label: s }));
         return (
-          <div className="m-b-5">
+          <div className="m-b-5" style={{ float: 'left', paddingLeft: '15px' }}>
             {field.replace('__', '')}
             <Select.Creatable
               options={options}
@@ -69,17 +70,33 @@ class FilterBox extends React.Component {
     }
     const filters = Object.keys(this.props.filtersChoices).map((filter) => {
       const data = this.props.filtersChoices[filter];
+      let styles = {
+        id: '',
+        field: '',
+        multi: 'true',
+        width: '100%',
+      };
+      for (let i in this.props.filtersStyles) {
+        if (this.props.filtersStyles[i].field === filter) {
+          styles = this.props.filtersStyles[i];
+          break;
+        }
+      }
+      let multi = false;
+      if (styles.multi === 'true') {
+        multi = true;
+      }
       const maxes = {};
       maxes[filter] = d3.max(data, function (d) {
         return d.metric;
       });
       return (
-        <div key={filter} className="m-b-5">
+        <div key={filter} className="m-b-5" style={{ width: `${styles.width}`, float: 'left', paddingLeft: '15px' }}>
           {filter}
           <Select
             placeholder={`Select [${filter}]`}
             key={filter}
-            multi
+            multi={multi}
             value={this.state.selectedValues[filter]}
             options={data.map((opt) => {
               const perc = Math.round((opt.metric / maxes[opt.filter]) * 100);
@@ -120,6 +137,22 @@ function filterBox(slice) {
     $.getJSON(url, (payload) => {
       const fd = payload.form_data;
       const filtersChoices = {};
+      const filtersStyles = [];
+      for (let i = 0; i < 10; i++) {
+        if (fd[`promptColStyle_id_${i}`]) {
+          filtersStyles.push({
+            id: fd[`promptColStyle_id_${i}`],
+            field: fd[`promptColStyle_field_${i}`],
+            multi: fd[`promptColStyle_multi_${i}`],
+            width: fd[`promptColStyle_width_${i}`],
+          });
+        }
+        /* eslint no-param-reassign: 0 */
+        delete fd[`promptColStyle_id_${i}`];
+        delete fd[`promptColStyle_field_${i}`];
+        delete fd[`promptColStyle_multi_${i}`];
+        delete fd[`promptColStyle_width_${i}`];
+      }
       // Making sure the ordering of the fields matches the setting in the
       // dropdown as it may have been shuffled while serialized to json
       payload.form_data.groupby.forEach((f) => {
@@ -131,6 +164,8 @@ function filterBox(slice) {
           onChange={slice.setFilter}
           showDateFilter={fd.date_filter}
           origSelectedValues={slice.getFilters() || {}}
+          filtersStyles={filtersStyles}
+          floatLayout={fd.float_layout}
         />,
         document.getElementById(slice.containerId)
       );

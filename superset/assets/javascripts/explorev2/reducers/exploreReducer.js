@@ -208,6 +208,45 @@ export const exploreReducer = function (state, action) {
         { viz: Object.assign({}, state.viz, { form_data: newFormData }) }
       );
     },
+    [actions.CHANGE_FLOAT_STYLE]() {
+      const changes = {};
+      changes[action.field] = action.value;
+      const newFormData = alterInArr(
+        state.viz.form_data, 'promptBaseStyles', action.style, changes);
+      return Object.assign(
+        {},
+        state,
+        { viz: Object.assign({}, state.viz, { form_data: newFormData }) }
+      );
+    },
+    [actions.ADD_PROMPT_COL_STYLE]() {
+      const newFormData = addToArr(state.viz.form_data, 'promptColStyles', action.promptColStyle);
+      const newState = Object.assign(
+        {},
+        state,
+        { viz: Object.assign({}, state.viz, { form_data: newFormData }) }
+      );
+      return newState;
+    },
+    [actions.REMOVE_PROMPT_COL_STYLE]() {
+      const newFormData = removeFromArr(state.viz.form_data, 'promptColStyles', action.promptColStyle);
+      return Object.assign(
+        {},
+        state,
+        { viz: Object.assign({}, state.viz, { form_data: newFormData }) }
+      );
+    },
+    [actions.CHANGE_PROMPT_COL_STYLE]() {
+      const changes = {};
+      changes[action.field] = action.value;
+      const newFormData = alterInArr(
+        state.viz.form_data, 'promptColStyles', action.promptColStyle, changes);
+      return Object.assign(
+        {},
+        state,
+        { viz: Object.assign({}, state.viz, { form_data: newFormData }) }
+      );
+    },
     [actions.SET_FIELD_VALUE]() {
       const newFormData = action.key === 'datasource' ?
         defaultFormData(state.viz.form_data.viz_type, action.datasource_type) :
@@ -217,6 +256,7 @@ export const exploreReducer = function (state, action) {
         newFormData.slice_id = state.viz.form_data.slice_id;
         newFormData.slice_name = state.viz.form_data.slice_name;
         newFormData.viz_type = state.viz.form_data.viz_type;
+        newFormData.slices = state.viz.form_data.slices;
       }
       if (action.key === 'viz_type') {
         newFormData.previous_viz_type = state.viz.form_data.viz_type;

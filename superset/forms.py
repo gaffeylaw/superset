@@ -1255,6 +1255,16 @@ class FormFactory(object):
             columnNames.append(tup)
         columns_choices = viz.datasource.metrics_combo + columnNames
 
+        # set promptColStyleMultiChoices
+        promptColStyleMultiChoices = self.choicify(['false','true'])
+
+        # get prompt column choices
+        promptColumnChoices = columnNames
+
+        print("====================")
+        print(promptColStyleMultiChoices)
+        print(promptColumnChoices)
+        
         for field_prefix in filter_prefixes:
             is_having_filter = field_prefix == 'having'
             col_choices = filter_cols if not is_having_filter else having_cols
@@ -1345,6 +1355,23 @@ class FormFactory(object):
                         _('Navigate 1'),
                         default=open_choices[0][0],
                         choices=open_choices))
+
+                # promptColStyle
+                setattr(QueryForm, 'promptColStyle_id_' + str(i),
+                    TextField(_("Super"), default=''))
+                setattr(QueryForm, 'promptColStyle_field_' + str(i),
+                    SelectField(
+                        _('PromptColStyle 1'),
+                        default=promptColumnChoices[0][0],
+                        choices=promptColumnChoices))
+                setattr(QueryForm, 'promptColStyle_multi_' + str(i),
+                    SelectField(
+                        _('PromptColStyle 1'),
+                        default=promptColStyleMultiChoices[0][0],
+                        choices=promptColStyleMultiChoices))
+                setattr(
+                    QueryForm, 'promptColStyle_width_' + str(i),
+                    TextField(_("Super"), default=''))
             
             # baseStyle
             setattr(

@@ -9,6 +9,7 @@ import ControlPanelSection from './ControlPanelSection';
 import FieldSetRow from './FieldSetRow';
 import Filters from './Filters';
 import StyleModal from './StyleModal';
+import PromptStyleModal from './PromptStyleModal';
 
 const propTypes = {
   datasource_type: PropTypes.string.isRequired,
@@ -25,6 +26,7 @@ class ControlPanelsContainer extends React.Component {
     super(props);
     this.state = {
       showModal: false,
+      showPromptModal: false,
     };
   }
 
@@ -71,10 +73,18 @@ class ControlPanelsContainer extends React.Component {
     this.setState({ showModal: !this.state.showModal });
   }
 
+  togglePromptModal() {
+    this.setState({ showPromptModal: !this.state.showPromptModal });
+  }
+
   render() {
     let flag = false;
     if (this.props.form_data.viz_type === 'table') {
       flag = true;
+    }
+    let flag_prompt = false;
+    if (this.props.form_data.viz_type === 'filter_box') {
+      flag_prompt = true;
     }
     return (
       <Panel>
@@ -129,6 +139,25 @@ class ControlPanelsContainer extends React.Component {
                 </div>
               }
 
+              {flag_prompt &&
+                <div className="panel panel-default">
+                  <div className="panel-heading">
+                    <div className="panel-title">Setting style</div>
+                  </div>
+                  <div className="panel-body">
+                    <button
+                      type="button"
+                      className="btn btn-sm btn-default"
+                      data-target="#save_modal"
+                      data-toggle="modal"
+                      onClick={this.togglePromptModal.bind(this)}
+                    >
+                      <i className="fa fa-plus" /> &nbsp; Setting Style
+                    </button>
+                  </div>
+                </div>
+              }
+
               {this.state.showModal &&
                 <StyleModal
                   onHide={this.toggleModal.bind(this)}
@@ -140,6 +169,15 @@ class ControlPanelsContainer extends React.Component {
                   compares={this.props.form_data.compares}
                   navigates={this.props.form_data.navigates}
                   slices={this.props.form_data.slices}
+                />
+              }
+
+              {this.state.showPromptModal &&
+                <PromptStyleModal
+                  onHide={this.togglePromptModal.bind(this)}
+                  actions={this.props.actions}
+                  form_data={this.props.form_data}
+                  promptColStyles={this.props.form_data.promptColStyles}
                 />
               }
 
