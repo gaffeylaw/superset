@@ -544,9 +544,8 @@ function tableVis(slice) {
                   let url = slc.url;
                   const title = slc.title;
                   if (url != null) {
-                    const standalone = GetQueryString(url, 'standalone',[]);
+                    const standalone = GetQueryString(url, 'standalone', []);
                     const navGroupby = GetQueryString(url, 'groupby', []);
-                    console.log(standalone)
                     if (standalone.length === 0) {
                       if (url.indexOf('standalone') !== -1) {
                         url = url.replace(/standalone=/, 'standalone=true');
@@ -562,9 +561,9 @@ function tableVis(slice) {
                         // make navigate groupby val equals source groupby
                         if (sourceGroupby[j] === navGroupby[k]) {
                           colArr.push({
-                          val: ele.textContent,
-                          col: navGroupby[k],
-                          title: ele.title,
+                            val: ele.textContent,
+                            col: navGroupby[k],
+                            title: ele.title,
                           });
                         }
                       }
