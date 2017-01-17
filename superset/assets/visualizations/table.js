@@ -303,7 +303,7 @@ function tableVis(slice) {
 
     // add listener to get navigate message
     $(document).ready(function () {
-      window.addEventListener('message', function (e) {
+      window.onmessage = function (e) {
         if (e.data.type === 'newWindow') {
           window.open(e.data.url, null, null);
         } else {
@@ -314,7 +314,7 @@ function tableVis(slice) {
             count++;
           }
         }
-      }, false);
+      }
     });
 
     // add filter by change url
@@ -570,7 +570,7 @@ function tableVis(slice) {
                     }
                     url = addFilter(url, colArr);
                     const postData = { url: url, title: title, type: type };
-                    window.parent.parent.postMessage(postData, '*');  // send message to navigate
+                    window.parent.postMessage(postData, '*');  // send message to navigate
                   }
                 }
               }
