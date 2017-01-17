@@ -340,12 +340,12 @@ function tableVis(slice) {
 
     function GetQueryString(url, name, result) {
       let search = url;
-      let resultCopy = result.concat();
+      const resultCopy = result.concat();
       const reg = new RegExp('(^|&)' + name + '=([^&]*)(&|$)');
       const r = search.substring(search.indexOf('?')).substr(1).match(reg);
-      if (r != undefined && r != null) {
+      if (r) {
         const target = unescape(r[2]);
-        if (r != null && target != null && target != '') {
+        if (r !== null && target !== null && target !== '') {
           search = search.replace(name + '=' + target + '&', '');
           resultCopy.push(target);
           return GetQueryString(search, name, resultCopy);
@@ -545,23 +545,29 @@ function tableVis(slice) {
                   const title = slc.title;
                   if (url != null) {
                     const standalone = GetQueryString(url, 'standalone',[]);
-                    const groupby = GetQueryString(url, 'groupby', []);
-                    if (standalone === null || standalone.length === 0) {
+                    const navGroupby = GetQueryString(url, 'groupby', []);
+                    console.log(standalone)
+                    if (standalone.length === 0) {
                       if (url.indexOf('standalone') !== -1) {
                         url = url.replace(/standalone=/, 'standalone=true');
                       } else {
                         url += '&standalone=true';
                       }
                     }
-                    // const groupby = fd.groupby;
+                    const sourceGroupby = fd.groupby;
                     const colArr = [];
-                    for (let j = 0; j < groupby.length; j++) {
+                    for (let j = 0; j < sourceGroupby.length; j++) {
                       const ele = this.parentNode.childNodes[j];
-                      colArr.push({
-                        val: ele.textContent,
-                        col: groupby[j],
-                        title: ele.title,
-                      });
+                      for (let k = 0; k < navGroupby.length; k++){
+                        // make navigate groupby val equals source groupby
+                        if (sourceGroupby[j] === navGroupby[k]) {
+                          colArr.push({
+                          val: ele.textContent,
+                          col: navGroupby[k],
+                          title: ele.title,
+                          });
+                        }
+                      }
                     }
                     url = addFilter(url, colArr);
                     const postData = { url: url, title: title, type: type };
