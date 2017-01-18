@@ -35,67 +35,6 @@ function tableVis(slice) {
       return navigateSlice.responseText;
     }
 
-    // add a modal
-    // function showModal(title, url) {
-    //   let modals;
-    //   if ($('#modals').attr('id') !== undefined) {
-    //     modals = $('#modals');
-    //   } else {
-    //     modals = document.createElement('div');
-    //     $(modals).attr('id', 'modals');
-    //     document.body.append(modals);
-    //   }
-    //   const myModal = document.createElement('div');
-    //   const modalCount = $('#modals').children().length;
-    //   $(myModal).attr('id', modalCount)
-    //   .attr('class', 'modal fade')
-    //   .attr('role', 'dialog')
-    //   .attr('aria-hidden', true)
-    //   .attr('id', 'newSlice_' + modalCount);
-    //   const modalDialog = document.createElement('div');
-    //   $(modalDialog).attr('class', 'modal-dialog');
-    //   const modalContent = document.createElement('div');
-    //   $(modalContent).attr('class', 'modal-content');
-    //   const modalHeader = document.createElement('div');
-    //   $(modalHeader).attr('class', 'modal-header');
-    //   const modalTitle = document.createElement('h4');
-    //   $(modalTitle).attr('class', 'modal-title')
-    //   .text(title);
-    //   const modalBody = document.createElement('div');
-    //   $(modalBody).attr('class', 'modal-body');
-    //   const iframe = document.createElement('iframe');
-    //   $(iframe).attr('id', 'iframe_' + modalCount)
-    //   .attr('src', url)
-    //   .attr('height', '50%')
-    //   .attr('width', '100%')
-    //   .attr('frameborder', 0);
-    //   $(modalBody).append(iframe);
-    //   $(modalContent).append(modalHeader);
-    //   $(modalContent).append(modalBody);
-    //   $(modalHeader).append(modalTitle);
-    //   $(modalDialog).append(modalContent);
-    //   $(myModal).append(modalDialog);
-    //   $(modals).append(myModal);
-    //   $(myModal).draggable({
-    //     handle: '.modal-header',
-    //   });
-    //   $(myModal).modal({ show: true });
-      // const myModal = $('#newSlice').clone();
-      // const modalCount = $('#modals').children().length;
-      // myModal.attr('id', 'newSlice_' + modalCount);
-      // $('#modals').append(myModal);
-      // $('#newSlice_' + modalCount + ' iframe').attr('src', url);
-      // $('#newSlice_' + modalCount + ' iframe').attr('id', 'iframe_' + modalCount);
-      // $('#newSlice_' + modalCount + ' .modal-title').text(title);
-      // myModal.attr('display', 'block');
-      // myModal.draggable({
-      //   handle: '.modal-header',
-      // });
-      // myModal.modal({ show: true });
-      // $('.modal-backdrop').each(function () {
-      //   $(this).attr('id', 'id_' + Math.random());
-      // });
-    // }
 
     let left = 10;
     const isIE = (document.all) ? true : false;
@@ -285,7 +224,7 @@ function tableVis(slice) {
         }
       },
     });
-    function creat(title, url) {
+    function createModal(title, url) {
       let modals;
       if ($('#modals').attr('id') !== undefined) {
         modals = $('#modals');
@@ -296,7 +235,7 @@ function tableVis(slice) {
       }
       const modalCount = $('#modals').children().length;
       const content = '<iframe id = "newSlice_' + modalCount +
-      '" width = "100%" height = "100%" src = "' + url + '"> </iframe>';
+      '" width = "100%" height = "100%" frameBorder = "0" src = "' + url + '"> </iframe>';
       new Dialog({ Info: title, Left: 300 + left, Content: content, Zindex: (++Dialog.Zindex) });
       left += 10;
     }
@@ -310,11 +249,11 @@ function tableVis(slice) {
            // make modal can be add only once
           if ($('#newSlice_' + count).attr('id') === undefined) {
             // showModal(e.data.title, e.data.url);
-            creat(e.data.title, e.data.url);
+            createModal(e.data.title, e.data.url);
             count++;
           }
         }
-      }
+      };
     });
 
     // add filter by change url
