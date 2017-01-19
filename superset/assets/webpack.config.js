@@ -21,6 +21,7 @@ const config = {
     standalone: ['babel-polyfill', APP_DIR + '/javascripts/standalone.js'],
     welcome: ['babel-polyfill', APP_DIR + '/javascripts/welcome.js'],
     profile: ['babel-polyfill', APP_DIR + '/javascripts/profile/index.jsx'],
+    portal: ['babel-polyfill', APP_DIR + '/javascripts/portal/index.jsx'],
   },
   output: {
     path: BUILD_DIR,

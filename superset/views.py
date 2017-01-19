@@ -41,6 +41,7 @@ from superset import (
 from superset.source_registry import SourceRegistry
 from superset.models import DatasourceAccessRequest as DAR
 from werkzeug.datastructures import ImmutableMultiDict
+from flask_login import login_user, logout_user
 
 config = app.config
 log_this = models.Log.log_this
@@ -2709,6 +2710,17 @@ class Superset(BaseSupersetView):
             'superset/sqllab.html',
             bootstrap_data=json.dumps(d, default=utils.json_iso_dttm_ser)
         )
+    
+    @has_access
+    @expose("/portal")
+    def portal(self):
+        d = {
+            'portalId': config.get('SQLLAB_DEFAULT_DBID'),
+        }
+        return self.render_template(
+            'superset/portal.html',
+            bootstrap_data=json.dumps(d, default=utils.json_iso_dttm_ser)
+        )
 
     @expose("/rest/api")
     def restIndex(self):
@@ -2725,7 +2737,6 @@ class Superset(BaseSupersetView):
         if not user:
             return "the user or password is invalid"
         else:
-            from flask_login import login_user, logout_user
             login_user(user, remember=False)
 
             try:
@@ -2774,7 +2785,6 @@ class Superset(BaseSupersetView):
         if not user:
             return 'the user or password is invalid'
         else:
-            from flask_login import login_user, logout_user
             login_user(user, remember=False)
 
             try:
@@ -2814,6 +2824,21 @@ class Superset(BaseSupersetView):
                 return json.dumps(json.loads(result)['data'])
             except Exception as e:
                 return utils.error_msg_from_exception(e)
+
+    @expose("/rest/api/loginByAccessToken", methods=['GET', 'POST'])
+    def loginByUserToken(self):
+         user_token = request.args.get('user_token')
+         import requests
+         headers = {
+          "Authorization": 'bearer ' + user_token
+         }
+         user = requests.get('http://apiuat.yunmart.com/api/check_token', headers=headers)
+         username = json.loads(user.text)['username']
+         user = self.appbuilder.sm.find_user(username)
+         print(user)
+         login_user(user, remember=False)
+         return redirect('/superset/welcome')
+        #  return 'login success'
 
     @expose("/rest/api/sliceUrl", methods=['GET', 'POST'])
     def sliceUrl(self):
@@ -2876,6 +2901,13 @@ appbuilder.add_link(
     category_icon="fa-flask",
     category='SQL Lab')
 
+# appbuilder.add_link(
+#     'portal',
+#     label="门户",
+#     href='/superset/portal',
+#     icon="fa-user",
+#     category_icon='',
+#     category='')
 
 @app.after_request
 def apply_caching(response):

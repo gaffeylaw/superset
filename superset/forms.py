@@ -1260,10 +1260,6 @@ class FormFactory(object):
 
         # get prompt column choices
         promptColumnChoices = columnNames
-
-        print("====================")
-        print(promptColStyleMultiChoices)
-        print(promptColumnChoices)
         
         for field_prefix in filter_prefixes:
             is_having_filter = field_prefix == 'having'
