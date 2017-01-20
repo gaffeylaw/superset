@@ -383,7 +383,7 @@ function nvd3Vis(slice) {
         }
 
         let height = slice.height() - 15;
-        let navHeight = location.search.substring(location.search.indexOf('navHeight='));
+        const navHeight = location.search.substring(location.search.indexOf('navHeight='));
         if (navHeight.length < location.search.length) {
           height = navHeight.substring(navHeight.indexOf('=') + 1, navHeight.indexOf('px'));
         }

@@ -24,6 +24,25 @@ function tableVis(slice) {
     }
 
 
+    function GetQueryString(url, name, result) {
+      let search = url;
+      const resultCopy = result.concat();
+      const reg = new RegExp('(^|&)' + name + '=([^&]*)(&|$)');
+      const r = search.substring(search.indexOf('?')).substr(1).match(reg);
+      if (r) {
+        const target = unescape(r[2]);
+        if (r !== null && target !== null && target !== '') {
+          search = search.replace('&' + name + '=' + target, '');
+          resultCopy.push(target);
+          return GetQueryString(search, name, resultCopy);
+        } else {
+          return resultCopy;
+        }
+      } else {
+        return resultCopy;
+      }
+    }
+
     // get slice by sliceId
     function sliceUrl(sliceId) {
       const navigateSlice = $.ajax({
@@ -219,7 +238,7 @@ function tableVis(slice) {
         removeListener(document, 'mousemove', this.optFM);
         removeListener(document, 'mouseup', this.optFS);
         if (startHeight !== this.optBody.style.height) {
-          let frame = this.optBody.childNodes[0];
+          const frame = this.optBody.childNodes[0];
           let newUrl = frame.getAttribute('src');
           const navHeight = GetQueryString(newUrl, 'navHeight', []);
           if (navHeight.length !== 0) {
@@ -249,14 +268,14 @@ function tableVis(slice) {
       }
       const modalCount = $('#modals').children().length;
       const navHeight = height - 26 - 20 + 'px';
-      console.log(height)
-      url += '&navHeight=' + navHeight;
+      let newUrl = url;
+      newUrl += '&navHeight=' + navHeight;
       const content = '<iframe id = "newSlice_' + modalCount +
       '" width = "100%" height = "100%" scrolling = "no" frameBorder = "0" src = "' +
-      url + '"> </iframe>';
+      newUrl + '"> </iframe>';
       new Dialog({
-        Url: url,
-        Height:height,
+        Url: newUrl,
+        Height: height,
         Width: width,
         Info: title,
         Left: 300 + left,
@@ -300,26 +319,6 @@ function tableVis(slice) {
         newUrl += nextFlt;
       }
       return newUrl;
-    }
-
-
-    function GetQueryString(url, name, result) {
-      let search = url;
-      const resultCopy = result.concat();
-      const reg = new RegExp('(^|&)' + name + '=([^&]*)(&|$)');
-      const r = search.substring(search.indexOf('?')).substr(1).match(reg);
-      if (r) {
-        const target = unescape(r[2]);
-        if (r !== null && target !== null && target !== '') {
-          search = search.replace('&' + name + '=' + target, '');
-          resultCopy.push(target);
-          return GetQueryString(search, name, resultCopy);
-        } else {
-          return resultCopy;
-        }
-      } else {
-        return resultCopy;
-      }
     }
 
 
@@ -541,11 +540,11 @@ function tableVis(slice) {
                     }
                     url = addFilter(url, colArr);
                     const postData = {
-                       url: url,
-                       title: title,
-                       type: type,
-                       navHeight: navHeight,
-                       navWidth: navWidth,
+                      url: url,
+                      title: title,
+                      type: type,
+                      navHeight: navHeight,
+                      navWidth: navWidth,
                     };
                     window.parent.postMessage(postData, '*');  // send message to navigate
                   }
