@@ -1341,6 +1341,10 @@ class FormFactory(object):
                         choices=viz.datasource.metrics_combo))
                 setattr(QueryForm, 'navigate_expr_' + str(i),
                     TextField(_("Super"), default=''))
+                setattr(QueryForm, 'navigate_width_' + str(i),
+                    TextField(_("Super"), default=''))
+                setattr(QueryForm, 'navigate_height_' + str(i),
+                    TextField(_("Super"), default=''))    
                 setattr(QueryForm, 'navigate_slice_' + str(i),
                     SelectField(
                         _('Navigate 1'),

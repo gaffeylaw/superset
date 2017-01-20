@@ -176,6 +176,8 @@ function parseNavigates(form_data) {
         id: form_data[`navigate_id_${i}`],
         metric: form_data[`navigate_metric_${i}`],
         expr: form_data[`navigate_expr_${i}`],
+        width: form_data[`navigate_width_${i}`],
+        height: form_data[`navigate_height_${i}`],
         slice: form_data[`navigate_slice_${i}`],
         open: form_data[`navigate_open_${i}`],
       });
@@ -184,6 +186,8 @@ function parseNavigates(form_data) {
     delete form_data[`navigate_id_${i}`];
     delete form_data[`navigate_metric_${i}`];
     delete form_data[`navigate_expr_${i}`];
+    delete form_data[`navigate_width_${i}`];
+    delete form_data[`navigate_height_${i}`];
     delete form_data[`navigate_slice_${i}`];
     delete form_data[`navigate_open_${i}`];
   }
