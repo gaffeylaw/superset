@@ -204,7 +204,7 @@ export function updateExploreEndpoints(jsonUrl, csvUrl, standaloneUrl) {
 }
 
 export const REMOVE_CONTROL_PANEL_ALERT = 'REMOVE_CONTROL_PANEL_ALERT';
-export function removeControlPanelAlert() {changeWidth
+export function removeControlPanelAlert() {
   return { type: REMOVE_CONTROL_PANEL_ALERT };
 }
 

@@ -37,6 +37,7 @@ function tableVis(slice) {
 
 
     let left = 10;
+    let startHeight;
     const isIE = (document.all) ? true : false;
     const Extend = function (destination, source) {
       for (const property in source) {
@@ -178,6 +179,7 @@ function tableVis(slice) {
         o.style.backgroundPosition = (o.style.backgroundPosition === x1) ? x2 : x1;
       },
       Start: function (e, isdrag) {
+        startHeight = this.optBody.style.height;
         if (!isdrag) {
           this.Cancelbubble(e);
         }
@@ -216,6 +218,18 @@ function tableVis(slice) {
       Stop: function () {
         removeListener(document, 'mousemove', this.optFM);
         removeListener(document, 'mouseup', this.optFS);
+        if (startHeight !== this.optBody.style.height) {
+          let frame = this.optBody.childNodes[0];
+          let newUrl = frame.getAttribute('src');
+          const navHeight = GetQueryString(newUrl, 'navHeight', []);
+          if (navHeight.length !== 0) {
+            newUrl = newUrl.replace('navHeight=' + navHeight,
+            'navHeight=' + this.optBody.style.height);
+          } else {
+            newUrl += '&navHeight=' + this.optBody.style.height;
+          }
+          frame.setAttribute('src', newUrl);
+        }
         if (isIE) {
           removeListener(this.optDragobj, 'losecapture', this.optFS);
           this.optDragobj.releaseCapture();
@@ -224,7 +238,7 @@ function tableVis(slice) {
         }
       },
     });
-    function createModal(title, url) {
+    function createModal(title, url, height, width) {
       let modals;
       if ($('#modals').attr('id') !== undefined) {
         modals = $('#modals');
@@ -234,9 +248,21 @@ function tableVis(slice) {
         document.body.append(modals);
       }
       const modalCount = $('#modals').children().length;
+      const navHeight = height - 26 - 20 + 'px';
+      console.log(height)
+      url += '&navHeight=' + navHeight;
       const content = '<iframe id = "newSlice_' + modalCount +
-      '" width = "100%" height = "100%" frameBorder = "0" src = "' + url + '"> </iframe>';
-      new Dialog({ Info: title, Left: 300 + left, Content: content, Zindex: (++Dialog.Zindex) });
+      '" width = "100%" height = "100%" scrolling = "no" frameBorder = "0" src = "' +
+      url + '"> </iframe>';
+      new Dialog({
+        Url: url,
+        Height:height,
+        Width: width,
+        Info: title,
+        Left: 300 + left,
+        Content: content,
+        Zindex: (++Dialog.Zindex),
+      });
       left += 10;
     }
 
@@ -249,7 +275,7 @@ function tableVis(slice) {
            // make modal can be add only once
           if ($('#newSlice_' + count).attr('id') === undefined) {
             // showModal(e.data.title, e.data.url);
-            createModal(e.data.title, e.data.url);
+            createModal(e.data.title, e.data.url, e.data.navHeight, e.data.navWidth);
             count++;
           }
         }
@@ -285,7 +311,7 @@ function tableVis(slice) {
       if (r) {
         const target = unescape(r[2]);
         if (r !== null && target !== null && target !== '') {
-          search = search.replace(name + '=' + target + '&', '');
+          search = search.replace('&' + name + '=' + target, '');
           resultCopy.push(target);
           return GetQueryString(search, name, resultCopy);
         } else {
@@ -479,6 +505,10 @@ function tableVis(slice) {
                 if (((expr.indexOf('$.inArray') === -1 && eval(expr))
                 || (expr.indexOf('$.inArray') !== -1 && eval(expr) !== -1))) {
                   const type = fd['navigate_open_' + i];
+                  const navHeight = (fd['navigate_height_' + i] === '') ? 300 :
+                  fd['navigate_height_' + i];
+                  const navWidth = (fd['navigate_width_' + i] === '') ? 300 :
+                  fd['navigate_width_' + i];
                   const slc = JSON.parse(sliceUrl(fd['navigate_slice_' + i]));
                   let url = slc.url;
                   const title = slc.title;
@@ -494,21 +524,29 @@ function tableVis(slice) {
                     }
                     const sourceGroupby = fd.groupby;
                     const colArr = [];
-                    for (let j = 0; j < sourceGroupby.length; j++) {
-                      const ele = this.parentNode.childNodes[j];
-                      for (let k = 0; k < navGroupby.length; k++){
-                        // make navigate groupby val equals source groupby
-                        if (sourceGroupby[j] === navGroupby[k]) {
-                          colArr.push({
-                            val: ele.textContent,
-                            col: navGroupby[k],
-                            title: ele.title,
-                          });
+                    if (navGroupby.length > 0) {
+                      for (let j = 0; j < sourceGroupby.length; j++) {
+                        const ele = this.parentNode.childNodes[j];
+                        for (let k = 0; k < navGroupby.length; k++) {
+                          // make navigate groupby val equals source groupby
+                          if (sourceGroupby[j] === navGroupby[k]) {
+                            colArr.push({
+                              val: ele.textContent,
+                              col: navGroupby[k],
+                              title: ele.title,
+                            });
+                          }
                         }
                       }
                     }
                     url = addFilter(url, colArr);
-                    const postData = { url: url, title: title, type: type };
+                    const postData = {
+                       url: url,
+                       title: title,
+                       type: type,
+                       navHeight: navHeight,
+                       navWidth: navWidth,
+                    };
                     window.parent.postMessage(postData, '*');  // send message to navigate
                   }
                 }
