@@ -26,6 +26,12 @@ export default class Navigate extends React.Component {
   changeExpr(navigate, event) {
     this.props.actions.changeNavigate(navigate, 'expr', event.target.value);
   }
+  changeWidth(navigate, event) {
+    this.props.actions.changeNavigate(navigate, 'width', event.target.value);
+  }
+  changeHeight(navigate, event) {
+    this.props.actions.changeNavigate(navigate, 'height', event.target.value);
+  }
   changeSlice(navigate, col) {
     const val = (col) ? col.value : null;
     this.props.actions.changeNavigate(navigate, 'slice', val);
@@ -58,6 +64,26 @@ export default class Navigate extends React.Component {
               value={this.props.navigate.expr}
               className="form-control input-sm"
               placeholder="阀值"
+            />
+          </div>
+        </div>
+        <div className="row space-1">
+          <div className="col-lg-6">
+            <input
+              type="text"
+              onChange={this.changeWidth.bind(this, this.props.navigate)}
+              value={this.props.navigate.width}
+              className="form-control input-sm"
+              placeholder="宽度"
+            />
+          </div>
+          <div className="col-lg-6">
+            <input
+              type="text"
+              onChange={this.changeHeight.bind(this, this.props.navigate)}
+              value={this.props.navigate.height}
+              className="form-control input-sm"
+              placeholder="高度"
             />
           </div>
         </div>

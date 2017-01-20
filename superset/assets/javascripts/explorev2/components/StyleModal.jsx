@@ -61,6 +61,8 @@ class StyleModal extends React.Component {
       id: shortid.generate(),
       metric: null,
       expr: null,
+      width: 300,
+      height: 300,
       slice: null,
       open: 'modal',
     });

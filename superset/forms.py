@@ -1260,10 +1260,6 @@ class FormFactory(object):
 
         # get prompt column choices
         promptColumnChoices = columnNames
-
-        print("====================")
-        print(promptColStyleMultiChoices)
-        print(promptColumnChoices)
         
         for field_prefix in filter_prefixes:
             is_having_filter = field_prefix == 'having'
@@ -1345,6 +1341,10 @@ class FormFactory(object):
                         choices=viz.datasource.metrics_combo))
                 setattr(QueryForm, 'navigate_expr_' + str(i),
                     TextField(_("Super"), default=''))
+                setattr(QueryForm, 'navigate_width_' + str(i),
+                    TextField(_("Super"), default=''))
+                setattr(QueryForm, 'navigate_height_' + str(i),
+                    TextField(_("Super"), default=''))    
                 setattr(QueryForm, 'navigate_slice_' + str(i),
                     SelectField(
                         _('Navigate 1'),
