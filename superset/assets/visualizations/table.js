@@ -30,9 +30,9 @@ function tableVis(slice) {
       const reg = new RegExp('(^|&)' + name + '=([^&]*)(&|$)');
       const r = search.substring(search.indexOf('?')).substr(1).match(reg);
       if (r) {
-        const target = unescape(r[2]);
+        const target = decodeURI(r[2]);// decodeURI for Chinese url
         if (r !== null && target !== null && target !== '') {
-          search = search.replace('&' + name + '=' + target, '');
+          search = search.replace('&' + name + '=' + r[2], '');// replace source url
           resultCopy.push(target);
           return GetQueryString(search, name, resultCopy);
         } else {
