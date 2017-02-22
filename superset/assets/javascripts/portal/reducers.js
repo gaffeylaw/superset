@@ -4,27 +4,11 @@ import { now } from '../modules/dates';
 import { addToObject, alterInObject, alterInArr, removeFromArr, getFromArr, addToArr }
   from '../reduxUtils.js';
 
-export function getInitialState(defaultDbId) {
-  const defaultQueryEditor = {
-    id: shortid.generate(),
-    title: 'Untitled Query',
-    sql: 'SELECT *\nFROM\nWHERE',
-    selectedText: null,
-    latestQueryId: null,
-    autorun: false,
-    dbId: defaultDbId,
-  };
-
+export function initialState(portal, menus, dashboards) {
   return {
-    alerts: [],
-    networkOn: true,
-    queries: {},
-    databases: {},
-    queryEditors: [defaultQueryEditor],
-    tabHistory: [defaultQueryEditor.id],
-    tables: [],
-    queriesLastUpdate: 0,
-    activeSouthPaneTab: 'Results',
+    portal: portal,
+    menus: menus,
+    dashboards: dashboards,
   };
 }
 

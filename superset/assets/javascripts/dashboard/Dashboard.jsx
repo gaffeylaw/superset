@@ -223,7 +223,7 @@ export function dashboardContainer(dashboard) {
         clearTimeout(resizeTimer);
         resizeTimer = setTimeout(() => {
           dash.sliceObjects.forEach((slice) => {
-            slice.resize();
+            // slice.resize();
           });
         }, 500);
       });
@@ -345,4 +345,22 @@ $(document).ready(() => {
   const dashboard = dashboardContainer(state.dashboard);
   initDashboardView(dashboard);
   dashboard.init();
+  hideHeader();
 });
+
+function hideHeader() {
+  // hide header and title
+  if(getQueryString('showHeader') === 'false') {
+    $('header').hide();
+    $('#dashboard-header').hide();
+    $('#alert-container').hide();
+  }
+}
+
+// get url param
+function getQueryString(name) {  
+    var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");  
+    var r = window.location.search.substr(1).match(reg);  
+    if (r != null) return unescape(r[2]);  
+    return null;  
+}

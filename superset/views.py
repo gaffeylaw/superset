@@ -1103,6 +1103,36 @@ def ping():
     return "OK"
 
 
+class PortalModelView(SupersetModelView, DeleteMixin):  # noqa
+    datamodel = SQLAInterface(models.Portal)
+    list_columns = [
+        'portal_link', 'description', 'creator', 'modified']
+    edit_columns = [
+        'portal_name', 'description', 'title', 
+        'footer', 'portal_href']
+    add_columns = edit_columns
+    show_columns = add_columns
+    page_size = 500
+    label_columns = {
+        'portal_link': _("portal_name"),
+        'portal_name': _("portal_name"),
+        'description': _("Description"),
+        'creator': _("Creator"),
+        'modified': _("Modified"),
+        'title': _("title"),
+        'footer': _("footer"),
+        'portal_href': _("portal_href"),
+    } 
+
+appbuilder.add_view(
+    PortalModelView,
+    "Portal list",
+    label= _("Portal"),
+    category="",
+    category_label="",
+    icon="fa-user")
+
+
 class R(BaseSupersetView):
 
     """used for short urls"""
@@ -2712,15 +2742,84 @@ class Superset(BaseSupersetView):
         )
     
     @has_access
-    @expose("/portal")
-    def portal(self):
+    @expose("/portal/<portal_id>/<operate>")
+    def portal(self, portal_id, operate):
+        print(portal_id, operate)
+        portal = db.session.query(models.Portal)\
+                    .filter_by(id = portal_id).one()
+        # query all menu by protal_id
+        menus = db.session.query(models.PortalMenu)\
+                    .filter_by(portal_id = portal_id).all()
+        showHeader = 'true'
         d = {
-            'portalId': config.get('SQLLAB_DEFAULT_DBID'),
+            'portal': (portal.id, portal.title, portal.width, portal.logo, portal.footer, portal.portal_href),
+            'menus':  [(m.id, m.menu_name, m.parent_id, m.dashboard_href, m.open_way, m.is_index, m.icon) for m in menus],
+            'edit': 'false',
+            'dashboards': None,
         }
+        if operate == 'edit':
+            d['edit'] = 'true'
+            dashobards = db.session.query(models.Dashboard).all()
+            d['dashboards'] = [(d.id, d.dashboard_title) for d in dashobards]
+        if operate == 'show':
+            showHeader = 'false'
+        # print(d)
         return self.render_template(
             'superset/portal.html',
-            bootstrap_data=json.dumps(d, default=utils.json_iso_dttm_ser)
+            bootstrap_data=json.dumps(d, default=utils.json_iso_dttm_ser),
+            showHeader=showHeader
         )
+    
+    @expose("/product/<name>")
+    def renderPortal(self, name):
+        portal = db.session.query(models.Portal)\
+                    .filter_by(portal_href = name).one()
+        return redirect('/superset/portal/' + str(portal.id) + '/show')
+
+    @has_access
+    @expose("/menu/<operate>", methods=['GET', 'POST'])
+    def addMenu(self, operate):
+        menu = {
+            'id': request.form['menu[id]'],
+            'portal_id': request.form['portal_id'],
+            'menu_name': request.form['menu[name]'],
+            'parent_id': request.form['menu[parent_id]'],
+            'dashboard_href': request.form['menu[dashboard_href]'],
+            'is_index': request.form['menu[is_index]'],
+            'icon': request.form['menu[icon]'],
+        }
+        try:
+            if menu['is_index'] == 'true':
+                db.session.execute('update portal_menu set is_index = null where portal_id = ' + menu['portal_id'])
+            # print(menu)
+            if operate == 'add':
+                db.session.execute("insert into portal_menu(portal_id, menu_name, parent_id, dashboard_href, is_index, icon) values (%s, '%s', %s, '%s', '%s')"
+                                    %(menu['portal_id'], menu['menu_name'], menu['parent_id'], menu['dashboard_href'], menu['is_index']), menu['icon'])
+            elif operate == 'modify':
+                db.session.execute("update portal_menu set menu_name = '%s', parent_id = %s, dashboard_href = '%s', is_index = '%s', icon = '%s' where id = %s" 
+                                    %(menu['menu_name'], menu['parent_id'], menu['dashboard_href'], menu['is_index'], menu['icon'], menu['id']))
+            else:
+                db.session.execute('delete from portal_menu where id = ' + menu['id'])
+            db.session.commit()
+            return 'true'
+        except Exception:
+            return 'something was wrong'
+
+    @has_access
+    @expose("/upload/logo", methods=['GET', 'POST'])
+    def uploadLogo(self):
+        print(request.form)
+        try:
+            file = request.files['file']
+            filename = 'logo_' + request.form['portal_id'] + '_' + request.form['time'] + '.png'
+            # write portal_logo to db
+            db.session.execute("update portal set logo = '%s' where id = %s" %(request.form['time'], request.form['portal_id']))
+            db.session.commit()
+            import os
+            file.save(os.path.join(os.path.abspath(os.path.dirname(__file__)) + '/static/logo/', filename))
+            return 'true'
+        except Exception: 
+            return 'false'
 
     @expose("/rest/api")
     def restIndex(self):
@@ -2900,14 +2999,6 @@ appbuilder.add_link(
     icon="fa-search",
     category_icon="fa-flask",
     category='SQL Lab')
-
-# appbuilder.add_link(
-#     'portal',
-#     label="门户",
-#     href='/superset/portal',
-#     icon="fa-user",
-#     category_icon='',
-#     category='')
 
 @app.after_request
 def apply_caching(response):

@@ -27,7 +27,9 @@
     {% block navbar %}
       {% if not standalone_mode %}
         <header class="top" role="header">
-          {% include 'appbuilder/navbar.html' %}
+          {% if showHeader == undefined or showHeader == 'true' %}
+            {% include 'appbuilder/navbar.html' %}
+          {% endif %}
         </header>
       {% endif %}
     {% endblock %}

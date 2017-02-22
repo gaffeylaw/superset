@@ -2669,3 +2669,43 @@ class DatasourceAccessRequest(Model, AuditMixinNullable):
                 href = "{} Role".format(r.name)
             action_list = action_list + '<li>' + href + '</li>'
         return '<ul>' + action_list + '</ul>'
+
+
+class Portal(Model, AuditMixinNullable, ImportMixin):
+
+    __tablename__ = 'portal'
+    id = Column(Integer, primary_key=True)
+    portal_name = Column(String(250))
+    description = Column(Text)
+    width = Column(Integer)
+    title = Column(String(250))
+    logo = Column(String(250))
+    footer = Column(String(250))
+    portal_href = Column(String(250))
+
+    export_fields = ('portal_name', 'description', 'title', 'width', 'logo', 'footer', 'portal_href')
+
+    def __repr__(self):
+        return self.portal_name
+
+    @property
+    def portal_link(self):
+         return Markup('<a href="/superset/portal/{self.id}/edit">{self.portal_name}</a>'.format(**locals()))
+
+    @property
+    def setting(self):
+        return Markup('<a href="/superset/portal/{self.id}/edit">菜单设置</a>'.format(**locals()))
+
+class PortalMenu(Model, AuditMixinNullable, ImportMixin):
+
+    __tablename__ = 'portal_menu'
+    id = Column(Integer, primary_key=True)
+    portal_id = Column(Integer)
+    menu_name = Column(String(250))
+    parent_id = Column(Integer)
+    dashboard_href = Column(String(250))
+    open_way = Column(String(32))
+    is_index = Column(String(32))
+    icon = Column(String(32))
+
+    export_fields = ('menu_name', 'parent_id', 'dashboard_href', 'open_way', 'is_index')
