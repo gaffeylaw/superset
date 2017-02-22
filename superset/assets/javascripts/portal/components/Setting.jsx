@@ -67,26 +67,26 @@ class Setting extends React.PureComponent {
         }
       }
       return children;
-    } else {
-      const nodes = [];
-      for (let i = 0; i < menus.length; i++) {
-        const menu = menus[i];
-        if (menu[2] === 0) {
-          const node = {
-            id: menu[0],
-            name: menu[1],
-            parent_id: menu[2],
-            dashboard_href: menu[3],
-            open_way: menu[4],
-            is_index: menu[5],
-            icon: menu[6],
-          };
-          node.children = this.getLeftMenu(menu[0], menus);
-          nodes.push(node);
-        }
-      }
-      return nodes;
     }
+    // id != 0
+    const nodes = [];
+    for (let i = 0; i < menus.length; i++) {
+      const menu = menus[i];
+      if (menu[2] === 0) {
+        const node = {
+          id: menu[0],
+          name: menu[1],
+          parent_id: menu[2],
+          dashboard_href: menu[3],
+          open_way: menu[4],
+          is_index: menu[5],
+          icon: menu[6],
+        };
+        node.children = this.getLeftMenu(menu[0], menus);
+        nodes.push(node);
+      }
+    }
+    return nodes;
   }
 
 
@@ -95,7 +95,7 @@ class Setting extends React.PureComponent {
     const vdom = [];
     if (menuObj instanceof Array) {
       let list = [];
-      for (let item of menuObj) {
+      for (const item of menuObj) {
         list.push(this.getMenuDiv(item));
       }
       vdom.push(
@@ -108,10 +108,18 @@ class Setting extends React.PureComponent {
       if (menuObj.children.length !== 0) {
         vdom.push(
           <li key={menuObj.id} style={{ listStyleType: 'none' }}>
-            <h1 id={'li' + menuObj.id} className='menu'
-                style={{ fontSize: '14px', cursor: 'pointer', color: '#333'}}>
-              <i id={'icon' + menuObj.id} className="fa fa-caret-down" aria-hidden="true" 
-                  style={{ width:'20px' }} onClick={this.toggleMenu.bind(this, menuObj)}></i>
+            <h1
+              id={'li' + menuObj.id}
+              className="menu"
+              style={{ fontSize: '14px', cursor: 'pointer', color: '#333'}}
+            >
+              <i
+                id={'icon' + menuObj.id}
+                className="fa fa-caret-down"
+                aria-hidden="true"
+                style={{ width: '20px' }}
+                onClick={this.toggleMenu.bind(this, menuObj)}
+              />
               <span onClick={this.dealMenu.bind(this, menuObj)}>{menuObj.name}</span>
             </h1>
             {this.getMenuDiv(menuObj.children)}
@@ -121,21 +129,37 @@ class Setting extends React.PureComponent {
         // set home icon
         if (menuObj.is_index === 'true') {
           vdom.push(
-            <li key={menuObj.id} style={{ listStyleType: 'none' }}>
-              <h1 id={'li' + menuObj.id} className='menu'
-                  style={{ fontSize: '12px', cursor: 'pointer', color: '#666' }}>
+            <li 
+              key={menuObj.id}
+              style={{ listStyleType: 'none' }}
+            >
+              <h1
+                id={'li' + menuObj.id}
+                className='menu'
+                style={{ fontSize: '12px', cursor: 'pointer', color: '#666' }}
+              >
                 <span onClick={this.dealMenu.bind(this, menuObj)}>{menuObj.name}</span>
-                <i id={'index' + menuObj.id} className="fa fa-home" aria-hidden="true" 
-                  style={{ marginLeft:'20px' }}></i>
+                <i
+                  id={'index' + menuObj.id}
+                  className="fa fa-home"
+                  aria-hidden="true"
+                  style={{ marginLeft: '20px' }}
+                />
               </h1>
               {this.getMenuDiv(menuObj.children)}
             </li>
           );
         } else {
           vdom.push(
-            <li key={menuObj.id} style={{ listStyleType: 'none' }}>
-              <h1 id={'li' + menuObj.id} className='menu'
-                  style={{ fontSize: '12px', cursor: 'pointer', color: '#666' }}>
+            <li
+              key={menuObj.id}
+              style={{ listStyleType: 'none' }}
+            >
+              <h1
+                id={'li' + menuObj.id}
+                className='menu'
+                style={{ fontSize: '12px', cursor: 'pointer', color: '#666' }}
+              >
                 <span onClick={this.dealMenu.bind(this, menuObj)}>{menuObj.name}</span>
               </h1>
               {this.getMenuDiv(menuObj.children)}
@@ -207,7 +231,7 @@ class Setting extends React.PureComponent {
             label: m[1],
           },
         });
-        return;
+        return false;
       }
     });
 
@@ -220,7 +244,7 @@ class Setting extends React.PureComponent {
             label: d[1],
           },
         });
-        return;
+        return false;
       }
     });
 
@@ -240,7 +264,7 @@ class Setting extends React.PureComponent {
             label: i.key,
           },
         });
-        return;
+        return false;
       }
     });
 
@@ -250,7 +274,7 @@ class Setting extends React.PureComponent {
   }
 
   changeParentMenu(event) {
-    console.log(event);
+    // console.log(event);
     this.setState({
       parentMenu: {
         value: event.value,
@@ -292,7 +316,7 @@ class Setting extends React.PureComponent {
 
   operateMenu(operate) {
     this.state.newMenu.name = $('#menuName').val();
-    console.log(this.state.newMenu);
+    // console.log(this.state.newMenu);
     const portalId = this.props.form_data.portal[0];
     $.ajax({
       type: 'POST',
@@ -303,7 +327,7 @@ class Setting extends React.PureComponent {
       },
       dataType: 'json',
       success: function (data) {
-        console.log(typeof(data));
+        // console.log(typeof(data));
         if (data) {
           location.href = '/superset/portal/' + portalId + '/edit';
         } else {
@@ -332,7 +356,7 @@ class Setting extends React.PureComponent {
       type: 'POST',
       data: data,
       cache: false,
-      contentType: false, 
+      contentType: false,
       processData: false,
       success: function (result) {
         if (result === 'true') {
@@ -363,9 +387,9 @@ class Setting extends React.PureComponent {
         <div className="container-fluid" height={this.state.contentHeight}>
           <div style={{ width: '100%', height: '85%', overflow: 'hidden' }}>
             <div style={{ width: '20%', float: 'left', height: '100%', overflow: 'auto' }}>
-                {menuDiv}
+              {menuDiv}
             </div>
-            <div style={{ width: '40%',float: 'left', marginTop: '50px', marginLeft: '100px' }}>
+            <div style={{ width: '40%', float: 'left', marginTop: '50px', marginLeft: '100px' }}>
               <div className="col-lg-12" style={{ height: '50px' }}>
                 <div className="col-lg-2" style={{ textAlign: 'right' }}>
                   <span>菜单名</span>
@@ -396,7 +420,7 @@ class Setting extends React.PureComponent {
                   />
                 </div>
               </div>
-              { (this.state.parentMenu === null || this.state.parentMenu.value === 0) &&
+              {(this.state.parentMenu === null || this.state.parentMenu.value === 0) &&
                 <div className="col-lg-12" style={{ height: '50px' }}>
                   <div className="col-lg-2" style={{ textAlign: 'right' }}>
                     <span>图标</span>
@@ -406,7 +430,8 @@ class Setting extends React.PureComponent {
                       multi={false}
                       name="select-column"
                       placeholder="图标"
-                      options={this.state.iconChoices.map((i) => ({ value: i.value, label: i.key }))}
+                      options={this.state.iconChoices.map((i) => 
+                                ({ value: i.value, label: i.key }))}
                       optionRenderer={this.renderOption.bind(this)}
                       value={this.state.icon}
                       autosize={false}
@@ -441,26 +466,54 @@ class Setting extends React.PureComponent {
                 </div>
               </div>
               <div className="col-lg-12" style={{ height: '50px' }}>
-                <button className="btn btn-primary" onClick={this.operateMenu.bind(this, 'add')}
-                        style={{ marginLeft: '20px', height: '40px' }}>添加</button>
-                <button className="btn btn-success" onClick={this.operateMenu.bind(this, 'modify')}
-                        style={{ marginLeft: '20px', height: '40px' }}>修改</button>
-                <button className="btn btn-danger" onClick={this.operateMenu.bind(this, 'delete')}
-                        style={{ marginLeft: '20px', height: '40px' }}>删除</button>
-                <a className="btn btn-primary" target="_blank" href={'/superset/portal/'
-                    + this.props.form_data.portal[0] + '/show'}
-                  style={{marginLeft: '20px', height: '40px'}}>门户预览</a>
+                <button
+                  className="btn btn-primary"
+                  onClick={this.operateMenu.bind(this, 'add')}
+                  style={{ marginLeft: '20px', height: '40px' }}
+                >
+                  添加
+                </button>
+                <button
+                  className="btn btn-success"
+                  onClick={this.operateMenu.bind(this, 'modify')}
+                  style={{ marginLeft: '20px', height: '40px' }}
+                >
+                  修改
+                </button>
+                <button
+                  className="btn btn-danger"
+                  onClick={this.operateMenu.bind(this, 'delete')}
+                  style={{ marginLeft: '20px', height: '40px' }}
+                >
+                  删除
+                </button>
+                <a
+                  className="btn btn-primary" 
+                  target="_blank" 
+                  href={'/superset/portal/' + this.props.form_data.portal[0] + '/show'}
+                  style={{ marginLeft: '20px', height: '40px' }}
+                >
+                  门户预览
+                </a>
               </div>
               <div className="col-lg-12" style={{ marginTop: '30px' }}>
                 <div className="col-lg-2" style={{ textAlign: 'right' }}>
                   <span>上传logo</span>
                 </div>
                 <div className="col-lg-1">
-                  <input id="file" type="file" name="file" onChange={this.upload.bind(this)} />
-                  <img id="img" style={{ width: '240px', height: '120px', marginTop: '20px' }}
-                       src={'/static/logo/logo_' + this.props.form_data.portal[0] + '_'
+                  <input
+                    id="file"
+                    type="file"
+                    name="file"
+                    onChange={this.upload.bind(this)}
+                  />
+                  <img
+                    id="img"
+                    style={{ width: '240px', height: '120px', marginTop: '20px' }}
+                    src={'/static/logo/logo_' + this.props.form_data.portal[0] + '_'
                           + this.props.form_data.portal[3] + '.png'}
-                       alt='img' />
+                    alt="img" 
+                  />
                 </div>
               </div>
             </div>

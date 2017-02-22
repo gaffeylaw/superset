@@ -2788,22 +2788,22 @@ class Superset(BaseSupersetView):
             'is_index': request.form['menu[is_index]'],
             'icon': request.form['menu[icon]'],
         }
-        # try:
-        if menu['is_index'] == 'true':
-            db.session.execute('update portal_menu set is_index = null where portal_id = ' + menu['portal_id'])
-        # print(menu)
-        if operate == 'add':
-            db.session.execute("insert into portal_menu(portal_id, menu_name, parent_id, dashboard_href, is_index, icon) values (%s, '%s', %s, '%s', '%s', '%s')"
-                                %(menu['portal_id'], menu['menu_name'], menu['parent_id'], menu['dashboard_href'], menu['is_index'], menu['icon']))
-        elif operate == 'modify':
-            db.session.execute("update portal_menu set menu_name = '%s', parent_id = %s, dashboard_href = '%s', is_index = '%s', icon = '%s' where id = %s" 
-                                %(menu['menu_name'], menu['parent_id'], menu['dashboard_href'], menu['is_index'], menu['icon'], menu['id']))
-        else:
-            db.session.execute('delete from portal_menu where id = ' + menu['id'])
-        db.session.commit()
-        return 'true'
-        # except Exception:
-        #     return 'false'
+        try:
+            if menu['is_index'] == 'true':
+                db.session.execute('update portal_menu set is_index = null where portal_id = ' + menu['portal_id'])
+            # print(menu)
+            if operate == 'add':
+                db.session.execute("insert into portal_menu(portal_id, menu_name, parent_id, dashboard_href, is_index, icon) values (%s, '%s', %s, '%s', '%s', '%s')"
+                                    %(menu['portal_id'], menu['menu_name'], menu['parent_id'], menu['dashboard_href'], menu['is_index'], menu['icon']))
+            elif operate == 'modify':
+                db.session.execute("update portal_menu set menu_name = '%s', parent_id = %s, dashboard_href = '%s', is_index = '%s', icon = '%s' where id = %s" 
+                                    %(menu['menu_name'], menu['parent_id'], menu['dashboard_href'], menu['is_index'], menu['icon'], menu['id']))
+            else:
+                db.session.execute('delete from portal_menu where id = ' + menu['id'])
+            db.session.commit()
+            return 'true'
+        except Exception:
+            return 'false'
 
     @has_access
     @expose("/upload/logo", methods=['GET', 'POST'])
