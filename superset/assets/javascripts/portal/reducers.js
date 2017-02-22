@@ -6,6 +6,6 @@ export function initialState(portal, menus, dashboards) {
   };
 }
 
-export const portalReducer = function (state, action) {
+export const portalReducer = function (state) {
   return state;
 };

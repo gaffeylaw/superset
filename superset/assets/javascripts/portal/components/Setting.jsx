@@ -12,15 +12,6 @@ const propTypes = {
 class Setting extends React.PureComponent {
   constructor(props) {
     super(props);
-    const iconChoices = [{ key: '无', value: '' },
-                         { key: 'home', value: 'fa fa-home' },
-                         { key: 'university', value: 'fa fa-university' },
-                         { key: 'chart', value: 'fa fa-line-chart' },
-                         { key: 'database', value: 'fa fa-database' },
-                         { key: 'cube', value: 'fa fa-cube' },
-                         { key: 'industry', value: 'fa fa-industry' },
-                         { key: 'cog', value: 'fa fa-cog' },
-                         { key: 'globe', value: 'fa fa-globe' }];
     this.state = {
       contentHeight: this.getHeight(),
       parentMenu: null,
@@ -34,7 +25,15 @@ class Setting extends React.PureComponent {
         icon: null,
       },
       icon: null,
-      iconChoices: iconChoices,
+      iconChoices: [{ key: '无', value: '' },
+                    { key: 'home', value: 'fa fa-home' },
+                    { key: 'university', value: 'fa fa-university' },
+                    { key: 'chart', value: 'fa fa-line-chart' },
+                    { key: 'database', value: 'fa fa-database' },
+                    { key: 'cube', value: 'fa fa-cube' },
+                    { key: 'industry', value: 'fa fa-industry' },
+                    { key: 'cog', value: 'fa fa-cog' },
+                    { key: 'globe', value: 'fa fa-globe' }],
     };
   }
 
@@ -111,7 +110,7 @@ class Setting extends React.PureComponent {
             <h1
               id={'li' + menuObj.id}
               className="menu"
-              style={{ fontSize: '14px', cursor: 'pointer', color: '#333'}}
+              style={{ fontSize: '14px', cursor: 'pointer', color: '#333' }}
             >
               <i
                 id={'icon' + menuObj.id}
@@ -129,13 +128,13 @@ class Setting extends React.PureComponent {
         // set home icon
         if (menuObj.is_index === 'true') {
           vdom.push(
-            <li 
+            <li
               key={menuObj.id}
               style={{ listStyleType: 'none' }}
             >
               <h1
                 id={'li' + menuObj.id}
-                className='menu'
+                className="menu"
                 style={{ fontSize: '12px', cursor: 'pointer', color: '#666' }}
               >
                 <span onClick={this.dealMenu.bind(this, menuObj)}>{menuObj.name}</span>
@@ -157,7 +156,7 @@ class Setting extends React.PureComponent {
             >
               <h1
                 id={'li' + menuObj.id}
-                className='menu'
+                className="menu"
                 style={{ fontSize: '12px', cursor: 'pointer', color: '#666' }}
               >
                 <span onClick={this.dealMenu.bind(this, menuObj)}>{menuObj.name}</span>
@@ -430,7 +429,7 @@ class Setting extends React.PureComponent {
                       multi={false}
                       name="select-column"
                       placeholder="图标"
-                      options={this.state.iconChoices.map((i) => 
+                      options={this.state.iconChoices.map((i) =>
                                 ({ value: i.value, label: i.key }))}
                       optionRenderer={this.renderOption.bind(this)}
                       value={this.state.icon}
@@ -488,8 +487,8 @@ class Setting extends React.PureComponent {
                   删除
                 </button>
                 <a
-                  className="btn btn-primary" 
-                  target="_blank" 
+                  className="btn btn-primary"
+                  target="_blank"
                   href={'/superset/portal/' + this.props.form_data.portal[0] + '/show'}
                   style={{ marginLeft: '20px', height: '40px' }}
                 >
@@ -512,7 +511,7 @@ class Setting extends React.PureComponent {
                     style={{ width: '240px', height: '120px', marginTop: '20px' }}
                     src={'/static/logo/logo_' + this.props.form_data.portal[0] + '_'
                           + this.props.form_data.portal[3] + '.png'}
-                    alt="img" 
+                    alt="img"
                   />
                 </div>
               </div>

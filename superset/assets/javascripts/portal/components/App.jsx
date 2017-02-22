@@ -45,7 +45,7 @@ class App extends React.PureComponent {
           this.setState({
             tabs: [
               (<Tab key={'tab' + headMenu[0]} title={headMenu[1]} disableClose={'true'}>
-                <iframe 
+                <iframe
                   src={headMenu[3] === '' ? '/superset/null' : '/superset/dashboard/'
                         + headMenu[3] + '?showHeader=false'}
                   style={{ width: '100%', height: '100%' }}
@@ -65,7 +65,7 @@ class App extends React.PureComponent {
           <Tab key={'tab' + headMenu[0]} title={headMenu[1]}>
             <iframe
               src={headMenu[3] === '' ? '/superset/null' : '/superset/dashboard/'
-                    + headMenu[3] + '?showHeader=false'} 
+                    + headMenu[3] + '?showHeader=false'}
               style={{ width: '100%', height: '100%' }}
             />
           </Tab>
@@ -88,7 +88,7 @@ class App extends React.PureComponent {
       return n;
     } else if (o instanceof Object) {
       const n = [];
-      for (let i in o) {
+      for (const i in o) {
         n[i] = this.deepCopy(o[i]);
       }
       return n;
@@ -178,7 +178,7 @@ class App extends React.PureComponent {
         this.setState({
           tabs: [
             (<Tab key={'tab' + menuObj.id} title={menuObj.name} disableClose={'true'}>
-              <iframe 
+              <iframe
                 src={menuObj.dashboard_href === '' ? '/superset/null' :
                       '/superset/dashboard/' + menuObj.dashboard_href + '?showHeader=false'}
                 style={{ width: '100%', height: '100%' }}
@@ -191,8 +191,8 @@ class App extends React.PureComponent {
       if (menuObj.children.length !== 0) {
         vdom.push(
           <li style={{ listStyleType: 'none' }}>
-            <h1 
-              id={'li' + menuObj.id} 
+            <h1
+              id={'li' + menuObj.id}
               className="menu"
               onClick={this.loadDashboard.bind(this, menuObj)}
             >
@@ -207,7 +207,7 @@ class App extends React.PureComponent {
       } else {
         vdom.push(
           <li style={{ listStyleType: 'none' }}>
-            <h1 
+            <h1
               id={'li' + menuObj.id}
               onClick={this.loadDashboard.bind(this, menuObj)}
             >
@@ -238,7 +238,7 @@ class App extends React.PureComponent {
         // doesn't exist
         const newTab = (
           <Tab key={'tab' + menu.id} title={menu.name}>
-            <iframe 
+            <iframe
               src={menu.dashboard_href === '' ? '/superset/null' : '/superset/dashboard/'
                     + menu.dashboard_href + '?showHeader=false'}
               style={{ width: '100%', height: '100%' }}
@@ -291,9 +291,8 @@ class App extends React.PureComponent {
         return this.getIndexParentMenu(menu2);
       }
       return null;
-    } else {
-      return indexMenu;
     }
+    return indexMenu;
   }
 
   render() {
@@ -329,7 +328,7 @@ class App extends React.PureComponent {
       i++;
       if ((this.state.headMenuId === 0 && i === 1) || headMenu[0] === this.state.headMenuId) {
         headMenuDiv.push(
-          <li 
+          <li
             role="presentation"
             className="active"
             style={{ fontSize: '20px', cursor: 'pointer' }}
@@ -362,10 +361,10 @@ class App extends React.PureComponent {
             <div>
               <div className="menu-header" style={{ overflow: 'hidden' }}>
                 <div style={{ float: 'left' }}>
-                  <img 
+                  <img
                     src={'/static/logo/logo_' + this.props.form_data.portal[0] + '_'
                           + this.props.form_data.portal[3] + '.png'}
-                    alt='img'
+                    alt="img"
                   />
                   <h2>{this.props.form_data.portal[1]}</h2>
                 </div>
