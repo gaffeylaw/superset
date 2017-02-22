@@ -24,8 +24,8 @@ const state = Object.assign(
   }
 );
 
-console.log('=================')
-console.log(state)
+// console.log('=================');
+// console.log(state);
 
 let store = createStore(
   portalReducer, state, compose(applyMiddleware(thunkMiddleware), enhancer()));
@@ -36,14 +36,14 @@ $('a:contains("portal")').parent().addClass('active');
 if (bootstrapData.edit === 'false') {
   render(
     <Provider store={store}>
-        <App form_data={state} />
+      <App form_data={state} />
     </Provider>,
     appContainer
   );
 } else {
   render(
     <Provider store={store}>
-        <Setting form_data={state} />
+      <Setting form_data={state} />
     </Provider>,
     appContainer
   );
