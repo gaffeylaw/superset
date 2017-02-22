@@ -1,0 +1,129 @@
+a{
+    color: #666;
+}
+body {
+    font-family: "Helvetica Neue",Helvetica,tahoma,Arial,"Lantinghei SC","Hiragino Sans GB",STHeitiSC-Light,"Microsoft YaHei","微软雅黑";
+    font-size: 12px;
+    line-height: 1.66666667;
+    color: #333;
+    background-color: transparent;
+    height: 100%;
+}
+li{
+    list-style-type:none;
+}
+iframe{
+    border: none;
+}
+.container-fluid{
+    padding: 0;
+}
+.navbar-tabs > li.active > a, .navbar-tabs > li.active > a:hover, .navbar-tabs > li.active > a:focus{
+    border-top: none;
+    font-weight: normal;
+    border: none;
+    color: #289dc9;
+}
+ul.navbar-tabs{
+    border-bottom:none;
+    flex: 1;
+    padding-left: 10px;
+    display: flex;
+}
+ul.navbar.navbar-tabs li{
+    margin-right: 30px;
+}
+ul.navbar.navbar-tabs li > a{
+    font-size: 16px;
+    padding: 0;
+    margin: 0;
+    line-height: 80px;
+    border: none;
+}
+ul.navbar a:active, a:hover{
+    color: #289dc9;
+}
+.navbar > li > a:hover, .navbar > li > a:focus{
+    border: none;
+    background-color:transparent;
+}
+ul.navbar i.fa{
+    vertical-align: -2px;
+    font-size: 24px;
+    margin-right: 6px;
+}
+div.menu-header{
+    height: 80px;
+    box-shadow: 0 1px 1px rgba(221,221,221,.6);
+    border-bottom: 1px solid #ddd;
+    position: relative;
+}
+div.menu-header img{
+    height: 60px;
+    float: left;
+    margin-top: 10px;
+    margin-right: 10px;
+}
+div.menu-header h2{
+    float: left;
+    font-weight: 400;
+    font-size: 18px;
+    line-height: 80px;
+    margin: 0;
+}
+div.menu-header > div{
+    width: 15%;
+    display: block;
+    height: 80px;
+    padding-left: 10px;
+    color: #00B3CC;
+    font-size: 18px;
+}
+div.menu-left{
+    width: 15%;
+    height: 100%;
+    float: left;
+    overflow: auto;
+    padding: 10px 10px 0;
+    border-right: 1px solid #ddd;
+}
+div.menu-left h1{
+    margin: 0;
+    height: 30px;
+    line-height: 30px;
+    font-size: 12px;
+    color: #666;
+}
+div.menu-left h1.menu{
+    font-size: 14px;
+    color: #333;
+}
+div.menu-left ul.sub-menu{
+    -webkit-padding-start: 30px;
+}
+div.menu-left > div > ul{
+    -webkit-padding-start: 0px !important;
+}
+div.menu-left h1:hover{
+    color: #289dc9;
+    cursor: pointer;
+}
+/*div.menu-left ul.sub-menu h1.menu{
+    background: #ddd;
+}*/
+div.menu-left h1 div{
+    margin-left: 10px;
+}
+/*div.menu-left ul.sub-menu li:nth-of-type(odd) > h1{
+    background: #f9f9f9;
+}*/
+div.menu-left > div > ul.sub-menu > li > h1.menu{
+    background: #ddd !important;
+}
+div.menu-left > div > ul.sub-menu > li > h1{
+    background: #fff !important;
+}
+div.menu-left h1 i.fa{
+    margin-right: 10px;
+}
+

@@ -1891,3 +1891,23 @@ msgstr "历史查询"
 #: caravel/views.py:613
 msgid "CSS Templates"
 msgstr "CSS 样式"
+
+# views.py:1130
+msgid "Portal"
+msgstr "门户"
+
+# views.py:1117
+msgid "portal_name"
+msgstr "门户名称"
+
+# views.py:1121
+msgid "title"
+msgstr "门户标题"
+
+# views.py:1122
+msgid "footer"
+msgstr "页脚"
+
+# views.py:1123
+msgid "portal_href"
+msgstr "链接别名"

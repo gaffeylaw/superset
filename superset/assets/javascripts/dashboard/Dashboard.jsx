@@ -222,9 +222,9 @@ export function dashboardContainer(dashboard) {
       $(window).on('resize', () => {
         clearTimeout(resizeTimer);
         resizeTimer = setTimeout(() => {
-          dash.sliceObjects.forEach((slice) => {
-            slice.resize();
-          });
+          // dash.sliceObjects.forEach((slice) => {
+          //   slice.resize();
+          // });
         }, 500);
       });
     },
@@ -336,6 +336,23 @@ export function dashboardContainer(dashboard) {
   });
 }
 
+// get url param
+function getQueryString (name) {
+  let reg = new RegExp('(^|&)' + name + '=([^&]*)(&|$)', 'i');
+  let r = window.location.search.substr(1).match(reg);
+  if (r != null) return unescape(r[2]); 
+  return null;
+}
+
+function hideHeader() {
+  // hide header and title
+  if (getQueryString('showHeader') === 'false') {
+    $('header').hide();
+    $('#dashboard-header').hide();
+    $('#alert-container').hide();
+  }
+}
+
 $(document).ready(() => {
   // Getting bootstrapped data from the DOM
   const dashboardData = $('.dashboard').data('dashboard');
@@ -345,4 +362,5 @@ $(document).ready(() => {
   const dashboard = dashboardContainer(state.dashboard);
   initDashboardView(dashboard);
   dashboard.init();
+  hideHeader();
 });
