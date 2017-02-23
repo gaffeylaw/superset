@@ -68,6 +68,8 @@ function formatNavigates(navigates) {
     params[`navigate_height_${i + 1}`] = navigate.height;
     params[`navigate_slice_${i + 1}`] = navigate.slice;
     params[`navigate_open_${i + 1}`] = navigate.open;
+    params[`navigate_type_${i + 1}`] = navigate.type;
+    params[`navigate_dashboard_${i + 1}`] = navigate.dashboard;
   }
   return params;
 }

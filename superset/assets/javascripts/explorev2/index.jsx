@@ -35,6 +35,7 @@ const bootstrappedState = Object.assign(
 bootstrappedState.viz.form_data.datasource = parseInt(bootstrapData.datasource_id, 10);
 bootstrappedState.viz.form_data.datasource_name = bootstrapData.datasource_name;
 bootstrappedState.viz.form_data.slices = bootstrapData.slices;
+bootstrappedState.viz.form_data.dashboards = bootstrapData.dashboards;
 
 function parseFilters(form_data, prefix = 'flt') {
   const filters = [];
@@ -180,6 +181,8 @@ function parseNavigates(form_data) {
         height: form_data[`navigate_height_${i}`],
         slice: form_data[`navigate_slice_${i}`],
         open: form_data[`navigate_open_${i}`],
+        type: form_data[`navigate_type_${i}`],
+        dashboard: form_data[`navigate_dashboard_${i}`],
       });
     }
     /* eslint no-param-reassign: 0 */
@@ -190,6 +193,8 @@ function parseNavigates(form_data) {
     delete form_data[`navigate_height_${i}`];
     delete form_data[`navigate_slice_${i}`];
     delete form_data[`navigate_open_${i}`];
+    delete form_data[`navigate_type_${i}`];
+    delete form_data[`navigate_dashboard_${i}`];
   }
   return navigates;
 }

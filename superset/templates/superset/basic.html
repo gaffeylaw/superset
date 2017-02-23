@@ -26,8 +26,8 @@
   <body>
     {% block navbar %}
       {% if not standalone_mode %}
-        <header class="top" role="header">
-          {% if showHeader == undefined or showHeader == 'true' %}
+        <header class="top" id = "topHeader" role="header">
+          {% if showHeader == undefined or showHeader == 'true'%}
             {% include 'appbuilder/navbar.html' %}
           {% endif %}
         </header>
@@ -59,29 +59,22 @@
         </div>
       </div>
     </div>
-
-    <!-- Modal for navigate alert-->
-    <!--<div id="modals">
-        <div style="display: none" class="modal fade" id="newSlice" tabindex="-1"  role="dialog"   
-        aria-labelledby="myModal"  aria-hidden="true">
-          <div class="modal-dialog">  
-          
-              <div class="modal-content">  
-
-                  <div class="modal-header">
-                    <h4 class="modal-title" id="myModal">title</h4>
-                  </div>
-
-                  <div class="modal-body">
-                      <iframe width="100%" height="100%" >
-
-                      </iframe>
-                  </div>
-              </div>
-          </div>
-        </div>
-    </div>   -->
     {% block tail_js %}
+    <script>
+      function GetQueryString(name){
+        var reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)");
+        var r = window.location.search.substr(1).match(reg);
+        if(r!=null)
+          return unescape(r[2]);
+        return null;
+      }
+    var url=window.location.href;
+    var isTopMenu=GetQueryString("isTopMenu");
+    var hd = document.getElementById("topHeader");
+    if (isTopMenu != null && isTopMenu == "false"){
+       hd.style.display="none";
+    }
+    </script> 
     {% endblock %}
   </body>
 </html>

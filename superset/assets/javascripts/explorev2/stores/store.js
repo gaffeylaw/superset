@@ -15,6 +15,7 @@ export function defaultFormData(vizType = 'table', datasourceType = 'table') {
     navigates: [],
     promptColStyles: [],
     slices: [],
+    dashboards: [],
   };
   const sections = sectionsToRender(vizType, datasourceType);
   sections.forEach((section) => {

@@ -1245,8 +1245,16 @@ class FormFactory(object):
         sliceIds = [(s.id) for s in slices]
         sliceIds = self.choicify(sliceIds)
 
+        #get dashboardIds
+        dashboards = db.session.query(models.Dashboard).all()
+        dashboardIds = [(d.id) for d in dashboards]
+        dashboardIds = self.choicify(dashboardIds)
+
         # set navigate open
         open_choices = self.choicify(['modal','newWindow'])
+
+        # set navigate type
+        type_choices = self.choicify(['dashboard','slice'])
 
         # get all columns
         columnNames = []
@@ -1350,6 +1358,16 @@ class FormFactory(object):
                         _('Navigate 1'),
                         default=sliceIds[0][0],
                         choices=sliceIds))
+                setattr(QueryForm, 'navigate_dashboard_' + str(i),
+                    SelectField(
+                        _('Navigate 1'),
+                        default = dashboardIds[0][0],
+                        choices=dashboardIds))
+                setattr(QueryForm, 'navigate_type_' + str(i),
+                    SelectField(
+                        _('Navigate 1'),
+                        default=type_choices[0][0],
+                        choices=type_choices))
                 setattr(QueryForm, 'navigate_open_' + str(i),
                     SelectField(
                         _('Navigate 1'),

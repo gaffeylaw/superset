@@ -76,7 +76,7 @@ class FilterBox extends React.Component {
         multi: 'true',
         width: '100%',
       };
-      for (let i in this.props.filtersStyles) {
+      for (const i in this.props.filtersStyles) {
         if (this.props.filtersStyles[i].field === filter) {
           styles = this.props.filtersStyles[i];
           break;
@@ -91,7 +91,8 @@ class FilterBox extends React.Component {
         return d.metric;
       });
       return (
-        <div key={filter} className="m-b-5" style={{ width: `${styles.width}`, float: 'left', paddingLeft: '15px' }}>
+        <div key={filter} className="m-b-5" style={{ width: `${styles.width}`,
+        float: 'left', paddingLeft: '15px' }}>
           {filter}
           <Select
             placeholder={`Select [${filter}]`}

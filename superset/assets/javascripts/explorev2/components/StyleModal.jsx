@@ -18,6 +18,7 @@ const propTypes = {
   compares: React.PropTypes.array.isRequired,
   navigates: React.PropTypes.array.isRequired,
   slices: React.PropTypes.array.isRequired,
+  dashboards: React.PropTypes.array.isRequired,
 };
 
 const defaultProps = {
@@ -123,6 +124,7 @@ class StyleModal extends React.Component {
           form_data={this.props.form_data}
           navigate={navigate}
           slices={this.props.slices}
+          dashboards={this.props.dashboards}
         />
       );
     });

@@ -54,6 +54,56 @@ function tableVis(slice) {
       return navigateSlice.responseText;
     }
 
+    function dashboardUrl(title) {
+      const navigateDashboard = $.ajax({
+        url: '/superset/rest/api/dashboardUrl',
+        async: false,
+        data: {
+          title: title,
+        },
+        type: 'POST',
+        dataType: 'json',
+      });
+      return navigateDashboard.responseText;
+    }
+
+    function convertDashUrl(dash, colArr) {
+      let url = dash.url;
+      //  &preselect_filters = {
+      //   sliceId: {
+      //     "groupby": [
+      //       "filters"
+      //       ],
+      //     "groupby": [
+      //       "filters"
+      //       ]
+      //     },
+      //   sliceId: {
+      //     "groupby": [
+      //       "filters"
+      //       ]
+      //     }
+      //   }
+      const filter = {};
+      for (let i = 0; i < colArr.length; i++) {
+        for (let j = 0; j < dash.slcs.length; j++) {
+          const sliceId = dash.slcs[j].sliceId;
+          const extCol = colArr[i].col;
+          const vals = [];
+          const val = colArr[i].val;
+          for (let k = 0; k < dash.slcs[j].columns.length; k++) {
+            if (colArr[i].col === dash.slcs[j].columns[k].extCol) {
+              const slc = {};
+              vals.push(val);
+              slc[extCol] = vals;
+              filter[sliceId] = slc;
+            }
+          }
+        }
+      }
+      url += '?preselect_filters=' + JSON.stringify(filter);
+      return url;
+    }
 
     let left = 10;
     let startHeight;
@@ -116,6 +166,7 @@ function tableVis(slice) {
         Info: '',
         Content: '',
         Zindex: 10,
+        IsDash: false,
       },
       init: function (options) {
         this.optDragobj = null;
@@ -139,6 +190,7 @@ function tableVis(slice) {
         this.Minheight = this.options.Minheight;
         this.Titleheight = this.options.Titleheight;
         this.Zindex = this.options.Zindex;
+        this.IsDash = this.options.IsDash;
         Extend(this, options);
         Dialog.Zindex = this.Zindex;
   // 构造dialog
@@ -237,17 +289,20 @@ function tableVis(slice) {
       Stop: function () {
         removeListener(document, 'mousemove', this.optFM);
         removeListener(document, 'mouseup', this.optFS);
-        if (startHeight !== this.optBody.style.height) {
-          const frame = this.optBody.childNodes[0];
-          let newUrl = frame.getAttribute('src');
-          const navHeight = GetQueryString(newUrl, 'navHeight', []);
-          if (navHeight.length !== 0) {
-            newUrl = newUrl.replace('navHeight=' + navHeight,
-            'navHeight=' + this.optBody.style.height);
-          } else {
-            newUrl += '&navHeight=' + this.optBody.style.height;
+        // if target is Slice, change area will redraw
+        if (!this.IsDash) {
+          if (startHeight !== this.optBody.style.height) {
+            const frame = this.optBody.childNodes[0];
+            let newUrl = frame.getAttribute('src');
+            const navHeight = GetQueryString(newUrl, 'navHeight', []);
+            if (navHeight.length !== 0) {
+              newUrl = newUrl.replace('navHeight=' + navHeight,
+              'navHeight=' + this.optBody.style.height);
+            } else {
+              newUrl += '&navHeight=' + this.optBody.style.height;
+            }
+            frame.setAttribute('src', newUrl);
           }
-          frame.setAttribute('src', newUrl);
         }
         if (isIE) {
           removeListener(this.optDragobj, 'losecapture', this.optFS);
@@ -257,7 +312,7 @@ function tableVis(slice) {
         }
       },
     });
-    function createModal(title, url, height, width) {
+    function createModal(title, url, height, width, isDash) {
       let modals;
       if ($('#modals').attr('id') !== undefined) {
         modals = $('#modals');
@@ -269,10 +324,18 @@ function tableVis(slice) {
       const modalCount = $('#modals').children().length;
       const navHeight = height - 26 - 20 + 'px';
       let newUrl = url;
-      newUrl += '&navHeight=' + navHeight;
-      const content = '<iframe id = "newSlice_' + modalCount +
-      '" width = "100%" height = "100%" scrolling = "no" frameBorder = "0" src = "' +
-      newUrl + '"> </iframe>';
+      let content = '';
+      if (isDash) {
+        newUrl += '&isTopMenu=false';
+        content = '<iframe id = "newSlice_' + modalCount +
+        '" width = "100%" height = "100%" scrolling = "auto" frameBorder = "0" src = ' +
+        newUrl + '> </iframe>';
+      } else {
+        newUrl += '&navHeight=' + navHeight;
+        content = '<iframe id = "newSlice_' + modalCount +
+        '" width = "100%" height = "100%" scrolling = "no" frameBorder = "0" src = "' +
+        newUrl + '"> </iframe>';
+      }
       new Dialog({
         Url: newUrl,
         Height: height,
@@ -281,6 +344,7 @@ function tableVis(slice) {
         Left: 300 + left,
         Content: content,
         Zindex: (++Dialog.Zindex),
+        IsDash: isDash,
       });
       left += 10;
     }
@@ -294,7 +358,7 @@ function tableVis(slice) {
            // make modal can be add only once
           if ($('#newSlice_' + count).attr('id') === undefined) {
             // showModal(e.data.title, e.data.url);
-            createModal(e.data.title, e.data.url, e.data.navHeight, e.data.navWidth);
+            createModal(e.data.title, e.data.url, e.data.navHeight, e.data.navWidth, e.data.isDash);
             count++;
           }
         }
@@ -313,7 +377,7 @@ function tableVis(slice) {
           nextFltIndex = flt.length + 1;
         }
         const col = colArr[i].col;
-        const val = (colArr[i].title === '') ? colArr[i].val : colArr[i].title;
+        const val = colArr[i].val;
         const nextFlt = '&flt_col_' + nextFltIndex + '=' + col + '&flt_op_' + nextFltIndex +
             '=in&flt_eq_' + nextFltIndex + '=' + val;
         newUrl += nextFlt;
@@ -503,50 +567,81 @@ function tableVis(slice) {
                 expr = expr.replace(/=/g, '==').replace(/>==/g, '>=').replace(/<==/g, '<=');
                 if (((expr.indexOf('$.inArray') === -1 && eval(expr))
                 || (expr.indexOf('$.inArray') !== -1 && eval(expr) !== -1))) {
-                  const type = fd['navigate_open_' + i];
+                  const openType = fd['navigate_open_' + i];
                   const navHeight = (fd['navigate_height_' + i] === '') ? 300 :
                   fd['navigate_height_' + i];
                   const navWidth = (fd['navigate_width_' + i] === '') ? 300 :
                   fd['navigate_width_' + i];
-                  const slc = JSON.parse(sliceUrl(fd['navigate_slice_' + i]));
-                  let url = slc.url;
-                  const title = slc.title;
-                  if (url != null) {
-                    const standalone = GetQueryString(url, 'standalone', []);
-                    const navGroupby = GetQueryString(url, 'groupby', []);
-                    if (standalone.length === 0) {
-                      if (url.indexOf('standalone') !== -1) {
-                        url = url.replace(/standalone=/, 'standalone=true');
-                      } else {
-                        url += '&standalone=true';
-                      }
-                    }
+                  const navType = fd['navigate_type_' + i];
+                  // navigate to dashboard
+                  if (navType === 'dashboard') {
                     const sourceGroupby = fd.groupby;
                     const colArr = [];
-                    if (navGroupby.length > 0) {
-                      for (let j = 0; j < sourceGroupby.length; j++) {
-                        const ele = this.parentNode.childNodes[j];
-                        for (let k = 0; k < navGroupby.length; k++) {
-                          // make navigate groupby val equals source groupby
-                          if (sourceGroupby[j] === navGroupby[k]) {
-                            colArr.push({
-                              val: ele.textContent,
-                              col: navGroupby[k],
-                              title: ele.title,
-                            });
+                    const dash = JSON.parse(dashboardUrl(fd['navigate_dashboard_' + i]));
+                    let url = dash.url;
+                    const title = dash.title;
+                    // make slice column equals dashboard filter column
+                    for (let j = 0; j < sourceGroupby.length; j++) {
+                      const ele = this.parentNode.childNodes[j];
+                      colArr.push({
+                        val: ele.textContent,
+                        col: sourceGroupby[j],
+                      });
+                    }
+                    if (url != null) {
+                      url = convertDashUrl(dash, colArr);
+                      const postData = {
+                        url: url,
+                        title: title,
+                        type: openType,
+                        navHeight: navHeight,
+                        navWidth: navWidth,
+                        isDash: true,
+                      };
+                      window.parent.postMessage(postData, '*');  // send message to navigate
+                    }
+                  }
+                  // navigate to slice 
+                  else {
+                    const slc = JSON.parse(sliceUrl(fd['navigate_slice_' + i]));
+                    let url = slc.url;
+                    const title = slc.title;
+                    if (url != null) {
+                      const standalone = GetQueryString(url, 'standalone', []);
+                      const navGroupby = GetQueryString(url, 'groupby', []);
+                      if (standalone.length === 0) {
+                        if (url.indexOf('standalone') !== -1) {
+                          url = url.replace(/standalone=/, 'standalone=true');
+                        } else {
+                          url += '&standalone=true';
+                        }
+                      }
+                      const sourceGroupby = fd.groupby;
+                      const colArr = [];
+                      if (navGroupby.length > 0) {
+                        for (let j = 0; j < sourceGroupby.length; j++) {
+                          const ele = this.parentNode.childNodes[j];
+                          for (let k = 0; k < navGroupby.length; k++) {
+                            // make navigate groupby val equals source groupby
+                            if (sourceGroupby[j] === navGroupby[k]) {
+                              colArr.push({
+                                val: ele.textContent,
+                                col: navGroupby[k],
+                              });
+                            }
                           }
                         }
                       }
+                      url = addFilter(url, colArr);
+                      const postData = {
+                        url: url,
+                        title: title,
+                        type: openType,
+                        navHeight: navHeight,
+                        navWidth: navWidth,
+                      };
+                      window.parent.postMessage(postData, '*');  // send message to navigate
                     }
-                    url = addFilter(url, colArr);
-                    const postData = {
-                      url: url,
-                      title: title,
-                      type: type,
-                      navHeight: navHeight,
-                      navWidth: navWidth,
-                    };
-                    window.parent.postMessage(postData, '*');  // send message to navigate
                   }
                 }
               }
