@@ -70,7 +70,7 @@ export default class Navigate extends React.Component {
           onChange={this.changeSlice.bind(this, this.props.navigate)}
         />
       );
-    } 
+    }
     return (
       <Select
         className="col-lg-6"
