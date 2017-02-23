@@ -8,15 +8,19 @@ const propTypes = {
   form_data: React.PropTypes.object.isRequired,
   navigate: React.PropTypes.object.isRequired,
   slices: React.PropTypes.array.isRequired,
+  dashboards: React.PropTypes.array.isRequired,
 };
 
 export default class Navigate extends React.Component {
   constructor(props) {
     super(props);
+    const navigateChoices = [{ key: '报表', value: 'dashboard' },
+                         { key: '切片', value: 'slice' }];
     const openChoices = [{ key: '弹框', value: 'modal' },
                          { key: '新窗口', value: 'newWindow' }];
     this.state = {
       openChoices,
+      navigateChoices,
     };
   }
   changeMetric(navigate, col) {
@@ -36,13 +40,52 @@ export default class Navigate extends React.Component {
     const val = (col) ? col.value : null;
     this.props.actions.changeNavigate(navigate, 'slice', val);
   }
+  changeDashboard(navigate, col){
+    const val = (col) ? col.value : null;
+    this.props.actions.changeNavigate(navigate, 'dashboard', val);
+  }
   changeOpen(navigate, col) {
     const val = (col) ? col.value : null;
     this.props.actions.changeNavigate(navigate, 'open', val);
   }
+  changeType(navigate, col) {
+    const val = (col) ? col.value : null;
+    this.props.actions.changeNavigate(navigate, 'type', val);
+  }
   removeNavigate(navigate) {
     this.props.actions.removeNavigate(navigate);
   }
+
+  renderNavType(){
+    if (this.props.navigate.type === 'slice') {
+      return (
+        <Select
+          className="col-lg-6"
+          multi={false}
+          name="select-column"
+          placeholder="导航切片"
+          options={this.props.slices.map((o) => ({ value: o[0] + '', label: o[1] }))}
+          value={this.props.navigate.slice}
+          autosize={false}
+          onChange={this.changeSlice.bind(this, this.props.navigate)}
+      />
+      )
+    } else {
+      return (
+        <Select
+          className="col-lg-6"
+          multi={false}
+          name="select-column"
+          placeholder="导航报表"
+          options={this.props.dashboards.map((o) => ({ value: o[0] + '', label: o[1] }))}
+          value={this.props.navigate.dashboard}
+          autosize={false}
+          onChange={this.changeDashboard.bind(this, this.props.navigate)}
+        />
+      )
+    }
+  }
+
   render() {
     return (
       <div>
@@ -92,14 +135,14 @@ export default class Navigate extends React.Component {
             className="col-lg-6"
             multi={false}
             name="select-column"
-            placeholder="导航切片"
-            options={this.props.slices.map((o) => ({ value: o[0] + '', label: o[1] }))}
-            value={this.props.navigate.slice}
+            placeholder="导航类型"
+            options={this.state.navigateChoices.map((o) => ({ value: o.value + '', label: o.key }))}
+            value={this.props.navigate.type}
             autosize={false}
-            onChange={this.changeSlice.bind(this, this.props.navigate)}
+            onChange={this.changeType.bind(this, this.props.navigate)}
           />
           <Select
-            className="col-lg-4"
+            className="col-lg-6"
             multi={false}
             name="select-column"
             placeholder="打开方式"
@@ -108,6 +151,9 @@ export default class Navigate extends React.Component {
             autosize={false}
             onChange={this.changeOpen.bind(this, this.props.navigate)}
           />
+        </div>
+        <div className="row space-1">
+          {this.renderNavType()}
           <div className="col-lg-2">
             <Button
               id="remove-button"

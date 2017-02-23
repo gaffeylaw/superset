@@ -2951,6 +2951,34 @@ class Superset(BaseSupersetView):
         else:
             return null
 
+    @expose("/rest/api/dashboardUrl", methods=['GET', 'POST'])
+    def dashboardUrl(self):
+        title = request.form['title']
+        # groupby = request.form['groupby']
+        # group = groupby.split(',')
+        slcs = []
+        if title:
+            dash = db.session.query(models.Dashboard).filter_by(id=title).one()
+            for slice in dash.slices:
+                if(slice.viz_type == 'filter_box'):
+                    param = json.loads(slice.params)
+                    cols = []
+                    for col in param['groupby']:
+                        cols.append({
+                            'extCol': col
+                        })
+                    slcs.append({
+                        'sliceId': slice.id,
+                        'columns': cols
+                    })
+            return json.dumps({
+                'url': dash.url,
+                'title': dash.dashboard_title,
+                'slcs': slcs
+            })
+        else:
+            return null
+
 appbuilder.add_view_no_menu(Superset)
 
 if config['DRUID_IS_ACTIVE']:

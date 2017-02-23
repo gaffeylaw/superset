@@ -169,6 +169,7 @@ class ControlPanelsContainer extends React.Component {
                   compares={this.props.form_data.compares}
                   navigates={this.props.form_data.navigates}
                   slices={this.props.form_data.slices}
+                  dashboards={this.props.form_data.dashboards}
                 />
               }
 
