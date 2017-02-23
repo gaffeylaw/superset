@@ -40,7 +40,7 @@ export default class Navigate extends React.Component {
     const val = (col) ? col.value : null;
     this.props.actions.changeNavigate(navigate, 'slice', val);
   }
-  changeDashboard(navigate, col){
+  changeDashboard(navigate, col) {
     const val = (col) ? col.value : null;
     this.props.actions.changeNavigate(navigate, 'dashboard', val);
   }
@@ -56,7 +56,7 @@ export default class Navigate extends React.Component {
     this.props.actions.removeNavigate(navigate);
   }
 
-  renderNavType(){
+  renderNavType() {
     if (this.props.navigate.type === 'slice') {
       return (
         <Select
@@ -68,22 +68,21 @@ export default class Navigate extends React.Component {
           value={this.props.navigate.slice}
           autosize={false}
           onChange={this.changeSlice.bind(this, this.props.navigate)}
-      />
-      )
-    } else {
-      return (
-        <Select
-          className="col-lg-6"
-          multi={false}
-          name="select-column"
-          placeholder="导航报表"
-          options={this.props.dashboards.map((o) => ({ value: o[0] + '', label: o[1] }))}
-          value={this.props.navigate.dashboard}
-          autosize={false}
-          onChange={this.changeDashboard.bind(this, this.props.navigate)}
         />
-      )
-    }
+      );
+    } 
+    return (
+      <Select
+        className="col-lg-6"
+        multi={false}
+        name="select-column"
+        placeholder="导航报表"
+        options={this.props.dashboards.map((o) => ({ value: o[0] + '', label: o[1] }))}
+        value={this.props.navigate.dashboard}
+        autosize={false}
+        onChange={this.changeDashboard.bind(this, this.props.navigate)}
+      />
+    );
   }
 
   render() {

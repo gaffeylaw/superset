@@ -54,14 +54,14 @@ function tableVis(slice) {
       return navigateSlice.responseText;
     }
 
-    function dashboardUrl(title){
+    function dashboardUrl(title) {
       const navigateDashboard = $.ajax({
         url: '/superset/rest/api/dashboardUrl',
         async: false,
         data: {
           title: title,
         },
-        type:'POST',
+        type: 'POST',
         dataType: 'json',
       });
       return navigateDashboard.responseText;
@@ -84,19 +84,19 @@ function tableVis(slice) {
       //       ]
       //     }
       //   }
-      let filter = {};
+      const filter = {};
       for (let i = 0; i < colArr.length; i++) {
-        for (let j = 0; j < dash.slcs.length; j++){
+        for (let j = 0; j < dash.slcs.length; j++) {
           const sliceId = dash.slcs[j].sliceId;
           const extCol = colArr[i].col;
-          let vals = [];
+          const vals = [];
           const val = colArr[i].val;
-          for (let k =0; k< dash.slcs[j].columns.length; k++){
+          for (let k = 0; k < dash.slcs[j].columns.length; k++) {
             if (colArr[i].col === dash.slcs[j].columns[k].extCol) {
-              let d = {};
+              const slc = {};
               vals.push(val);
-              d[extCol] = vals;
-              filter[sliceId] = d;
+              slc[extCol] = vals;
+              filter[sliceId] = slc;
             }
           }
         }
@@ -326,7 +326,7 @@ function tableVis(slice) {
       let newUrl = url;
       let content = '';
       if (isDash) {
-        newUrl += '&isTopMenu=false'
+        newUrl += '&isTopMenu=false';
         content = '<iframe id = "newSlice_' + modalCount +
         '" width = "100%" height = "100%" scrolling = "auto" frameBorder = "0" src = ' +
         newUrl + '> </iframe>';
@@ -578,7 +578,7 @@ function tableVis(slice) {
                     const sourceGroupby = fd.groupby;
                     const colArr = [];
                     const dash = JSON.parse(dashboardUrl(fd['navigate_dashboard_' + i]));
-                    const slcs = dash.slcs;
+                    let url = dash.url;
                     const title = dash.title;
                     // make slice column equals dashboard filter column
                     for (let j = 0; j < sourceGroupby.length; j++) {
@@ -588,7 +588,7 @@ function tableVis(slice) {
                         col: sourceGroupby[j],
                       });
                     }
-                    if (url != null) { 
+                    if (url != null) {
                       url = convertDashUrl(dash, colArr);
                       const postData = {
                         url: url,
@@ -602,7 +602,7 @@ function tableVis(slice) {
                     }
                   }
                   // navigate to slice 
-                  else {  
+                  else {
                     const slc = JSON.parse(sliceUrl(fd['navigate_slice_' + i]));
                     let url = slc.url;
                     const title = slc.title;
