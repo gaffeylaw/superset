@@ -222,9 +222,9 @@ export function dashboardContainer(dashboard) {
       $(window).on('resize', () => {
         clearTimeout(resizeTimer);
         resizeTimer = setTimeout(() => {
-          // dash.sliceObjects.forEach((slice) => {
-          //   slice.resize();
-          // });
+          dash.sliceObjects.forEach((slice) => {
+            slice.resize();
+          });
         }, 500);
       });
     },
@@ -344,12 +344,15 @@ function getQueryString (name) {
   return null;
 }
 
-function hideHeader() {
+function hideTitle() {
   // hide header and title
   if (getQueryString('showHeader') === 'false') {
-    $('header').hide();
+    $('.pull-right').hide();
+  }
+  if (getQueryString('isTitle') === 'false') {
     $('#dashboard-header').hide();
     $('#alert-container').hide();
+    $('.pull-right').hide();
   }
 }
 
@@ -362,5 +365,5 @@ $(document).ready(() => {
   const dashboard = dashboardContainer(state.dashboard);
   initDashboardView(dashboard);
   dashboard.init();
-  hideHeader();
+  hideTitle();
 });

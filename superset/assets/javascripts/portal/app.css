@@ -37,7 +37,7 @@ ul.navbar.navbar-tabs li > a{
     font-size: 16px;
     padding: 0;
     margin: 0;
-    line-height: 80px;
+    line-height: 60px;
     border: none;
 }
 ul.navbar a:active, a:hover{
@@ -53,28 +53,28 @@ ul.navbar i.fa{
     margin-right: 6px;
 }
 div.menu-header{
-    height: 80px;
+    height: 60px;
     box-shadow: 0 1px 1px rgba(221,221,221,.6);
     border-bottom: 1px solid #ddd;
     position: relative;
 }
 div.menu-header img{
-    height: 60px;
+    height: 50px;
     float: left;
-    margin-top: 10px;
-    margin-right: 10px;
+    margin-top: 5px;
+    margin-right: 5px;
 }
 div.menu-header h2{
     float: left;
     font-weight: 400;
     font-size: 18px;
-    line-height: 80px;
+    line-height: 60px;
     margin: 0;
 }
 div.menu-header > div{
     width: 15%;
     display: block;
-    height: 80px;
+    height: 60px;
     padding-left: 10px;
     color: #00B3CC;
     font-size: 18px;
