@@ -242,10 +242,10 @@ class App extends React.PureComponent {
           newTab = (
             <Tab key={'tab' + menu.id} title={menu.name}>
               <iframe
-                  src={'/superset/dashboard/' + menu.dashboard_href
+                src={'/superset/dashboard/' + menu.dashboard_href
                   + '?showHeader=false&isTitle=false'}
-                  style={{ width: '100%', height: '100%' }}
-                />
+                style={{ width: '100%', height: '100%' }}
+              />
             </Tab>
           );
         } else {
@@ -397,52 +397,51 @@ class App extends React.PureComponent {
                   onTabSelect={this.handleTabSelect.bind(this)}
                   onTabClose={this.handleTabClose.bind(this)}
                   tabs={this.state.tabs}
-                  tabsStyles={
-                    {
-                      tabBarAfter: {
-                        height: '3px',
-                        backgroundColor: '#666',
-                        borderBottom: '0.5px solid #666',
-                      },
-                      tabBefore: {
-                        display: 'none',
-                      },
-                      tab: {
-                        marginLeft: '0px',
-                        marginRight: '2px',
-                        maxWidth: '130px',
-                        backgroundImage: '',
-                        backgroundColor: '#eee',
-                        boxShadow: 'rgb(72, 72, 72) 1px 1px 0px inset, rgba(0, 0, 0, 0.0980392) -4px 0px 4px;'
-                      },
-                      tabAfter: {
-                        display: 'none',
-                      },
-                      tabActive: {
-                        backgroundImage: '',
-                        backgroundColor: '#999',
-                        color: '#eee',
-                      },
-                      tabOnHover: {
-                        backgroundImage: '',
-                        backgroundColor: '#999',
-                      },
-                      tabTitle: {
-                        color: '#666',
-                        marginTop: '4px',
-                      },
-                      tabTitleOnHover: {
-                        color: '#eee',
-                      },
-                      tabCloseIconOnHover: {
-                        backgroundColor: '#999',
-                        color: 'white'
-                      },
-                      tabAddButton: {
-                        display: 'none',
-                      }
-                    }
-                  }
+                  tabsStyles={{
+                    tabBarAfter: {
+                      height: '3px',
+                      backgroundColor: '#666',
+                      borderBottom: '0.5px solid #666',
+                    },
+                    tabBefore: {
+                      display: 'none',
+                    },
+                    tab: {
+                      marginLeft: '0px',
+                      marginRight: '2px',
+                      maxWidth: '130px',
+                      backgroundImage: '',
+                      backgroundColor: '#eee',
+                      boxShadow: 'rgb(72, 72, 72) 1px 1px 0px inset, '
+                             + 'rgba(0, 0, 0, 0.0980392) -4px 0px 4px;',
+                    },
+                    tabAfter: {
+                      display: 'none',
+                    },
+                    tabActive: {
+                      backgroundImage: '',
+                      backgroundColor: '#999',
+                      color: '#eee',
+                    },
+                    tabOnHover: {
+                      backgroundImage: '',
+                      backgroundColor: '#999',
+                    },
+                    tabTitle: {
+                      color: '#666',
+                      marginTop: '4px',
+                    },
+                    tabTitleOnHover: {
+                      color: '#eee',
+                    },
+                    tabCloseIconOnHover: {
+                      backgroundColor: '#999',
+                      color: 'white',
+                    },
+                    tabAddButton: {
+                      display: 'none',
+                    },
+                  }}
                 />
               </div>
             </div>
