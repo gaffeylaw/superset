@@ -1103,7 +1103,7 @@ def ping():
     return "OK"
 
 
-class PortalModelView(SupersetModelView, DeleteMixin):  # noqa
+class PortalModelManageView(SupersetModelView, DeleteMixin):  # noqa
     datamodel = SQLAInterface(models.Portal)
     list_columns = [
         'portal_link', 'description', 'creator', 'modified']
@@ -1122,15 +1122,51 @@ class PortalModelView(SupersetModelView, DeleteMixin):  # noqa
         'title': _("title"),
         'footer': _("footer"),
         'portal_href': _("portal_href"),
-    } 
+    }
+
+
+class PortalModelView(SupersetModelView, DeleteMixin):  # noqa
+    datamodel = SQLAInterface(models.Portal)
+    list_columns = [
+        'portal_link2', 'description', 'creator', 'modified']
+    edit_columns = [
+        'portal_name', 'description', 'title', 
+        'footer', 'portal_href']
+    add_columns = edit_columns
+    show_columns = add_columns
+    page_size = 500
+    label_columns = {
+        'portal_link2': _("portal_name"),
+        'portal_name': _("portal_name"),
+        'description': _("Description"),
+        'creator': _("Creator"),
+        'modified': _("Modified"),
+        'title': _("title"),
+        'footer': _("footer"),
+        'portal_href': _("portal_href"),
+    }
+
+appbuilder.add_view(
+    PortalModelManageView,
+    "Portal Manage",
+    label= _("manage"),
+    icon="fa-wrench",
+    category="Portal",
+    category_label=_("Portal"),
+    category_icon='fa-user',
+)
 
 appbuilder.add_view(
     PortalModelView,
     "Portal list",
-    label= _("Portal"),
-    category="",
-    category_label="",
-    icon="fa-user")
+    label=__("to_view"),
+    icon="fa-database",
+    category="Portal",
+    category_label=__("Portal"),
+    category_icon='fa-user',
+)
+
+appbuilder.add_separator("Portal")
 
 
 class R(BaseSupersetView):
@@ -2138,11 +2174,15 @@ class Superset(BaseSupersetView):
             dash_edit_perm=dash_edit_perm,
             standalone_mode=standalone,
         )
+        showHeader = 'true'
+        if request.args.get('showHeader') != None:
+            showHeader = request.args.get('showHeader')
         return self.render_template(
             "superset/dashboard.html",
             dashboard=dash,
             context=json.dumps(context),
             standalone_mode=standalone,
+            showHeader = showHeader,
         )
 
     @has_access

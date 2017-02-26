@@ -47,7 +47,7 @@ class App extends React.PureComponent {
               (<Tab key={'tab' + headMenu[0]} title={headMenu[1]} disableClose={'true'}>
                 <iframe
                   src={headMenu[3] === '' ? '/superset/null' : '/superset/dashboard/'
-                        + headMenu[3] + '?showHeader=false'}
+                        + headMenu[3] + '?showHeader=false&isTitle=false'}
                   style={{ width: '100%', height: '100%' }}
                 />
               </Tab>),
@@ -65,7 +65,7 @@ class App extends React.PureComponent {
           <Tab key={'tab' + headMenu[0]} title={headMenu[1]}>
             <iframe
               src={headMenu[3] === '' ? '/superset/null' : '/superset/dashboard/'
-                    + headMenu[3] + '?showHeader=false'}
+                    + headMenu[3] + '?showHeader=false&isTitle=false'}
               style={{ width: '100%', height: '100%' }}
             />
           </Tab>
@@ -180,7 +180,8 @@ class App extends React.PureComponent {
             (<Tab key={'tab' + menuObj.id} title={menuObj.name} disableClose={'true'}>
               <iframe
                 src={menuObj.dashboard_href === '' ? '/superset/null' :
-                      '/superset/dashboard/' + menuObj.dashboard_href + '?showHeader=false'}
+                      '/superset/dashboard/' + menuObj.dashboard_href
+                      + '?showHeader=false&isTitle=false'}
                 style={{ width: '100%', height: '100%' }}
               />
             </Tab>),
@@ -236,15 +237,26 @@ class App extends React.PureComponent {
       }
       if (flag) {
         // doesn't exist
-        const newTab = (
-          <Tab key={'tab' + menu.id} title={menu.name}>
-            <iframe
-              src={menu.dashboard_href === '' ? '/superset/null' : '/superset/dashboard/'
-                    + menu.dashboard_href + '?showHeader=false'}
-              style={{ width: '100%', height: '100%' }}
-            />
-          </Tab>
-        );
+        let newTab = null;
+        if (menu.dashboard_href !== '') {
+          newTab = (
+            <Tab key={'tab' + menu.id} title={menu.name}>
+              <iframe
+                src={'/superset/dashboard/' + menu.dashboard_href
+                  + '?showHeader=false&isTitle=false'}
+                style={{ width: '100%', height: '100%' }}
+              />
+            </Tab>
+          );
+        } else {
+          newTab = (
+            <Tab key={'tab' + menu.id} title={menu.name}>
+              <div>
+                <h2 style={{ marginLeft: '20px' }}>this menu has no link...</h2>
+              </div>
+            </Tab>
+          );
+        }
         this.setState({
           tabs: this.state.tabs.concat([newTab]),
           selectedTab: 'tab' + menu.id,
@@ -384,8 +396,52 @@ class App extends React.PureComponent {
                   selectedTab={this.state.selectedTab ? this.state.selectedTab : 'tab'}
                   onTabSelect={this.handleTabSelect.bind(this)}
                   onTabClose={this.handleTabClose.bind(this)}
-                  // onTabPositionChange={this.handleTabPositionChange.bind(this)}
                   tabs={this.state.tabs}
+                  tabsStyles={{
+                    tabBarAfter: {
+                      height: '3px',
+                      backgroundColor: '#666',
+                      borderBottom: '0.5px solid #666',
+                    },
+                    tabBefore: {
+                      display: 'none',
+                    },
+                    tab: {
+                      marginLeft: '0px',
+                      marginRight: '2px',
+                      maxWidth: '130px',
+                      backgroundImage: '',
+                      backgroundColor: '#eee',
+                      boxShadow: 'rgb(72, 72, 72) 1px 1px 0px inset, '
+                             + 'rgba(0, 0, 0, 0.0980392) -4px 0px 4px;',
+                    },
+                    tabAfter: {
+                      display: 'none',
+                    },
+                    tabActive: {
+                      backgroundImage: '',
+                      backgroundColor: '#999',
+                      color: '#eee',
+                    },
+                    tabOnHover: {
+                      backgroundImage: '',
+                      backgroundColor: '#999',
+                    },
+                    tabTitle: {
+                      color: '#666',
+                      marginTop: '4px',
+                    },
+                    tabTitleOnHover: {
+                      color: '#eee',
+                    },
+                    tabCloseIconOnHover: {
+                      backgroundColor: '#999',
+                      color: 'white',
+                    },
+                    tabAddButton: {
+                      display: 'none',
+                    },
+                  }}
                 />
               </div>
             </div>

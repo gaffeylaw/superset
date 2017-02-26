@@ -326,7 +326,7 @@ function tableVis(slice) {
       let newUrl = url;
       let content = '';
       if (isDash) {
-        newUrl += '&isTopMenu=false';
+        newUrl += '&showHeader=false';
         content = '<iframe id = "newSlice_' + modalCount +
         '" width = "100%" height = "100%" scrolling = "auto" frameBorder = "0" src = ' +
         newUrl + '> </iframe>';

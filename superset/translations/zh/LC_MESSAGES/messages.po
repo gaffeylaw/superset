@@ -1911,3 +1911,11 @@ msgstr "页脚"
 # views.py:1123
 msgid "portal_href"
 msgstr "链接别名"
+
+# views.py:1152
+msgid "manage"
+msgstr "管理"
+
+# views.py:1162
+msgid "to_view"
+msgstr "查看"

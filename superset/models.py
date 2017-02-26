@@ -2693,6 +2693,10 @@ class Portal(Model, AuditMixinNullable, ImportMixin):
          return Markup('<a href="/superset/portal/{self.id}/edit">{self.portal_name}</a>'.format(**locals()))
 
     @property
+    def portal_link2(self):
+         return Markup('<a target="_blank" href="/superset/portal/{self.id}/show">{self.portal_name}</a>'.format(**locals()))
+
+    @property
     def setting(self):
         return Markup('<a href="/superset/portal/{self.id}/edit">菜单设置</a>'.format(**locals()))
 
