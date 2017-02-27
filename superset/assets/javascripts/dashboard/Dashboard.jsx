@@ -14,6 +14,7 @@ import Header from './components/Header';
 require('bootstrap');
 require('../../stylesheets/dashboard.css');
 require('../superset-select2.js');
+require('../../visualizations/table.css');
 
 export function getInitialState(dashboardData, context) {
   const dashboard = Object.assign({ context }, utils.controllerInterface, dashboardData);
