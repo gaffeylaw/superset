@@ -108,7 +108,8 @@ function tableVis(slice) {
 
 
 // <!-- 模态框（Modal） -->
-// <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+// <div class="modal fade" id="myModal" tabindex="-1" role="dialog" 
+//  aria-labelledby="myModalLabel" aria-hidden="true">
 // 	<div class="modal-dialog">
 // 		<div class="modal-content">
 // 			<div class="modal-header">
@@ -165,7 +166,7 @@ function tableVis(slice) {
             item.onclick = function(){
               window.parent.postMessage(navigates[j], '*');
               $(modal).modal('hide');
-            }
+            };
             nav.appendChild(navInner);
             item.appendChild(nav);
             modalBody.appendChild(item);
@@ -456,7 +457,7 @@ function tableVis(slice) {
               } else {
                 nextFltIndex = flt.length + 1;
               }
-              const col = sourceGroupby[i];
+              const col = sourceGroupby[j];
               const nextFlt = '&flt_col_' + nextFltIndex + '=' + col + '&flt_op_' + nextFltIndex +
                   '=in&flt_eq_' + nextFltIndex + '=' + val;
               newUrl += nextFlt;
