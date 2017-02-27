@@ -67,7 +67,7 @@ function tableVis(slice) {
       return navigateDashboard.responseText;
     }
 
-    function convertDashUrl(dash, colArr) {
+    function convertDashUrl(dash, groupby, clickTarget) {
       let url = dash.url;
       //  &preselect_filters = {
       //   sliceId: {
@@ -85,14 +85,15 @@ function tableVis(slice) {
       //     }
       //   }
       const filter = {};
-      for (let i = 0; i < colArr.length; i++) {
+      for (let i = 0; i < groupby.length; i++) {
+        const extCol = groupby[i];
         for (let j = 0; j < dash.slcs.length; j++) {
           const sliceId = dash.slcs[j].sliceId;
-          const extCol = colArr[i].col;
           const vals = [];
-          const val = colArr[i].val;
+          const val = clickTarget.parentNode.childNodes[i].textContent;
           for (let k = 0; k < dash.slcs[j].columns.length; k++) {
-            if (colArr[i].col === dash.slcs[j].columns[k].extCol) {
+            // make slice column equals dashboard filter column
+            if (extCol === dash.slcs[j].columns[k].extCol) {
               const slc = {};
               vals.push(val);
               slc[extCol] = vals;
@@ -103,6 +104,81 @@ function tableVis(slice) {
       }
       url += '?preselect_filters=' + JSON.stringify(filter);
       return url;
+    }
+
+
+// <!-- 模态框（Modal） -->
+// <div class="modal fade" id="myModal" tabindex="-1" role="dialog" 
+//  aria-labelledby="myModalLabel" aria-hidden="true">
+// 	<div class="modal-dialog">
+// 		<div class="modal-content">
+// 			<div class="modal-header">
+// 				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+// 					&times;
+// 				</button>
+// 				<h4 class="modal-title" id="myModalLabel">
+// 					模态框（Modal）标题
+// 				</h4>
+// 			</div>
+// 			<div class="modal-body">
+// 				在这里添加一些文本
+// 			</div>
+// 			<div class="modal-footer">
+// 				<button type="button" class="btn btn-default" data-dismiss="modal">关闭
+// 				</button>
+// 				<button type="button" class="btn btn-primary">
+// 					提交更改
+// 				</button>
+// 			</div>
+// 		</div><!-- /.modal-content -->
+// 	</div><!-- /.modal -->
+// </div>
+
+    function handleNavigate(i, navigates) {
+      if (i === 10) {
+        if (navigates.length === 1) {
+          window.parent.postMessage(navigates[0], '*');
+        } else if (navigates.length > 1) {
+          const modal = document.createElement('div');
+          modal.setAttribute('class', 'modal fade');
+          modal.style.marginTop = '100px';
+          const modalDialog = document.createElement('div');
+          modalDialog.setAttribute('class', 'modal-dialog');
+          const modalHeader = document.createElement('div');
+          modalHeader.setAttribute('class', 'modal-header');
+          const modalTitle = document.createElement('h4');
+          modalTitle.setAttribute('class', 'modal-title');
+          modalTitle.style.textAlign = 'center';
+          modalTitle.innerHTML = '请选择要导航的目标';
+          const modalContent = document.createElement('div');
+          modalContent.setAttribute('class', 'modal-content');
+          const modalBody = document.createElement('div');
+          modalBody.setAttribute('class', 'modal-body');
+          for (let j = 0; j < navigates.length; j++) {
+            const item = document.createElement('div');
+            item.setAttribute('class', 'navWrapper');
+            // item.innerHTML = navigates[j].title;
+            const nav = document.createElement('div');
+            // nav.innerHTML = navigates[j].title;
+            nav.setAttribute('class', 'sim-button navItem');
+            const navInner = document.createElement('span');
+            navInner.innerHTML = navigates[j].title;
+            item.onclick = function(){
+              window.parent.postMessage(navigates[j], '*');
+              $(modal).modal('hide');
+            };
+            nav.appendChild(navInner);
+            item.appendChild(nav);
+            modalBody.appendChild(item);
+          }
+          modalHeader.appendChild(modalTitle);
+          modalContent.appendChild(modalHeader);
+          modalContent.appendChild(modalBody);
+          modalDialog.appendChild(modalContent);
+          modal.appendChild(modalDialog);
+          $(modal).modal('show');
+        }
+      }
     }
 
     let left = 10;
@@ -366,21 +442,28 @@ function tableVis(slice) {
     });
 
     // add filter by change url
-    function addFilter(url, colArr) {
+    function addFilter(url, sourceGroupby, navGroupby, clickTarget) {
       let newUrl = url;
-      for (let i = 0; i < colArr.length; i++) {
-        const flt = newUrl.match(/flt_col/g);
-        let nextFltIndex = 0;
-        if (flt === null || flt === '') {
-          nextFltIndex = 1;
-        } else {
-          nextFltIndex = flt.length + 1;
+      if (navGroupby.length > 0) {
+        for (let j = 0; j < sourceGroupby.length; j++) {
+          const val = clickTarget.parentNode.childNodes[j].textContent;
+          for (let k = 0; k < navGroupby.length; k++) {
+            // make navigate groupby val equals source groupby
+            if (sourceGroupby[j] === navGroupby[k]) {
+              const flt = newUrl.match(/flt_col/g);
+              let nextFltIndex = 0;
+              if (flt === null || flt === '') {
+                nextFltIndex = 1;
+              } else {
+                nextFltIndex = flt.length + 1;
+              }
+              const col = sourceGroupby[j];
+              const nextFlt = '&flt_col_' + nextFltIndex + '=' + col + '&flt_op_' + nextFltIndex +
+                  '=in&flt_eq_' + nextFltIndex + '=' + val;
+              newUrl += nextFlt;
+            }
+          }
         }
-        const col = colArr[i].col;
-        const val = colArr[i].val;
-        const nextFlt = '&flt_col_' + nextFltIndex + '=' + col + '&flt_op_' + nextFltIndex +
-            '=in&flt_eq_' + nextFltIndex + '=' + val;
-        newUrl += nextFlt;
       }
       return newUrl;
     }
@@ -559,6 +642,8 @@ function tableVis(slice) {
         //   return (!d.isMetric) ? 'pointer' : '';
         // })
         .on('click', function (d) {
+          let navCount = 0;
+          const navigates = [];
           for (let i = 1; i <= 10; i++) {
             if (fd['navigate_expr_' + i] !== '') {
               if (d.isMetric && d.col === fd['navigate_metric_' + i]) {
@@ -567,6 +652,7 @@ function tableVis(slice) {
                 expr = expr.replace(/=/g, '==').replace(/>==/g, '>=').replace(/<==/g, '<=');
                 if (((expr.indexOf('$.inArray') === -1 && eval(expr))
                 || (expr.indexOf('$.inArray') !== -1 && eval(expr) !== -1))) {
+                  navCount++;
                   const openType = fd['navigate_open_' + i];
                   const navHeight = (fd['navigate_height_' + i] === '') ? 300 :
                   fd['navigate_height_' + i];
@@ -575,21 +661,11 @@ function tableVis(slice) {
                   const navType = fd['navigate_type_' + i];
                   // navigate to dashboard
                   if (navType === 'dashboard') {
-                    const sourceGroupby = fd.groupby;
-                    const colArr = [];
                     const dash = JSON.parse(dashboardUrl(fd['navigate_dashboard_' + i]));
                     let url = dash.url;
                     const title = dash.title;
-                    // make slice column equals dashboard filter column
-                    for (let j = 0; j < sourceGroupby.length; j++) {
-                      const ele = this.parentNode.childNodes[j];
-                      colArr.push({
-                        val: ele.textContent,
-                        col: sourceGroupby[j],
-                      });
-                    }
-                    if (url != null) {
-                      url = convertDashUrl(dash, colArr);
+                    if (url) {
+                      url = convertDashUrl(dash, fd.groupby, this);
                       const postData = {
                         url: url,
                         title: title,
@@ -598,7 +674,8 @@ function tableVis(slice) {
                         navWidth: navWidth,
                         isDash: true,
                       };
-                      window.parent.postMessage(postData, '*');  // send message to navigate
+                      navigates.push(postData);
+                      // window.parent.postMessage(postData, '*');  // send message to navigate
                     }
                   }
                   // navigate to slice 
@@ -606,7 +683,7 @@ function tableVis(slice) {
                     const slc = JSON.parse(sliceUrl(fd['navigate_slice_' + i]));
                     let url = slc.url;
                     const title = slc.title;
-                    if (url != null) {
+                    if (url) {
                       const standalone = GetQueryString(url, 'standalone', []);
                       const navGroupby = GetQueryString(url, 'groupby', []);
                       if (standalone.length === 0) {
@@ -617,22 +694,7 @@ function tableVis(slice) {
                         }
                       }
                       const sourceGroupby = fd.groupby;
-                      const colArr = [];
-                      if (navGroupby.length > 0) {
-                        for (let j = 0; j < sourceGroupby.length; j++) {
-                          const ele = this.parentNode.childNodes[j];
-                          for (let k = 0; k < navGroupby.length; k++) {
-                            // make navigate groupby val equals source groupby
-                            if (sourceGroupby[j] === navGroupby[k]) {
-                              colArr.push({
-                                val: ele.textContent,
-                                col: navGroupby[k],
-                              });
-                            }
-                          }
-                        }
-                      }
-                      url = addFilter(url, colArr);
+                      url = addFilter(url, sourceGroupby, navGroupby, this);
                       const postData = {
                         url: url,
                         title: title,
@@ -640,11 +702,14 @@ function tableVis(slice) {
                         navHeight: navHeight,
                         navWidth: navWidth,
                       };
-                      window.parent.postMessage(postData, '*');  // send message to navigate
+                      navigates.push(postData);
+                      // window.parent.postMessage(postData, '*');  // send message to navigate
                     }
                   }
                 }
               }
+              // check navigates and send message to navigate
+              handleNavigate(i, navigates);
             }
           }
         })
