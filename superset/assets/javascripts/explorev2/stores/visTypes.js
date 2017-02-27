@@ -101,6 +101,35 @@ const visTypes = {
   },
 
   // add new style
+  ag_grid: {
+    label: 'Ag-grid View',
+    controlPanelSections: [
+      {
+        label: 'GROUP BY',
+        description: 'Use this section if you want a query that aggregates',
+        fieldSetRows: [
+          ['groupby', 'metrics'],
+        ],
+      },
+      {
+        label: 'NOT GROUPED BY',
+        description: 'Use this section if you want to query atomic rows',
+        fieldSetRows: [
+          ['all_columns', 'order_by_cols'],
+        ],
+      },
+      {
+        label: 'Options',
+        fieldSetRows: [
+          ['table_timestamp_format'],
+          ['row_limit'],
+          ['page_length'],
+          ['include_search', 'table_filter'],
+        ],
+      },
+    ],
+  },
+
   linePlusBar: {
     label: 'Distribution - LinePlusBar Chart',
     controlPanelSections: [

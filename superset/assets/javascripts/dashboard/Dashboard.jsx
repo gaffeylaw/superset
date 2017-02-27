@@ -62,14 +62,17 @@ function renderAlert() {
   );
 }
 
-function initDashboardView(dashboard) {
+function initDashboardView(dashboard, isManager) {
   render(
     <Header dashboard={dashboard} />,
     document.getElementById('dashboard-header')
   );
   // eslint-disable-next-line no-param-reassign
   dashboard.reactGridLayout = render(
-    <GridLayout dashboard={dashboard} />,
+    <GridLayout
+      dashboard={dashboard}
+      isManager={isManager}
+    />,
     document.getElementById('grid-container')
   );
 
@@ -348,11 +351,19 @@ function getQueryString(name) {
 function hideTitle() {
   // hide header and title
   if (getQueryString('showHeader') === 'false') {
-    $('.pull-right').hide();
+    $('header').hide();
   }
   if (getQueryString('isTitle') === 'false') {
-    $('#dashboard-header').hide();
     $('#alert-container').hide();
+    $('#dashboard-header .pull-left').hide();
+  }
+  if (getQueryString('isControl') === 'false') {
+    $('#dashboard-header .pull-right').hide();
+  }
+  if (getQueryString('isPortal') === 'true') {
+    $('header').hide();
+    $('#alert-container').hide();
+    $('#dashboard-header .pull-left').hide();
     $('.pull-right').hide();
   }
 }
@@ -364,7 +375,8 @@ $(document).ready(() => {
 
   const state = getInitialState(dashboardData, contextData);
   const dashboard = dashboardContainer(state.dashboard);
-  initDashboardView(dashboard);
+  const isManager = getQueryString('isManager');
+  initDashboardView(dashboard, isManager === 'false' ? false : true);
   dashboard.init();
   hideTitle();
 });

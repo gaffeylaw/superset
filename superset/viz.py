@@ -1522,6 +1522,18 @@ class DistributionMultiViz(DistributionBarViz):
         )
     },)
 
+class agGridViz(TableViz):
+
+    viz_type = "ag_grid"
+    verbose_name = _("ag_grid View")
+    credits = 'a <a href="https://github.com/airbnb/superset">Superset</a> original'
+
+    form_overrides = ({
+        'metrics': {
+            'default': [],
+        },
+    })
+    is_timeseries = False
 
 class SunburstViz(BaseViz):
 
@@ -2142,6 +2154,7 @@ viz_types_list = [
 
     DistributionLinePlusBarViz,
     DistributionMultiViz,
+    agGridViz,
 
     DistributionPieViz,
     BubbleViz,

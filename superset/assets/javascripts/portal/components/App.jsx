@@ -47,7 +47,7 @@ class App extends React.PureComponent {
               (<Tab key={'tab' + headMenu[0]} title={headMenu[1]} disableClose={'true'}>
                 <iframe
                   src={headMenu[3] === '' ? '/superset/null' : '/superset/dashboard/'
-                        + headMenu[3] + '?showHeader=false&isTitle=false'}
+                        + headMenu[3] + '?isPortal=true'}
                   style={{ width: '100%', height: '100%' }}
                 />
               </Tab>),
@@ -65,7 +65,7 @@ class App extends React.PureComponent {
           <Tab key={'tab' + headMenu[0]} title={headMenu[1]}>
             <iframe
               src={headMenu[3] === '' ? '/superset/null' : '/superset/dashboard/'
-                    + headMenu[3] + '?showHeader=false&isTitle=false'}
+                    + headMenu[3] + '?isPortal=true'}
               style={{ width: '100%', height: '100%' }}
             />
           </Tab>
@@ -181,7 +181,7 @@ class App extends React.PureComponent {
               <iframe
                 src={menuObj.dashboard_href === '' ? '/superset/null' :
                       '/superset/dashboard/' + menuObj.dashboard_href
-                      + '?showHeader=false&isTitle=false'}
+                      + '?isPortal=true'}
                 style={{ width: '100%', height: '100%' }}
               />
             </Tab>),
@@ -243,7 +243,7 @@ class App extends React.PureComponent {
             <Tab key={'tab' + menu.id} title={menu.name}>
               <iframe
                 src={'/superset/dashboard/' + menu.dashboard_href
-                  + '?showHeader=false&isTitle=false'}
+                  + '?isPortal=true'}
                 style={{ width: '100%', height: '100%' }}
               />
             </Tab>
