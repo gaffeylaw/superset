@@ -370,5 +370,4 @@ function agGridVis(slice) {
     resize() {},
   };
 }
-
 module.exports = agGridVis;
