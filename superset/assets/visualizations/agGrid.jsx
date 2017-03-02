@@ -1,10 +1,9 @@
 const $ = require('jquery');
-// import d3 from 'd3';
-import React, { Component } from 'react';
+import React from 'react';
 import ReactDOM from 'react-dom';
 
-import {AgGridReact} from 'ag-grid-react';
-import "ag-grid-enterprise";
+import { AgGridReact } from 'ag-grid-react';
+import 'ag-grid-enterprise';
 
 import 'ag-grid/dist/styles/ag-grid.css';
 import 'ag-grid/dist/styles/theme-fresh.css';
@@ -21,15 +20,15 @@ const propTypes = {
 
 let allOfTheData = [];
 class AgGrid extends React.Component {
-  constructor(props) {
-    super(props);
-    allOfTheData = this.props.data.records;
-    this.state = {
+	constructor(props) {
+		super(props);
+		allOfTheData = this.props.data.records;
+		this.state = {
 			gridTheme: 'ag-blue',
 			showToolPanel: false,
 			quickFilterText: null,
-    };
-    this.gridOptions = {
+		};
+		this.gridOptions = {
 			paginationPageSize: '15',
 			// onModelUpdated: function () {
 			// 		console.log('event onModelUpdated received');
@@ -40,8 +39,8 @@ class AgGrid extends React.Component {
 			columnDefs: this.initColumnDefs(),
 			rowGroupPanelShow: 'always',
 			enableColResize: true,
-    };
-  }
+		};
+	}
 
   getAllRecordsByColumnName(columnName) {
 		const data = [];
@@ -136,7 +135,7 @@ class AgGrid extends React.Component {
 									|| (expr.indexOf('$.inArray') !== -1 && eval(expr) !== -1)) {
 								// style(str to json)
 								const conditionStyleArray = fd['style_value_' + i].split(';');
-								let conditionStylejson = {};
+								const conditionStylejson = {};
 								conditionStyleArray.forEach(a => {
 										const k = a.split(':');
 										conditionStylejson[k[0]] = k[1];
@@ -159,7 +158,7 @@ class AgGrid extends React.Component {
 						if (params.value === compareMetricLefts[i][0] && eval(expr)) {
 							// style(str to json)
 							const compareStyleArray = compareValues[i].split(';');
-							let compareStyleJson = {};
+							const compareStyleJson = {};
 							compareStyleArray.forEach(a => {
 									const k = a.split(':');
 									compareStyleJson[k[0]] = k[1];
@@ -172,7 +171,7 @@ class AgGrid extends React.Component {
 						break;
 					}
 				}
-				console.log(styleJson);
+				// console.log(styleJson);
 				return styleJson;
 			};
 
@@ -217,7 +216,7 @@ class AgGrid extends React.Component {
     this.createNewDatasource();
   }
 
-  onThemeChanged(selected){
+  onThemeChanged(selected) {
     const themeSelected = selected.currentTarget.value;
     this.setState({ gridTheme: themeSelected });
   }
@@ -233,10 +232,10 @@ class AgGrid extends React.Component {
 
   createNewDatasource() {
     if (!allOfTheData) {
-        return;
+			return;
     }
     let rowsThisPage = [];
-    let dataSource = {
+    const dataSource = {
 			getRows: function(params) {
 				setTimeout(function() {
 					rowsThisPage = allOfTheData.slice(params.startRow, params.endRow);
@@ -246,7 +245,7 @@ class AgGrid extends React.Component {
 					}
 					params.successCallback(rowsThisPage, lastRow);
 				}, 500);
-			}
+			},
     };
     this.setState({ rowData: this.dataSource });
     this.gridOptions.api.setDatasource(dataSource);
@@ -254,7 +253,7 @@ class AgGrid extends React.Component {
 
   render() {
     const themeTemplate = (
-      <div style={{height: '30px', float: 'left' }}>
+      <div style={{ height: '30px', float: 'left' }}>
 				Theme:
 				<select onChange={this.onThemeChanged.bind(this)}>
 					<option value="ag-blue" selected>blue</option>
@@ -291,8 +290,9 @@ class AgGrid extends React.Component {
 
     const gridTemplate = (
         <div
-					style={{ height: this.props.height-30, width: '100%', textAlign: 'left' }}
-					className={this.state.gridTheme}>
+					style={{ height: this.props.height - 30, width: '100%', textAlign: 'left' }}
+					className={this.state.gridTheme}
+				>
 					<AgGridReact
 							// binding to simple properties
 							columnDefs={this.gridOptions.columnDefs}
@@ -308,7 +308,7 @@ class AgGrid extends React.Component {
 							groupIncludeFooter="true"
 							groupUseEntireRow="false"
 
-							rowSelection="multiple"     // 
+							rowSelection="multiple"
 							enableColResize="true"      // 列大小调整
 							enableSorting="true"        // 排序
 							enableFilter="true"         // 筛选
