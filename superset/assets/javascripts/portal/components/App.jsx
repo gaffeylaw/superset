@@ -138,7 +138,7 @@ class App extends React.PureComponent {
     this.state.leftMenus = [];
     const menus = this.deepCopy(this.props.form_data.menus);
     let k = 0;
-    for (let i = 0; i < menus.length; i++) {
+    for (let i = 0; i < this.props.form_data.menus.length; i++) {
       if (menus[i - k][2] === 0) {
         menus.splice(i - k, 1);
         k++;

@@ -182,7 +182,12 @@ export default class MenuField extends React.Component {
               <font size="2">表格</font>
             </span>
           </MenuItem>
-         
+          <MenuItem key="ag_grid">
+            <span>
+              <i className="fa fa-table icon-span"></i>
+              <font size="2">ag_grid</font>
+            </span>
+          </MenuItem>
           <MenuItem key="pivot_table">
             <span>
               <i className="fa fa-table icon-span"></i>

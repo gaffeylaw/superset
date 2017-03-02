@@ -236,7 +236,7 @@ class Setting extends React.PureComponent {
 
     // set dashboard_href
     this.props.form_data.dashboards.map((d) => {
-      if (d[0] === menu.dashboard_href) {
+      if (d[0] == menu.dashboard_href) {
         this.setState({
           dashboard: {
             value: d[0],

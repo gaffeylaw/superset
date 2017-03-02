@@ -1822,16 +1822,46 @@ class FilterBoxViz(BaseViz):
         qry = self.query_obj()
         filters = [g for g in self.form_data['groupby']]
         d = {}
+        qry['groupby'] = filters
+        df = super(FilterBoxViz, self).get_df(qry)
         for flt in filters:
-            qry['groupby'] = [flt]
-            df = super(FilterBoxViz, self).get_df(qry)
-            d[flt] = [{
-                'id': row[0],
-                'text': row[0],
-                'filter': flt,
-                'metric': row[1]}
-                for row in df.itertuples(index=False)
-            ]
+            # get series value
+            array = df[flt].values
+            # get unique data
+            s = None
+            try:
+                s = set(array)
+            except Exception:
+                # list will get this error: unhashable type: 'numpy.ndarray'
+                k = []
+                for row in array:
+                    k.append(tuple(row))
+                s = set(k)
+            # print(s)
+            d[flt] = [
+                {
+                    'id': row,
+                    'text': row,
+                    'filter': flt,
+                    'metric': 0
+                } for row in s
+            ] 
+            
+        
+        # for flt in filters:
+        #     print("===========")
+        #     print(flt)
+        #     qry['groupby'] = [flt]
+        #     df = super(FilterBoxViz, self).get_df(qry)
+        #     print(df)
+
+        #     d[flt] = [{
+        #         'id': row[0],
+        #         'text': row[0],
+        #         'filter': flt,
+        #         'metric': row[1]}
+        #         for row in df.itertuples(index=False)
+        #     ]
         return d
 
 

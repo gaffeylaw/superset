@@ -79,7 +79,7 @@ class ControlPanelsContainer extends React.Component {
 
   render() {
     let flag = false;
-    if (this.props.form_data.viz_type === 'table') {
+    if (this.props.form_data.viz_type === 'table' || this.props.form_data.viz_type === 'ag_grid') {
       flag = true;
     }
     let flag_prompt = false;
