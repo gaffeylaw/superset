@@ -11,7 +11,7 @@ const BUILD_DIR = path.resolve(__dirname, './dist');
 const VERSION_STRING = JSON.parse(fs.readFileSync('package.json')).version;
 
 const config = {
-  
+
   entry: {
     // vender: ['react', 'd3', 'bootstrap', 'jquery', 'nvd3', 'redux'],
     'css-theme': APP_DIR + '/javascripts/css-theme.js',
@@ -28,7 +28,7 @@ const config = {
   output: {
     path: BUILD_DIR,
     filename: `[name].${VERSION_STRING}.entry.js`,
-    chunkFilename: `[name].[hash:5].enrty.js`,
+    chunkFilename: '[name].[hash:5].enrty.js',
   },
   resolve: {
     extensions: [
