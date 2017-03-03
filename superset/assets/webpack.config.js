@@ -11,7 +11,9 @@ const BUILD_DIR = path.resolve(__dirname, './dist');
 const VERSION_STRING = JSON.parse(fs.readFileSync('package.json')).version;
 
 const config = {
+
   entry: {
+    // vender: ['react', 'd3', 'bootstrap', 'jquery', 'nvd3', 'redux'],
     'css-theme': APP_DIR + '/javascripts/css-theme.js',
     common: APP_DIR + '/javascripts/common.js',
     dashboard: ['babel-polyfill', APP_DIR + '/javascripts/dashboard/Dashboard.jsx'],
@@ -26,6 +28,7 @@ const config = {
   output: {
     path: BUILD_DIR,
     filename: `[name].${VERSION_STRING}.entry.js`,
+    chunkFilename: '[name].[hash:5].enrty.js',
   },
   resolve: {
     extensions: [
@@ -128,6 +131,7 @@ const config = {
         NODE_ENV: JSON.stringify(process.env.NODE_ENV),
       },
     }),
+    // new webpack.optimize.CommonsChunkPlugin({name: "vendor", minChunks: Infinity}),
   ],
 };
 if (process.env.NODE_ENV === 'production') {

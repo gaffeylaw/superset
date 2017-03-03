@@ -32,5 +32,6 @@ const vizMap = {
 
   linePlusBar: require('./nvd3_vis.js'),
   multi: require('./nvd3_vis.js'),
+  ag_grid: require('./agGrid.jsx'),
 };
 export default vizMap;

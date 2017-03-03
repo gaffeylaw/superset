@@ -5,9 +5,10 @@ const propTypes = {
   slice: PropTypes.object.isRequired,
   removeSlice: PropTypes.func.isRequired,
   expandedSlices: PropTypes.object,
+  isManager: PropTypes.bool.isRequired,
 };
 
-function SliceCell({ expandedSlices, removeSlice, slice, doPrint }) {
+function SliceCell({ expandedSlices, removeSlice, slice, doPrint, isManager }) {
   return (
     <div className="slice-cell" id={`${slice.token}-cell`}>
       <div className="chart-header">
@@ -17,13 +18,17 @@ function SliceCell({ expandedSlices, removeSlice, slice, doPrint }) {
           </div>
           <div className="col-md-12 chart-controls">
             <div className="pull-right">
-              <a title="Move chart" data-toggle="tooltip">
-                <i className="fa fa-arrows drag" />
-              </a>
-              <a className="refresh" title="Force refresh data" data-toggle="tooltip">
-                <i className="fa fa-repeat" />
-              </a>
-              {slice.description &&
+              {isManager &&
+                <span>
+                  <a title="Move chart" data-toggle="tooltip">
+                    <i className="fa fa-arrows drag" />
+                  </a>
+                  <a className="refresh" title="Force refresh data" data-toggle="tooltip">
+                    <i className="fa fa-repeat" />
+                  </a>
+                </span>
+              }
+              {(slice.description && isManager) &&
                 <a title="Toggle chart description">
                   <i
                     className="fa fa-info-circle slice_info"
@@ -32,32 +37,38 @@ function SliceCell({ expandedSlices, removeSlice, slice, doPrint }) {
                   />
                 </a>
               }
-              <a
-                href={slice.edit_url}
-                title="Edit chart"
-                data-toggle="tooltip"
-              >
-                <i className="fa fa-pencil" />
-              </a>
-              <a href={slice.slice_url} title="Explore chart" data-toggle="tooltip">
-                <i className="fa fa-share" />
-              </a>
+              {isManager &&
+                <span>
+                  <a
+                    href={slice.edit_url}
+                    title="Edit chart"
+                    data-toggle="tooltip"
+                  >
+                    <i className="fa fa-pencil" />
+                  </a>
+                  <a href={slice.slice_url} title="Explore chart" data-toggle="tooltip">
+                    <i className="fa fa-share" />
+                  </a>
+                </span>
+              }
               <a title="print chart" data-toggle="tooltip">
                 <i
                   className="fa fa-print"
                   onClick={() => { doPrint(slice.slice_id); }}
                 />
               </a>
-              <a
-                className="remove-chart"
-                title="Remove chart from dashboard"
-                data-toggle="tooltip"
-              >
-                <i
-                  className="fa fa-close"
-                  onClick={() => { removeSlice(slice.slice_id); }}
-                />
-              </a>
+              {isManager &&
+                <a
+                  className="remove-chart"
+                  title="Remove chart from dashboard"
+                  data-toggle="tooltip"
+                >
+                  <i
+                    className="fa fa-close"
+                    onClick={() => { removeSlice(slice.slice_id); }}
+                  />
+                </a>
+              }
             </div>
           </div>
         </div>

@@ -2858,6 +2858,8 @@ class Superset(BaseSupersetView):
             db.session.execute("update portal set logo = '%s' where id = %s" %(request.form['time'], request.form['portal_id']))
             db.session.commit()
             import os
+            if not os.path.exists(os.path.join(os.path.abspath(os.path.dirname(__file__)) + '/static/logo')):
+                os.mkdir(os.path.join(os.path.abspath(os.path.dirname(__file__)) + '/static/logo'))
             file.save(os.path.join(os.path.abspath(os.path.dirname(__file__)) + '/static/logo/', filename))
             return 'true'
         except Exception: 

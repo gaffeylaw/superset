@@ -58,6 +58,7 @@ const vizType = [
     { chart: 'world_map', icon: 'fa fa-map-marker' },
     { chart: 'linePlusBar', icon: 'fa fa-line-chart' },
     { chart: 'multi', icon: 'fa fa-line-chart' },
+    { chart: 'ag_grid', icon: 'fa fa-table' },
 ];
 
 const selectedMenu = {
@@ -179,6 +180,12 @@ export default class MenuField extends React.Component {
             <span>
               <i className="fa fa-table icon-span"></i>
               <font size="2">表格</font>
+            </span>
+          </MenuItem>
+          <MenuItem key="ag_grid">
+            <span>
+              <i className="fa fa-table icon-span"></i>
+              <font size="2">ag_grid</font>
             </span>
           </MenuItem>
           <MenuItem key="pivot_table">

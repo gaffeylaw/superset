@@ -13,7 +13,8 @@
     "dev": "NODE_ENV=dev webpack --watch --colors --progress --debug --output-pathinfo --devtool inline-source-map",
     "prod": "NODE_ENV=production node --max_old_space_size=4096 ./node_modules/webpack/bin/webpack.js -p --colors --progress",
     "build": "NODE_ENV=production webpack --colors --progress",
-    "lint": "eslint --ignore-path=.eslintignore --ext .js,.jsx ."
+    "lint": "eslint --ignore-path=.eslintignore --ext .js,.jsx .",
+    "clear": "rm -fr ./dist/"
   },
   "repository": {
     "type": "git",
@@ -95,7 +96,10 @@
     "topojson": "^1.6.22",
     "victory": "^0.12.1",
     "viewport-mercator-project": "^2.1.0",
-    "react-draggable-tab": "^0.8.1"
+    "react-draggable-tab": "^0.8.1",
+    "ag-grid": "8.0.x",
+    "ag-grid-enterprise": "8.0.x",
+    "ag-grid-react": "8.0.x"
   },
   "devDependencies": {
     "babel": "^6.3.26",

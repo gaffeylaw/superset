@@ -180,8 +180,8 @@ def upgrade():
     sa.Column('logo', sa.String(length=255), nullable=True),
     sa.Column('footer', sa.String(length=255), nullable=True),
     sa.Column('portal_href', sa.String(length=255), nullable=True),
-    sa.Column('created_on', sa.DateTime(), nullable=False),
-    sa.Column('changed_on', sa.DateTime(), nullable=False),
+    sa.Column('created_on', sa.DateTime(), nullable=True),
+    sa.Column('changed_on', sa.DateTime(), nullable=True),
     sa.Column('created_by_fk', sa.Integer(), sa.ForeignKey("ab_user.id"), nullable=True),
     sa.Column('changed_by_fk', sa.Integer(), sa.ForeignKey("ab_user.id"), nullable=True),
     sa.PrimaryKeyConstraint('id')
@@ -195,8 +195,8 @@ def upgrade():
     sa.Column('open_way', sa.String(length=32), nullable=True),
     sa.Column('is_index', sa.String(length=32), nullable=True),
     sa.Column('icon', sa.String(length=32), nullable=True),
-    sa.Column('created_on', sa.DateTime(), nullable=False),
-    sa.Column('changed_on', sa.DateTime(), nullable=False),
+    sa.Column('created_on', sa.DateTime(), nullable=True),
+    sa.Column('changed_on', sa.DateTime(), nullable=True),
     sa.Column('created_by_fk', sa.Integer(), sa.ForeignKey("ab_user.id"), nullable=True),
     sa.Column('changed_by_fk', sa.Integer(), sa.ForeignKey("ab_user.id"), nullable=True),
     sa.PrimaryKeyConstraint('id')
