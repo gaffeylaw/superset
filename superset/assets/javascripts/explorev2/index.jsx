@@ -209,6 +209,34 @@ function getNavigates(form_data, datasource_type) {
 bootstrappedState.viz.form_data.navigates =
   getNavigates(bootstrappedState.viz.form_data, bootstrapData.datasource_type);
 
+function parseHeaderSettings(form_data) {
+  const headerSettings = [];
+  for (let i = 0; i < 10; i++) {
+    if (form_data[`headerSetting_parentName_${i}`] && form_data[`headerSetting_children_${i}`]) {
+      headerSettings.push({
+        id: form_data[`headerSetting_id_${i}`],
+        parentName: form_data[`headerSetting_parentName_${i}`],
+        children: form_data[`headerSetting_children_${i}`],
+      });
+    }
+    /* eslint no-param-reassign: 0 */
+    delete form_data[`headerSetting_id_${i}`];
+    delete form_data[`headerSetting_parentName_${i}`];
+    delete form_data[`headerSetting_children_${i}`];
+  }
+  return headerSettings;
+}
+
+function getHeaderSettings(form_data, datasource_type) {
+  if (datasource_type === 'table') {
+    return parseHeaderSettings(form_data);
+  }
+  return null;
+}
+
+bootstrappedState.viz.form_data.headerSettings =
+  getHeaderSettings(bootstrappedState.viz.form_data, bootstrapData.datasource_type);
+
 function parsePromptColStyles(form_data) {
   const promptColStyles = [];
   for (let i = 0; i < 10; i++) {

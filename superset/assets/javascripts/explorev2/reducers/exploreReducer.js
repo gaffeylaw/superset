@@ -208,6 +208,52 @@ export const exploreReducer = function (state, action) {
         { viz: Object.assign({}, state.viz, { form_data: newFormData }) }
       );
     },
+    [actions.ADD_HEADSETTING]() {
+      const newFormData = addToArr(state.viz.form_data, 'headerSettings', action.headerSetting);
+      const newState = Object.assign(
+        {},
+        state,
+        { viz: Object.assign({}, state.viz, { form_data: newFormData }) }
+      );
+      return newState;
+    },
+    [actions.REMOVE_HEADSETTING]() {
+      const newFormData = removeFromArr(state.viz.form_data, 'headerSettings', action.headerSetting);
+      return Object.assign(
+        {},
+        state,
+        { viz: Object.assign({}, state.viz, { form_data: newFormData }) }
+      );
+    },
+    [actions.CHANGE_HEADSETTING]() {
+      const changes = {};
+      changes[action.field] = action.value;
+      const newFormData = alterInArr(
+        state.viz.form_data, 'headerSettings', action.headerSetting, changes);
+      return Object.assign(
+        {},
+        state,
+        { viz: Object.assign({}, state.viz, { form_data: newFormData }) }
+      );
+    },
+    [actions.CHANGE_THEME]() {
+      const newFormData = state.viz.form_data;
+      newFormData.theme = action.value;
+      return Object.assign(
+        {},
+        state,
+        { viz: Object.assign({}, state.viz, { form_data: newFormData }) }
+      );
+    },
+    [actions.CHANGE_PAGESIZE]() {
+      const newFormData = state.viz.form_data;
+      newFormData.pageSize = action.value;
+      return Object.assign(
+        {},
+        state,
+        { viz: Object.assign({}, state.viz, { form_data: newFormData }) }
+      );
+    },
     [actions.CHANGE_FLOAT_STYLE]() {
       const changes = {};
       changes[action.field] = action.value;
