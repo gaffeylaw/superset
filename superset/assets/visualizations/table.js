@@ -11,7 +11,7 @@ import 'datatables.net';
 import dt from 'datatables.net-bs';
 dt(window, $);
 
-function tableVis(slice) {
+function tableVis(slice, flag) {
   let count = 0;
   const fC = d3.format('0,000');
   let timestampFormatter;
@@ -22,7 +22,6 @@ function tableVis(slice) {
       slice.error(xhr.responseText, xhr);
       return;
     }
-
 
     function GetQueryString(url, name, result) {
       let search = url;
@@ -67,7 +66,7 @@ function tableVis(slice) {
       return navigateDashboard.responseText;
     }
 
-    function convertDashUrl(dash, groupby, clickTarget) {
+    function convertDashUrl(dash, groupby, clickTarget, groupbyValue) {
       let url = dash.url;
       //  &preselect_filters = {
       //   sliceId: {
@@ -90,7 +89,8 @@ function tableVis(slice) {
         for (let j = 0; j < dash.slcs.length; j++) {
           const sliceId = dash.slcs[j].sliceId;
           const vals = [];
-          const val = clickTarget.parentNode.childNodes[i].textContent;
+          const val = (groupbyValue === null
+              ? clickTarget.parentNode.childNodes[i].textContent : groupbyValue[i]);
           for (let k = 0; k < dash.slcs[j].columns.length; k++) {
             // make slice column equals dashboard filter column
             if (extCol === dash.slcs[j].columns[k].extCol) {
@@ -108,7 +108,7 @@ function tableVis(slice) {
 
 
 // <!-- 模态框（Modal） -->
-// <div class="modal fade" id="myModal" tabindex="-1" role="dialog" 
+// <div class="modal fade" id="myModal" tabindex="-1" role="dialog"
 //  aria-labelledby="myModalLabel" aria-hidden="true">
 // 	<div class="modal-dialog">
 // 		<div class="modal-content">
@@ -163,7 +163,7 @@ function tableVis(slice) {
             nav.setAttribute('class', 'sim-button navItem');
             const navInner = document.createElement('span');
             navInner.innerHTML = navigates[j].title;
-            item.onclick = function(){
+            item.onclick = function () {
               window.parent.postMessage(navigates[j], '*');
               $(modal).modal('hide');
             };
@@ -442,11 +442,11 @@ function tableVis(slice) {
     });
 
     // add filter by change url
-    function addFilter(url, sourceGroupby, navGroupby, clickTarget) {
+    function addFilter(url, sourceGroupby, navGroupby, clickTarget, groupbyValue) {
       let newUrl = url;
       if (navGroupby.length > 0) {
         for (let j = 0; j < sourceGroupby.length; j++) {
-          const val = clickTarget.parentNode.childNodes[j].textContent;
+          const val = (groupbyValue === null ? clickTarget.parentNode.childNodes[j].textContent : groupbyValue[j]);
           for (let k = 0; k < navGroupby.length; k++) {
             // make navigate groupby val equals source groupby
             if (sourceGroupby[j] === navGroupby[k]) {
@@ -665,7 +665,7 @@ function tableVis(slice) {
                     let url = dash.url;
                     const title = dash.title;
                     if (url) {
-                      url = convertDashUrl(dash, fd.groupby, this);
+                      url = convertDashUrl(dash, fd.groupby, this, null);
                       const postData = {
                         url: url,
                         title: title,
@@ -694,7 +694,7 @@ function tableVis(slice) {
                         }
                       }
                       const sourceGroupby = fd.groupby;
-                      url = addFilter(url, sourceGroupby, navGroupby, this);
+                      url = addFilter(url, sourceGroupby, navGroupby, this, null);
                       const postData = {
                         url: url,
                         title: title,
@@ -795,12 +795,24 @@ function tableVis(slice) {
       slice.done(json);
       container.parents('.widget').find('.tooltip').remove();
     }
-    $.getJSON(slice.jsonEndpoint(), onSuccess).fail(onError);
+    if (flag !== 'false') {
+      $.getJSON(slice.jsonEndpoint(), onSuccess).fail(onError);
+    }
+
+    this.params = {
+      dashboardUrl: dashboardUrl,
+      convertDashUrl: convertDashUrl,
+      sliceUrl: sliceUrl,
+      GetQueryString: GetQueryString,
+      addFilter: addFilter,
+      handleNavigate: handleNavigate,
+    };
   }
 
   return {
     render: refresh,
     resize() {},
+    params: new refresh().params,
   };
 }
 

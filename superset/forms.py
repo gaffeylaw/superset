@@ -1268,6 +1268,10 @@ class FormFactory(object):
 
         # get prompt column choices
         promptColumnChoices = columnNames
+
+        # set ag_grid theme and pageSize
+        theme_choices = self.choicify(['fresh', 'blue', 'bootstrap', 'dark'])
+        pageSize_choices = self.choicify(['15', '30', '50', '100', '100000000'])
         
         for field_prefix in filter_prefixes:
             is_having_filter = field_prefix == 'having'
@@ -1374,6 +1378,17 @@ class FormFactory(object):
                         default=open_choices[0][0],
                         choices=open_choices))
 
+                # headerSetting
+                setattr(QueryForm, 'headerSetting_id_' + str(i),
+                    TextField(_("Super"), default=''))
+                setattr(QueryForm, 'headerSetting_parentName_' + str(i),
+                    TextField(_("Super"), default=''))
+                setattr(QueryForm, 'headerSetting_children_' + str(i),
+                    SelectField(
+                        _('Navigate 1'),
+                        default=viz.datasource.metrics_combo[0][0],
+                        choices=viz.datasource.metrics_combo))
+
                 # promptColStyle
                 setattr(QueryForm, 'promptColStyle_id_' + str(i),
                     TextField(_("Super"), default=''))
@@ -1398,6 +1413,16 @@ class FormFactory(object):
             setattr(
                 QueryForm, 'bodyValue',
                 TextField(_("Super"), default=''))
+                
+            # agStyle
+            setattr(QueryForm, 'theme',
+                    SelectField(
+                        default=theme_choices[0],
+                        choices=theme_choices))
+            setattr(QueryForm, 'pageSize',
+                    SelectField(
+                        default=pageSize_choices[0],
+                        choices=pageSize_choices))
 
 
         if time_fields:

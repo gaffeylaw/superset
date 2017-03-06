@@ -158,6 +158,31 @@ export function changeNavigate(navigate, field, value) {
   return { type: CHANGE_NAVIGATE, navigate, field, value };
 }
 
+export const ADD_HEADSETTING = 'ADD_HEADSETTING';
+export function addHeaderSetting(headerSetting) {
+  return { type: ADD_HEADSETTING, headerSetting };
+}
+
+export const REMOVE_HEADSETTING = 'REMOVE_HEADSETTING';
+export function removeHeaderSetting(headerSetting) {
+  return { type: REMOVE_HEADSETTING, headerSetting };
+}
+
+export const CHANGE_HEADSETTING = 'CHANGE_HEADSETTING';
+export function changeHeaderSetting(headerSetting, field, value) {
+  return { type: CHANGE_HEADSETTING, headerSetting, field, value };
+}
+
+export const CHANGE_THEME = 'CHANGE_THEME';
+export function changeTheme(theme, value) {
+  return { type: CHANGE_THEME, theme, value };
+}
+
+export const CHANGE_PAGESIZE = 'CHANGE_PAGESIZE';
+export function changePageSize(pageSize, value) {
+  return { type: CHANGE_PAGESIZE, pageSize, value };
+}
+
 export const CHANGE_FLOAT_STYLE = 'CHANGE_FLOAT_STYLE';
 export function changeFloatStyle(style, field, value) {
   return { type: CHANGE_FLOAT_STYLE, style, field, value };

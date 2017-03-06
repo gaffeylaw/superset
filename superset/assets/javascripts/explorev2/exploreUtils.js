@@ -74,6 +74,17 @@ function formatNavigates(navigates) {
   return params;
 }
 
+function formatHeaderSettings(headerSettings) {
+  const params = {};
+  for (let i = 0; i < headerSettings.length; i++) {
+    const headerSetting = headerSettings[i];
+    params[`headerSetting_id_${i + 1}`] = headerSetting.id;
+    params[`headerSetting_parentName_${i + 1}`] = headerSetting.parentName;
+    params[`headerSetting_children_${i + 1}`] = headerSetting.children;
+  }
+  return params;
+}
+
 function formatPromptColStyles(promptColStyles) {
   const params = {};
   for (let i = 0; i < promptColStyles.length; i++) {
@@ -99,7 +110,8 @@ export function getParamObject(form_data, datasource_type, saveNewSlice) {
     if (form_data[field] !== null && field !== 'datasource'
       && field !== 'filters' && field !== 'styles' && field !== 'baseStyle'
       && field !== 'colStyles' && field !== 'compares' && field !== 'navigates'
-      && field !== 'slices' && !(saveNewSlice && field === 'slice_name')) {
+      && field !== 'slices' && field !== 'headerSettings' 
+      && !(saveNewSlice && field === 'slice_name')) {
       data[field] = form_data[field];
     }
   });
@@ -115,6 +127,8 @@ export function getParamObject(form_data, datasource_type, saveNewSlice) {
   Object.assign(data, compareParams);
   const navigateParams = formatNavigates(form_data.navigates);
   Object.assign(data, navigateParams);
+  const headerSettingParams = formatHeaderSettings(form_data.headerSettings);
+  Object.assign(data, headerSettingParams);
   const promptColStyleParams = formatPromptColStyles(form_data.promptColStyles);
   Object.assign(data, promptColStyleParams);
   return data;

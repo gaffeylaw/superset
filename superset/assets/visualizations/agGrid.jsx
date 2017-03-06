@@ -12,10 +12,13 @@ import 'ag-grid/dist/styles/theme-bootstrap.css';
 import 'ag-grid/dist/styles/theme-material.css';
 import 'ag-grid/dist/styles/theme-blue.css';
 
+const Table = require('./table.js');
+
 const propTypes = {
   form_data: React.PropTypes.object.isRequired,
   data: React.PropTypes.object.isRequired,
   height: React.PropTypes.number.isRequired,
+  slice: React.PropTypes.object.isRequired,
 };
 
 let allOfTheData = [];
@@ -24,12 +27,12 @@ class AgGrid extends React.Component {
     super(props);
     allOfTheData = this.props.data.records;
     this.state = {
-      gridTheme: 'ag-blue',
+      gridTheme: 'ag-' + this.props.form_data.theme,
       showToolPanel: false,
       quickFilterText: null,
     };
     this.gridOptions = {
-      paginationPageSize: '15',
+      paginationPageSize: this.props.form_data.pageSize,
       // onModelUpdated: function () {
       // 		console.log('event onModelUpdated received');
       // },
@@ -52,6 +55,7 @@ class AgGrid extends React.Component {
 
   initColumnDefs() {
     const fd = this.props.form_data;
+    const TableFunctions = Table(this.props.slice, 'false').params;
 
     // get compare info from form_data
     const compareMetricLefts = [];
@@ -93,8 +97,7 @@ class AgGrid extends React.Component {
         }
       });
 
-      props.cellStyle = function(params) {
-
+      props.cellStyle = function (params) {
         const styleJson = {};
 
         // add body style
@@ -113,8 +116,8 @@ class AgGrid extends React.Component {
               const columnStyleArray = fd['colStyle_value_' + i].split(';');
               const columnStyleJson = {};
               columnStyleArray.forEach(a => {
-                  const k = a.split(':');
-                  columnStyleJson[k[0]] = k[1];
+                const k = a.split(':');
+                columnStyleJson[k[0]] = k[1];
               });
               $.extend(styleJson, columnStyleJson);
               break;
@@ -137,8 +140,8 @@ class AgGrid extends React.Component {
                 const conditionStyleArray = fd['style_value_' + i].split(';');
                 const conditionStylejson = {};
                 conditionStyleArray.forEach(a => {
-                    const k = a.split(':');
-                    conditionStylejson[k[0]] = k[1];
+                  const k = a.split(':');
+                  conditionStylejson[k[0]] = k[1];
                 });
                 $.extend(styleJson, conditionStylejson);
               }
@@ -160,8 +163,8 @@ class AgGrid extends React.Component {
               const compareStyleArray = compareValues[i].split(';');
               const compareStyleJson = {};
               compareStyleArray.forEach(a => {
-                  const k = a.split(':');
-                  compareStyleJson[k[0]] = k[1];
+                const k = a.split(':');
+                compareStyleJson[k[0]] = k[1];
               });
               $.extend(styleJson, compareStyleJson);
             }
@@ -175,37 +178,137 @@ class AgGrid extends React.Component {
         return styleJson;
       };
 
+      props.cellRenderer = function (params) {
+        // set link style
+        for (let i = 1; i < 10; i++) {
+          if (params.value === undefined) {
+            return null;
+          } else if (fd['navigate_expr_' + i] !== '') {
+            if (columnName === fd['navigate_metric_' + i]) {
+              let expr = fd['navigate_expr_' + i].replace(/x/g, params.value);
+              // make '=' to '=='
+              expr = expr.replace(/=/g, '==').replace(/>==/g, '>=').replace(/<==/g, '<=');
+              if ((expr.indexOf('$.inArray') === -1 && eval(expr))
+                || (expr.indexOf('$.inArray') !== -1 && eval(expr) !== -1)) {
+                return '<a href="#">' + params.value + '</a>';
+                break;
+              }
+            }
+          } else {
+            return params.value;
+          }
+        }
+      };
+
+      props.onCellClicked = function (params) {
+        // get groupby's value
+        const groupby = [];
+        for (let j = 0; j < fd.groupby.length; j++) {
+          groupby.push(params.data[fd.groupby[j]]);
+        }
+        let navCount = 0;
+        const navigates = [];
+        for (let i = 1; i <= 10; i++) {
+          if (fd['navigate_expr_' + i] !== '') {
+            if (columnName === fd['navigate_metric_' + i]) {
+              let expr = fd['navigate_expr_' + i].replace(/x/g, params.value);
+              // make '=' to '=='
+              expr = expr.replace(/=/g, '==').replace(/>==/g, '>=').replace(/<==/g, '<=');
+              if (((expr.indexOf('$.inArray') === -1 && eval(expr))
+              || (expr.indexOf('$.inArray') !== -1 && eval(expr) !== -1))) {
+                navCount++;
+                const openType = fd['navigate_open_' + i];
+                const navHeight = (fd['navigate_height_' + i] === '') ? 300 :
+                fd['navigate_height_' + i];
+                const navWidth = (fd['navigate_width_' + i] === '') ? 300 :
+                fd['navigate_width_' + i];
+                const navType = fd['navigate_type_' + i];
+                // navigate to dashboard
+                if (navType === 'dashboard') {
+                  const dash = JSON.parse(
+                    TableFunctions.dashboardUrl(fd['navigate_dashboard_' + i]));
+                  let url = dash.url;
+                  const title = dash.title;
+                  if (url) {
+                    url = TableFunctions.convertDashUrl(dash, fd.groupby, null, groupby);
+                    const postData = {
+                      url: url,
+                      title: title,
+                      type: openType,
+                      navHeight: navHeight,
+                      navWidth: navWidth,
+                      isDash: true,
+                    };
+                    navigates.push(postData);
+                    // window.parent.postMessage(postData, '*');  // send message to navigate
+                  }
+                } else {
+                  // navigate to slice
+                  const slc = JSON.parse(TableFunctions.sliceUrl(fd['navigate_slice_' + i]));
+                  let url = slc.url;
+                  const title = slc.title;
+                  if (url) {
+                    const standalone = TableFunctions.GetQueryString(url, 'standalone', []);
+                    const navGroupby = TableFunctions.GetQueryString(url, 'groupby', []);
+                    if (standalone.length === 0) {
+                      if (url.indexOf('standalone') !== -1) {
+                        url = url.replace(/standalone=/, 'standalone=true');
+                      } else {
+                        url += '&standalone=true';
+                      }
+                    }
+                    const sourceGroupby = fd.groupby;
+                    url = TableFunctions.addFilter(url, sourceGroupby, navGroupby, null, groupby);
+                    const postData = {
+                      url: url,
+                      title: title,
+                      type: openType,
+                      navHeight: navHeight,
+                      navWidth: navWidth,
+                    };
+                    navigates.push(postData);
+                    // window.parent.postMessage(postData, '*');  // send message to navigate
+                  }
+                }
+              }
+            }
+            // check navigates and send message to navigate
+            TableFunctions.handleNavigate(i, navigates);
+          }
+        }
+      };
+
       columnDefs.push(props);
     });
 
     // set parentHeader
-    // var data = [
-    // 	{
-    // 		parentName: 'book_details',
-    // 		children: ['book_type', 'book_author', 'book_name'],
-    // 	},
-    // 	{
-    // 		parentName: 'count_details',
-    // 		children: ['count', 'sum__id'],
-    // 	}
-    // ]
-    
-    // for (let i=0; i<data.length; i++) {
-    // 	const parentProps = {};
-    // 	parentProps.headerName = data[i].parentName;
-    // 	parentProps.marryChildren = true;
-    // 	parentProps.children = [];
-    // 	let k = 0;
-    // 	for (let j=0; j<columnDefs.length; j++) {
-    // 		if ($.inArray(columnDefs[j-k].headerName, data[i].children) != -1) {
-    // 			parentProps.children.push(columnDefs[j-k]);
-    // 			columnDefs.splice(j-k, 1);
-    // 			k++;
-    // 		}
-    // 	}
-    // 	columnDefs.push(parentProps);
-    // }
-    // console.log("==============");
+    const data = [];
+    for (let i = 1; i < 10; i++) {
+      if (fd['headerSetting_id_' + i] !== '' && fd['headerSetting_parentName_' + i] !== '') {
+        data.push({
+          parentName: fd['headerSetting_parentName_' + i],
+          children: fd['headerSetting_children_' + i].split(','),
+        });
+      } else {
+        break;
+      }
+    }
+    for (let i = 0; i < data.length; i++) {
+      const parentProps = {};
+      parentProps.headerName = data[i].parentName;
+      parentProps.marryChildren = true;
+      parentProps.children = [];
+      let k = 0;
+      const len = columnDefs.length;
+      for (let j = 0; j < len; j++) {
+        if ($.inArray(columnDefs[j - k].headerName, data[i].children) !== -1) {
+          parentProps.children.push(columnDefs[j - k]);
+          columnDefs.splice(j - k, 1);
+          k++;
+        }
+      }
+      columnDefs.unshift(parentProps);
+    }
     // console.log(columnDefs);
     return columnDefs;
   }
@@ -236,8 +339,8 @@ class AgGrid extends React.Component {
     }
     let rowsThisPage = [];
     const dataSource = {
-      getRows: function(params) {
-        setTimeout(function() {
+      getRows: function (params) {
+        setTimeout (function () {
           rowsThisPage = allOfTheData.slice(params.startRow, params.endRow);
           let lastRow = -1;
           if (allOfTheData.length <= params.endRow) {
@@ -255,8 +358,8 @@ class AgGrid extends React.Component {
     const themeTemplate = (
       <div style={{ height: '30px', float: 'left' }}>
         Theme:
-        <select onChange={this.onThemeChanged.bind(this)}>
-          <option value="ag-blue" selected>blue</option>
+        <select onChange={this.onThemeChanged.bind(this)} value={this.state.gridTheme}>
+          <option value="ag-blue">blue</option>
           <option value="ag-bootstrap">bootstrap</option>
           <option value="ag-dark">dark</option>
           <option value="ag-fresh">fresh</option>
@@ -267,8 +370,11 @@ class AgGrid extends React.Component {
     const pageSizeTemplate = (
       <div style={{ height: '30px', marginLeft: '30px', float: 'left' }}>
         Page Size:
-        <select onChange={this.onPageSizeChanged.bind(this)}>
-          <option value="15" selected>15</option>
+        <select
+          onChange={this.onPageSizeChanged.bind(this)}
+          value={this.gridOptions.paginationPageSize}
+        >
+          <option value="15">15</option>
           <option value="30">30</option>
           <option value="50">50</option>
           <option value="100">100</option>
@@ -352,6 +458,7 @@ function agGridVis(slice) {
           form_data={json.form_data}
           data={json.data}
           height={slice.height()}
+          slice={slice}
         />,
         document.getElementById(slice.containerId)
       );
