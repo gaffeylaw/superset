@@ -267,73 +267,73 @@ class StyleModal extends React.Component {
            </div>
          }
          {this.state.flag4 &&
-          <div>
-            <div>
-              {navigatesDiv}
-            </div>
-            <div className="row space-2">
-              <div className="col-lg-2">
-                <Button
-                  id="add-button"
-                  bsSize="sm"
-                  onClick={this.addNavigate.bind(this)}
-                >
-                  <i className="fa fa-plus" /> &nbsp; 添加导航
-                </Button>
-              </div>
-            </div>
-          </div>
+           <div>
+             <div>
+               {navigatesDiv}
+             </div>
+             <div className="row space-2">
+               <div className="col-lg-2">
+                 <Button
+                   id="add-button"
+                   bsSize="sm"
+                   onClick={this.addNavigate.bind(this)}
+                 >
+                   <i className="fa fa-plus" /> &nbsp; 添加导航
+                 </Button>
+               </div>
+             </div>
+           </div>
          }
          {this.state.flag5 &&
-          <div>
-            <div className="col-lg-12">
-              <div className="col-lg-2">
-                <span>主题:</span>
-              </div>
-              <div className="col-lg-10">
-                <Select
-                  multi={false}
-                  name="select-column"
-                  placeholder="主题"
-                  options={this.state.theme.map((o) => ({ label: o.key, value: o.value }))}
-                  value={themeObj}
-                  autosize={false}
-                  onChange={this.changeTheme.bind(this, this.props.form_data.theme)}
-                />
-              </div>
-            </div>
-            <div className="col-lg-12" style={{ marginTop: '20px' }}>
-              <div className="col-lg-2">
-                <span>条数:</span>
-              </div>
-              <div className="col-lg-10">
-                <Select
-                  multi={false}
-                  name="select-column"
-                  placeholder="条数"
-                  options={this.state.pageSize.map((o) => ({ label: o.key, value: o.value }))}
-                  value={pageSizeObj}
-                  autosize={false}
-                  onChange={this.changePageSize.bind(this, this.props.form_data.pageSize)}
-                />
-              </div>
-            </div>
-            <div className="col-lg-12" style={{ marginTop: '10px' }}>
-              <hr style={{ height: '1px', border: 'none', borderTop: '1px solid #555555' }} />
-              {headerSettingDiv}
-              <div className="row space-2">
-                <div className="col-lg-2">
-                  <Button
-                    id="add-button"
-                    bsSize="sm"
-                    onClick={this.addHeaderSetting.bind(this)}
-                  >
-                    <i className="fa fa-plus" /> &nbsp; 添加表头设置
-                  </Button>
-                </div>
-              </div>
-            </div>
-          </div>
+           <div>
+             <div className="col-lg-12">
+               <div className="col-lg-2">
+                 <span>主题:</span>
+               </div>
+               <div className="col-lg-10">
+                 <Select
+                   multi={false}
+                   name="select-column"
+                   placeholder="主题"
+                   options={this.state.theme.map((o) => ({ label: o.key, value: o.value }))}
+                   value={themeObj}
+                   autosize={false}
+                   onChange={this.changeTheme.bind(this, this.props.form_data.theme)}
+                 />
+               </div>
+             </div>
+             <div className="col-lg-12" style={{ marginTop: '20px' }}>
+               <div className="col-lg-2">
+                 <span>条数:</span>
+               </div>
+               <div className="col-lg-10">
+                 <Select
+                   multi={false}
+                   name="select-column"
+                   placeholder="条数"
+                   options={this.state.pageSize.map((o) => ({ label: o.key, value: o.value }))}
+                   value={pageSizeObj}
+                   autosize={false}
+                   onChange={this.changePageSize.bind(this, this.props.form_data.pageSize)}
+                 />
+               </div>
+             </div>
+             <div className="col-lg-12" style={{ marginTop: '10px' }}>
+               <hr style={{ height: '1px', border: 'none', borderTop: '1px solid #555555' }} />
+               {headerSettingDiv}
+               <div className="row space-2">
+                 <div className="col-lg-2">
+                   <Button
+                     id="add-button"
+                     bsSize="sm"
+                     onClick={this.addHeaderSetting.bind(this)}
+                   >
+                     <i className="fa fa-plus" /> &nbsp; 添加表头设置
+                   </Button>
+                 </div>
+               </div>
+             </div>
+           </div>
          }
         </Modal.Body>
 

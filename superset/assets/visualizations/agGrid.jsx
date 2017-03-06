@@ -194,7 +194,6 @@ class AgGrid extends React.Component {
                 break;
               }
             }
-            return null;
           } else {
             return params.value;
           }
@@ -244,7 +243,7 @@ class AgGrid extends React.Component {
                     // window.parent.postMessage(postData, '*');  // send message to navigate
                   }
                 } else {
-                  // navigate to slice 
+                  // navigate to slice
                   const slc = JSON.parse(TableFunctions.sliceUrl(fd['navigate_slice_' + i]));
                   let url = slc.url;
                   const title = slc.title;
@@ -302,8 +301,8 @@ class AgGrid extends React.Component {
       let k = 0;
       const len = columnDefs.length;
       for (let j = 0; j < len; j++) {
-        if ($.inArray(columnDefs[j-k].headerName, data[i].children) !== -1) {
-          parentProps.children.push(columnDefs[j-k]);
+        if ($.inArray(columnDefs[j - k].headerName, data[i].children) !== -1) {
+          parentProps.children.push(columnDefs[j - k]);
           columnDefs.splice(j - k, 1);
           k++;
         }
@@ -341,7 +340,7 @@ class AgGrid extends React.Component {
     let rowsThisPage = [];
     const dataSource = {
       getRows: function (params) {
-        setTimeout (function() {
+        setTimeout (function () {
           rowsThisPage = allOfTheData.slice(params.startRow, params.endRow);
           let lastRow = -1;
           if (allOfTheData.length <= params.endRow) {

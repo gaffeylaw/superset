@@ -18,12 +18,10 @@ function tableVis(slice, flag) {
   const container = $(slice.selector);
 
   function refresh() {
-    
     function onError(xhr) {
       slice.error(xhr.responseText, xhr);
       return;
     }
-
 
     function GetQueryString(url, name, result) {
       let search = url;
@@ -91,7 +89,8 @@ function tableVis(slice, flag) {
         for (let j = 0; j < dash.slcs.length; j++) {
           const sliceId = dash.slcs[j].sliceId;
           const vals = [];
-          const val = (groupbyValue === null ? clickTarget.parentNode.childNodes[i].textContent : groupbyValue[i]);
+          const val = (groupbyValue === null
+              ? clickTarget.parentNode.childNodes[i].textContent : groupbyValue[i]);
           for (let k = 0; k < dash.slcs[j].columns.length; k++) {
             // make slice column equals dashboard filter column
             if (extCol === dash.slcs[j].columns[k].extCol) {
@@ -109,7 +108,7 @@ function tableVis(slice, flag) {
 
 
 // <!-- 模态框（Modal） -->
-// <div class="modal fade" id="myModal" tabindex="-1" role="dialog" 
+// <div class="modal fade" id="myModal" tabindex="-1" role="dialog"
 //  aria-labelledby="myModalLabel" aria-hidden="true">
 // 	<div class="modal-dialog">
 // 		<div class="modal-content">
@@ -164,7 +163,7 @@ function tableVis(slice, flag) {
             nav.setAttribute('class', 'sim-button navItem');
             const navInner = document.createElement('span');
             navInner.innerHTML = navigates[j].title;
-            item.onclick = function(){
+            item.onclick = function () {
               window.parent.postMessage(navigates[j], '*');
               $(modal).modal('hide');
             };
