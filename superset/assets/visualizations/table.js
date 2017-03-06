@@ -18,14 +18,7 @@ function tableVis(slice, flag) {
   const container = $(slice.selector);
 
   function refresh() {
-    this.params = {
-      dashboardUrl: dashboardUrl,
-      convertDashUrl: convertDashUrl,
-      sliceUrl: sliceUrl,
-      GetQueryString: GetQueryString,
-      addFilter: addFilter,
-      handleNavigate: handleNavigate,
-    }
+    
     function onError(xhr) {
       slice.error(xhr.responseText, xhr);
       return;
@@ -803,9 +796,18 @@ function tableVis(slice, flag) {
       slice.done(json);
       container.parents('.widget').find('.tooltip').remove();
     }
-    if(flag !== 'false') {
+    if (flag !== 'false') {
       $.getJSON(slice.jsonEndpoint(), onSuccess).fail(onError);
     }
+
+    this.params = {
+      dashboardUrl: dashboardUrl,
+      convertDashUrl: convertDashUrl,
+      sliceUrl: sliceUrl,
+      GetQueryString: GetQueryString,
+      addFilter: addFilter,
+      handleNavigate: handleNavigate,
+    };
   }
 
   return {

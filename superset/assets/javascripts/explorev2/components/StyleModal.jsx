@@ -43,17 +43,17 @@ class StyleModal extends React.Component {
       flag4: false,
       flag5: false,
       theme: [
-        {key: 'fresh', value: 'fresh'},
-        {key: 'blue', value: 'blue'},
-        {key: 'bootstrap', value: 'bootstrap'},
-        {key: 'dark', value: 'dark'},
+        { key: 'fresh', value: 'fresh' },
+        { key: 'blue', value: 'blue' },
+        { key: 'bootstrap', value: 'bootstrap' },
+        { key: 'dark', value: 'dark' },
       ],
       pageSize: [
-        {key: '15', value: '15'},
-        {key: '30', value: '30'},
-        {key: '50', value: '50'},
-        {key: '100', value: '100'},
-        {key: 'all', value: '100000000'},
+        { key: '15', value: '15' },
+        { key: '30', value: '30' },
+        { key: '50', value: '50' },
+        { key: '100', value: '100' },
+        { key: 'all', value: '100000000' },
       ],
       count: 0,
     };
@@ -120,12 +120,12 @@ class StyleModal extends React.Component {
   changeTheme(theme, col) {
     const val = (col) ? col.value : null;
     this.props.actions.changeTheme(theme, val);
-    this.setState({count: this.state.count+1});
+    this.setState({ count: this.state.count + 1 });
   }
   changePageSize(pageSize, col) {
     const val = (col) ? col.value : null;
     this.props.actions.changePageSize(pageSize, val);
-    this.setState({count: this.state.count+1});
+    this.setState({ count: this.state.count + 1 });
   }
   render() {
     const stylesDiv = [];
@@ -189,7 +189,8 @@ class StyleModal extends React.Component {
         value: this.props.form_data.theme,
       };
       pageSizeObj = {
-        label: this.props.form_data.pageSize === '100000000' ? 'all' : this.props.form_data.pageSize,
+        label: this.props.form_data.pageSize === '100000000'
+                ? 'all' : this.props.form_data.pageSize,
         value: this.props.form_data.pageSize,
       };
     }
@@ -266,25 +267,25 @@ class StyleModal extends React.Component {
            </div>
          }
          {this.state.flag4 &&
-           <div>
-             <div>
-               {navigatesDiv}
-             </div>
-             <div className="row space-2">
-               <div className="col-lg-2">
-                 <Button
-                   id="add-button"
-                   bsSize="sm"
-                   onClick={this.addNavigate.bind(this)}
-                 >
-                   <i className="fa fa-plus" /> &nbsp; 添加导航
-                 </Button>
-               </div>
-             </div>
-           </div>
+          <div>
+            <div>
+              {navigatesDiv}
+            </div>
+            <div className="row space-2">
+              <div className="col-lg-2">
+                <Button
+                  id="add-button"
+                  bsSize="sm"
+                  onClick={this.addNavigate.bind(this)}
+                >
+                  <i className="fa fa-plus" /> &nbsp; 添加导航
+                </Button>
+              </div>
+            </div>
+          </div>
          }
          {this.state.flag5 &&
-           <div>
+          <div>
             <div className="col-lg-12">
               <div className="col-lg-2">
                 <span>主题:</span>
@@ -301,7 +302,6 @@ class StyleModal extends React.Component {
                 />
               </div>
             </div>
-
             <div className="col-lg-12" style={{ marginTop: '20px' }}>
               <div className="col-lg-2">
                 <span>条数:</span>
@@ -318,7 +318,6 @@ class StyleModal extends React.Component {
                 />
               </div>
             </div>
-
             <div className="col-lg-12" style={{ marginTop: '10px' }}>
               <hr style={{ height: '1px', border: 'none', borderTop: '1px solid #555555' }} />
               {headerSettingDiv}
@@ -334,7 +333,7 @@ class StyleModal extends React.Component {
                 </div>
               </div>
             </div>
-           </div>
+          </div>
          }
         </Modal.Body>
 
