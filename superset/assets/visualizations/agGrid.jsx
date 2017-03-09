@@ -25,6 +25,7 @@ let allOfTheData = [];
 class AgGrid extends React.Component {
   constructor(props) {
     super(props);
+    // console.log(this.props.form_data);
     allOfTheData = this.props.data.records;
     this.state = {
       gridTheme: 'ag-' + this.props.form_data.theme,
@@ -39,10 +40,21 @@ class AgGrid extends React.Component {
       rowBuffer: 10, // no need to set this, the default is fine for almost all scenarios
       floatingTopRowData: [],
       floatingBottomRowData: [],
-      columnDefs: this.initColumnDefs(),
+      // columnDefs: this.initColumnDefs(),
       rowGroupPanelShow: 'always',
       enableColResize: true,
+      pivotPanelShow: 'always',
     };
+    if (this.props.form_data.isPivot !== 'true') {
+      // table
+      this.gridOptions.pivotMode = false;
+      this.gridOptions.columnDefs = this.initTableColumnDefs();
+    } else {
+      // pivot table
+      this.gridOptions.pivotMode = true;
+      this.gridOptions.functionsReadOnly = true;
+      this.gridOptions.columnDefs = this.initPivotTableColumnDefs();
+    }
   }
 
   getAllRecordsByColumnName(columnName) {
@@ -53,7 +65,7 @@ class AgGrid extends React.Component {
     return data;
   }
 
-  initColumnDefs() {
+  initTableColumnDefs() {
     const fd = this.props.form_data;
     const TableFunctions = Table(this.props.slice, 'false').params;
 
@@ -79,6 +91,15 @@ class AgGrid extends React.Component {
         field: columnName,
         enablePivot: true,
       };
+
+      // set pinned
+      if ($.inArray(columnName, fd.pinned_left.split(',')) !== -1) {
+        props.pinned = 'left';
+      }
+
+      if ($.inArray(columnName, fd.pinned_right.split(',')) !== -1) {
+        props.pinned = 'right';
+      }
 
       // set group
       fd.groupby.forEach(m => {
@@ -181,7 +202,7 @@ class AgGrid extends React.Component {
       props.cellRenderer = function (params) {
         // set link style
         for (let i = 1; i < 10; i++) {
-          if (params.value === undefined) {
+          if (params.value === undefined || params.value === null) {
             return null;
           } else if (fd['navigate_expr_' + i] !== '') {
             if (columnName === fd['navigate_metric_' + i]) {
@@ -201,6 +222,7 @@ class AgGrid extends React.Component {
       };
 
       props.onCellClicked = function (params) {
+        // console.log(params)
         // get groupby's value
         const groupby = [];
         for (let j = 0; j < fd.groupby.length; j++) {
@@ -288,6 +310,7 @@ class AgGrid extends React.Component {
         data.push({
           parentName: fd['headerSetting_parentName_' + i],
           children: fd['headerSetting_children_' + i].split(','),
+          items: fd['headerSetting_items_' + i].split(','),
         });
       } else {
         break;
@@ -302,7 +325,18 @@ class AgGrid extends React.Component {
       const len = columnDefs.length;
       for (let j = 0; j < len; j++) {
         if ($.inArray(columnDefs[j - k].headerName, data[i].children) !== -1) {
-          parentProps.children.push(columnDefs[j - k]);
+          if ($.inArray(columnDefs[j - k].headerName, data[i].items) !== -1) {
+            columnDefs[j - k].columnGroupShow = 'closed';
+            parentProps.children.push(columnDefs[j - k]);
+            // give close column another open column
+            const openColumnObj = {};
+            $.extend(openColumnObj, columnDefs[j - k]);
+            openColumnObj.columnGroupShow = 'open';
+            parentProps.children.push(openColumnObj);
+          } else {
+            columnDefs[j - k].columnGroupShow = 'open';
+            parentProps.children.push(columnDefs[j - k]);
+          }
           columnDefs.splice(j - k, 1);
           k++;
         }
@@ -310,6 +344,36 @@ class AgGrid extends React.Component {
       columnDefs.unshift(parentProps);
     }
     // console.log(columnDefs);
+    return columnDefs;
+  }
+
+  initPivotTableColumnDefs() {
+    const fd = this.props.form_data;
+    const columnDefs = [];
+    fd.pivotSetting_groupby.split(',').forEach(function(val, index) {
+      const props = {
+        headerName: val,
+        field: val,
+      };
+      props.rowGroupIndex = index;
+      columnDefs.push(props);
+    });
+    fd.pivotSetting_columns.split(',').forEach(function(val, index) {
+      const props = {
+        headerName: val,
+        field: val,
+      };
+      props.pivotIndex = index;
+      columnDefs.push(props);
+    });
+    fd.pivotSetting_values.split(',').forEach(function(val) {
+      const props = {
+        headerName: val,
+        field: val,
+      };
+      props.aggFunc = 'sum';
+      columnDefs.push(props);
+    });
     return columnDefs;
   }
 

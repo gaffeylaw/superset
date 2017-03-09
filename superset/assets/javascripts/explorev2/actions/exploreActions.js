@@ -174,13 +174,28 @@ export function changeHeaderSetting(headerSetting, field, value) {
 }
 
 export const CHANGE_THEME = 'CHANGE_THEME';
-export function changeTheme(theme, value) {
-  return { type: CHANGE_THEME, theme, value };
+export function changeTheme(value) {
+  return { type: CHANGE_THEME, value };
 }
 
 export const CHANGE_PAGESIZE = 'CHANGE_PAGESIZE';
-export function changePageSize(pageSize, value) {
-  return { type: CHANGE_PAGESIZE, pageSize, value };
+export function changePageSize(value) {
+  return { type: CHANGE_PAGESIZE, value };
+}
+
+export const CHANGE_PINNED = 'CHANGE_PINNED';
+export function changePinned(field, value) {
+  return { type: CHANGE_PINNED, field, value };
+}
+
+export const CHANGE_PIVOT = 'CHANGE_PIVOT';
+export function changePivot(value) {
+  return { type: CHANGE_PIVOT, value };
+}
+
+export const CHANGE_PIVOTSETTING = 'CHANGE_PIVOTSETTING';
+export function changePivotSetting(field, value) {
+  return { type: CHANGE_PIVOTSETTING, field, value };
 }
 
 export const CHANGE_FLOAT_STYLE = 'CHANGE_FLOAT_STYLE';

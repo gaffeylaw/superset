@@ -137,11 +137,15 @@ function tableVis(slice, flag) {
     function handleNavigate(i, navigates) {
       if (i === 10) {
         if (navigates.length === 1) {
-          window.parent.postMessage(navigates[0], '*');
+          if (window.location.href.indexOf('isFrameIndex') === -1) {
+            window.postMessage(navigates[0], '*');
+          } else {
+            window.parent.postMessage(navigates[0], '*');
+          }
         } else if (navigates.length > 1) {
           const modal = document.createElement('div');
           modal.setAttribute('class', 'modal fade');
-          modal.style.marginTop = '100px';
+          // modal.style.marginTop = '100px';
           const modalDialog = document.createElement('div');
           modalDialog.setAttribute('class', 'modal-dialog');
           const modalHeader = document.createElement('div');
@@ -164,7 +168,12 @@ function tableVis(slice, flag) {
             const navInner = document.createElement('span');
             navInner.innerHTML = navigates[j].title;
             item.onclick = function () {
-              window.parent.postMessage(navigates[j], '*');
+              if (window.location.href.indexOf('isFrameIndex') === -1) {
+                window.postMessage(navigates[0], '*');
+              } else {
+                window.parent.postMessage(navigates[0], '*');
+              }
+              // window.parent.postMessage(navigates[j], '*');
               $(modal).modal('hide');
             };
             nav.appendChild(navInner);
@@ -399,7 +408,7 @@ function tableVis(slice, flag) {
       }
       const modalCount = $('#modals').children().length;
       const navHeight = height - 26 - 20 + 'px';
-      let newUrl = url;
+      let newUrl = url + '&isFrameIndex=false';
       let content = '';
       if (isDash) {
         newUrl += '&showHeader=false';
@@ -418,6 +427,7 @@ function tableVis(slice, flag) {
         Width: width,
         Info: title,
         Left: 300 + left,
+        Top: 100,
         Content: content,
         Zindex: (++Dialog.Zindex),
         IsDash: isDash,

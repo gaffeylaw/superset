@@ -81,7 +81,23 @@ function formatHeaderSettings(headerSettings) {
     params[`headerSetting_id_${i + 1}`] = headerSetting.id;
     params[`headerSetting_parentName_${i + 1}`] = headerSetting.parentName;
     params[`headerSetting_children_${i + 1}`] = headerSetting.children;
+    params[`headerSetting_items_${i + 1}`] = headerSetting.items;
   }
+  return params;
+}
+
+function formatPivotSetting(pivotSetting) {
+  const params = {};
+  params.pivotSetting_groupby = pivotSetting.groupby;
+  params.pivotSetting_columns = pivotSetting.columns;
+  params.pivotSetting_values = pivotSetting.values;
+  return params;
+}
+
+function formatPinned(pinned) {
+  const params = {};
+  params.pinned_left = pinned.left;
+  params.pinned_right = pinned.right;
   return params;
 }
 
@@ -110,7 +126,8 @@ export function getParamObject(form_data, datasource_type, saveNewSlice) {
     if (form_data[field] !== null && field !== 'datasource'
       && field !== 'filters' && field !== 'styles' && field !== 'baseStyle'
       && field !== 'colStyles' && field !== 'compares' && field !== 'navigates'
-      && field !== 'slices' && field !== 'headerSettings' 
+      && field !== 'slices' && field !== 'headerSettings' && field !== 'pivotSetting'
+      && field !== 'pinned'
       && !(saveNewSlice && field === 'slice_name')) {
       data[field] = form_data[field];
     }
@@ -129,6 +146,10 @@ export function getParamObject(form_data, datasource_type, saveNewSlice) {
   Object.assign(data, navigateParams);
   const headerSettingParams = formatHeaderSettings(form_data.headerSettings);
   Object.assign(data, headerSettingParams);
+  const pivotSettingParams = formatPivotSetting(form_data.pivotSetting);
+  Object.assign(data, pivotSettingParams);
+  const pinnedParams = formatPinned(form_data.pinned);
+  Object.assign(data, pinnedParams);
   const promptColStyleParams = formatPromptColStyles(form_data.promptColStyles);
   Object.assign(data, promptColStyleParams);
   return data;
