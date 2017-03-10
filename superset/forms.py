@@ -1272,6 +1272,7 @@ class FormFactory(object):
         # set ag_grid theme and pageSize
         theme_choices = self.choicify(['fresh', 'blue', 'bootstrap', 'dark'])
         pageSize_choices = self.choicify(['15', '30', '50', '100', '100000000'])
+        pivot_choices = self.choicify(['true', 'false'])
         
         for field_prefix in filter_prefixes:
             is_having_filter = field_prefix == 'having'
@@ -1385,7 +1386,12 @@ class FormFactory(object):
                     TextField(_("Super"), default=''))
                 setattr(QueryForm, 'headerSetting_children_' + str(i),
                     SelectField(
-                        _('Navigate 1'),
+                        _('header 1'),
+                        default=viz.datasource.metrics_combo[0][0],
+                        choices=viz.datasource.metrics_combo))
+                setattr(QueryForm, 'headerSetting_items_' + str(i),
+                    SelectField(
+                        _('header 1'),
                         default=viz.datasource.metrics_combo[0][0],
                         choices=viz.datasource.metrics_combo))
 
@@ -1423,6 +1429,30 @@ class FormFactory(object):
                     SelectField(
                         default=pageSize_choices[0],
                         choices=pageSize_choices))
+            setattr(QueryForm, 'pinned_left',
+                    SelectField(
+                        default=viz.datasource.metrics_combo[0][0],
+                        choices=viz.datasource.metrics_combo))
+            setattr(QueryForm, 'pinned_right',
+                    SelectField(
+                        default=viz.datasource.metrics_combo[0][0],
+                        choices=viz.datasource.metrics_combo))
+            setattr(QueryForm, 'isPivot',
+                    SelectField(
+                        default=pivot_choices[0],
+                        choices=pivot_choices))
+            setattr(QueryForm, 'pivotSetting_groupby',
+                    SelectField(
+                        default=viz.datasource.metrics_combo[0][0],
+                        choices=viz.datasource.metrics_combo))
+            setattr(QueryForm, 'pivotSetting_columns',
+                    SelectField(
+                        default=viz.datasource.metrics_combo[0][0],
+                        choices=viz.datasource.metrics_combo))
+            setattr(QueryForm, 'pivotSetting_values',
+                    SelectField(
+                        default=viz.datasource.metrics_combo[0][0],
+                        choices=viz.datasource.metrics_combo))
 
 
         if time_fields:

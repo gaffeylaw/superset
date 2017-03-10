@@ -48,7 +48,7 @@ class App extends React.PureComponent {
                 <iframe
                   src={headMenu[3] === '' ? '/superset/null' : '/superset/dashboard/'
                         + headMenu[3] + '?isPortal=true'}
-                  style={{ width: '100%', height: '100%' }}
+                  style={{ width: '100%', height: '90%' }}
                 />
               </Tab>),
             ],
@@ -66,7 +66,7 @@ class App extends React.PureComponent {
             <iframe
               src={headMenu[3] === '' ? '/superset/null' : '/superset/dashboard/'
                     + headMenu[3] + '?isPortal=true'}
-              style={{ width: '100%', height: '100%' }}
+              style={{ width: '100%', height: '90%' }}
             />
           </Tab>
         );
@@ -182,7 +182,7 @@ class App extends React.PureComponent {
                 src={menuObj.dashboard_href === '' ? '/superset/null' :
                       '/superset/dashboard/' + menuObj.dashboard_href
                       + '?isPortal=true'}
-                style={{ width: '100%', height: '100%' }}
+                style={{ width: '100%', height: '90%' }}
               />
             </Tab>),
           ],
@@ -244,7 +244,7 @@ class App extends React.PureComponent {
               <iframe
                 src={'/superset/dashboard/' + menu.dashboard_href
                   + '?isPortal=true'}
-                style={{ width: '100%', height: '100%' }}
+                style={{ width: '100%', height: '90%' }}
               />
             </Tab>
           );
@@ -368,8 +368,12 @@ class App extends React.PureComponent {
 
     return (
       <div className="App SqlLab">
-        <div className="container-fluid" height={this.state.contentHeight}>
-          <div style={{ width: '100%', height: '95%', overflow: 'hidden' }}>
+        <div
+          className="container-fluid"
+          height={this.state.contentHeight}
+          style={{ overflow: 'hidden' }}
+        >
+          <div style={{ width: '100%', height: '95%' }}>
             <div>
               <div className="menu-header" style={{ overflow: 'hidden' }}>
                 <div style={{ float: 'left' }}>
@@ -391,7 +395,7 @@ class App extends React.PureComponent {
                     {leftMenuDiv}
                 </div>
               </div>
-              <div style={{ float: 'left', width: '85%', height: '90%' }}>
+              <div style={{ float: 'left', width: '85%', height: '95%' }}>
                 <Tabs
                   selectedTab={this.state.selectedTab ? this.state.selectedTab : 'tab'}
                   onTabSelect={this.handleTabSelect.bind(this)}

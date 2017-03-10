@@ -218,7 +218,8 @@ export const exploreReducer = function (state, action) {
       return newState;
     },
     [actions.REMOVE_HEADSETTING]() {
-      const newFormData = removeFromArr(state.viz.form_data, 'headerSettings', action.headerSetting);
+      const newFormData = removeFromArr(state.viz.form_data, 'headerSettings',
+                                        action.headerSetting);
       return Object.assign(
         {},
         state,
@@ -254,6 +255,35 @@ export const exploreReducer = function (state, action) {
         { viz: Object.assign({}, state.viz, { form_data: newFormData }) }
       );
     },
+    [actions.CHANGE_PINNED]() {
+      const newObject = Object.assign({}, state.viz.form_data.pinned);
+      newObject[action.field] = action.value;
+      const newFormData = Object.assign({}, state.viz.form_data, { ['pinned']: newObject });
+      return Object.assign(
+        {},
+        state,
+        { viz: Object.assign({}, state.viz, { form_data: newFormData }) }
+      );
+    },
+    [actions.CHANGE_PIVOT]() {
+      const newFormData = state.viz.form_data;
+      newFormData.isPivot = action.value;
+      return Object.assign(
+        {},
+        state,
+        { viz: Object.assign({}, state.viz, { form_data: newFormData }) }
+      );
+    },
+    [actions.CHANGE_PIVOTSETTING]() {
+      const newObject = Object.assign({}, state.viz.form_data.pivotSetting);
+      newObject[action.field] = action.value;
+      const newFormData = Object.assign({}, state.viz.form_data, { ['pivotSetting']: newObject });
+      return Object.assign(
+        {},
+        state,
+        { viz: Object.assign({}, state.viz, { form_data: newFormData }) }
+      );
+    },
     [actions.CHANGE_FLOAT_STYLE]() {
       const changes = {};
       changes[action.field] = action.value;
@@ -275,7 +305,8 @@ export const exploreReducer = function (state, action) {
       return newState;
     },
     [actions.REMOVE_PROMPT_COL_STYLE]() {
-      const newFormData = removeFromArr(state.viz.form_data, 'promptColStyles', action.promptColStyle);
+      const newFormData = removeFromArr(state.viz.form_data, 'promptColStyles',
+                                        action.promptColStyle);
       return Object.assign(
         {},
         state,

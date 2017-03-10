@@ -9,6 +9,7 @@ import BaseStyle from './BaseStyle';
 import Compare from './Compare';
 import Navigate from './Navigate';
 import HeaderSetting from './HeaderSetting';
+import PivotSetting from './PivotSetting';
 
 const propTypes = {
   onHide: React.PropTypes.func.isRequired,
@@ -54,6 +55,10 @@ class StyleModal extends React.Component {
         { key: '50', value: '50' },
         { key: '100', value: '100' },
         { key: 'all', value: '100000000' },
+      ],
+      isPivot: [
+        { key: 'true', value: 'true' },
+        { key: 'false', value: 'false' },
       ],
       count: 0,
     };
@@ -117,14 +122,27 @@ class StyleModal extends React.Component {
       $('#li5').attr('style', 'background: #ccc');
     }
   }
-  changeTheme(theme, col) {
+  changeTheme(col) {
     const val = (col) ? col.value : null;
-    this.props.actions.changeTheme(theme, val);
+    this.props.actions.changeTheme(val);
     this.setState({ count: this.state.count + 1 });
   }
-  changePageSize(pageSize, col) {
+  changePageSize(col) {
     const val = (col) ? col.value : null;
-    this.props.actions.changePageSize(pageSize, val);
+    this.props.actions.changePageSize(val);
+    this.setState({ count: this.state.count + 1 });
+  }
+  changePinnedLeft(val) {
+    this.props.actions.changePinned('left', val);
+    this.setState({ count: this.state.count + 1 });
+  }
+  changePinnedRight(val) {
+    this.props.actions.changePinned('right', val);
+    this.setState({ count: this.state.count + 1 });
+  }
+  changePivot(col) {
+    const val = (col) ? col.value : null;
+    this.props.actions.changePivot(val);
     this.setState({ count: this.state.count + 1 });
   }
   render() {
@@ -181,18 +199,8 @@ class StyleModal extends React.Component {
       );
     });
 
-    let themeObj = null;
-    let pageSizeObj = null;
     if (this.state.count >= 0) {
-      themeObj = {
-        label: this.props.form_data.theme,
-        value: this.props.form_data.theme,
-      };
-      pageSizeObj = {
-        label: this.props.form_data.pageSize === '100000000'
-                ? 'all' : this.props.form_data.pageSize,
-        value: this.props.form_data.pageSize,
-      };
+      // console.log('refresh the render')
     }
 
     return (
@@ -212,7 +220,7 @@ class StyleModal extends React.Component {
                 <li id="li3"><a onClick={this.changeModal.bind(this, 3)}>列间比较</a></li>
                 <li id="li4"><a onClick={this.changeModal.bind(this, 4)}>切片导航</a></li>
                 {this.props.form_data.viz_type === 'ag_grid' &&
-                  <li id="li5"><a onClick={this.changeModal.bind(this, 5)}>表头设置</a></li>
+                  <li id="li5"><a onClick={this.changeModal.bind(this, 5)}>ag-grid设置</a></li>
                 }
               </ul>
             </div>
@@ -288,51 +296,107 @@ class StyleModal extends React.Component {
            <div>
              <div className="col-lg-12">
                <div className="col-lg-2">
-                 <span>主题:</span>
+                 <span>grid主题:</span>
                </div>
-               <div className="col-lg-10">
+               <div className="col-lg-4">
                  <Select
                    multi={false}
                    name="select-column"
                    placeholder="主题"
                    options={this.state.theme.map((o) => ({ label: o.key, value: o.value }))}
-                   value={themeObj}
+                   value={this.props.form_data.theme}
                    autosize={false}
-                   onChange={this.changeTheme.bind(this, this.props.form_data.theme)}
+                   onChange={this.changeTheme.bind(this)}
                  />
                </div>
-             </div>
-             <div className="col-lg-12" style={{ marginTop: '20px' }}>
                <div className="col-lg-2">
-                 <span>条数:</span>
+                 <span>页面条数:</span>
                </div>
-               <div className="col-lg-10">
+               <div className="col-lg-4">
                  <Select
                    multi={false}
                    name="select-column"
                    placeholder="条数"
                    options={this.state.pageSize.map((o) => ({ label: o.key, value: o.value }))}
-                   value={pageSizeObj}
+                   value={this.props.form_data.pageSize}
                    autosize={false}
-                   onChange={this.changePageSize.bind(this, this.props.form_data.pageSize)}
+                   onChange={this.changePageSize.bind(this)}
+                 />
+               </div>
+             </div>
+             <div className="col-lg-12">
+               <div className="col-lg-2">
+                 <span style={{ marginTop: '15px' }}>冻结左边:</span>
+               </div>
+               <div className="col-lg-4">
+                 <Select
+                   style={{ marginTop: '10px' }}
+                   multi
+                   simpleValue
+                   placeholder="选择列"
+                   options={this.props.form_data.groupby.concat(this.props.form_data.metrics)
+                                .map((o) => ({ value: o, label: o }))}
+                   value={this.props.form_data.pinned.left}
+                   autosize={false}
+                   onChange={this.changePinnedLeft.bind(this)}
+                 />
+               </div>
+               <div className="col-lg-2">
+                 <span style={{ marginTop: '15px' }}>冻结右边:</span>
+               </div>
+               <div className="col-lg-4">
+                 <Select
+                   style={{ marginTop: '10px' }}
+                   multi
+                   simpleValue
+                   placeholder="选择列"
+                   options={this.props.form_data.groupby.concat(this.props.form_data.metrics)
+                                .map((o) => ({ value: o, label: o }))}
+                   value={this.props.form_data.pinned.right}
+                   autosize={false}
+                   onChange={this.changePinnedRight.bind(this)}
                  />
                </div>
              </div>
              <div className="col-lg-12" style={{ marginTop: '10px' }}>
-               <hr style={{ height: '1px', border: 'none', borderTop: '1px solid #555555' }} />
-               {headerSettingDiv}
-               <div className="row space-2">
-                 <div className="col-lg-2">
-                   <Button
-                     id="add-button"
-                     bsSize="sm"
-                     onClick={this.addHeaderSetting.bind(this)}
-                   >
-                     <i className="fa fa-plus" /> &nbsp; 添加表头设置
-                   </Button>
-                 </div>
+               <div className="col-lg-4">
+                 <span>启用数据透视表:</span>
+               </div>
+               <div className="col-lg-8">
+                 <Select
+                   options={this.state.isPivot.map((o) => ({ label: o.key, value: o.value }))}
+                   value={this.props.form_data.isPivot}
+                   autosize={false}
+                   onChange={this.changePivot.bind(this)}
+                 />
                </div>
              </div>
+             {this.props.form_data.isPivot === 'false' &&
+               <div className="col-lg-12" style={{ marginTop: '10px' }}>
+                 <hr style={{ height: '1px', border: 'none', borderTop: '1px solid #555555' }} />
+                 {headerSettingDiv}
+                 <div className="row space-2">
+                   <div className="col-lg-2">
+                     <Button
+                       id="add-button"
+                       bsSize="sm"
+                       onClick={this.addHeaderSetting.bind(this)}
+                     >
+                       <i className="fa fa-plus" /> &nbsp; 添加表头设置
+                     </Button>
+                   </div>
+                 </div>
+               </div>
+             }
+             {this.props.form_data.isPivot === 'true' &&
+               <div className="col-lg-12" style={{ marginTop: '10px' }}>
+                 <hr style={{ height: '1px', border: 'none', borderTop: '1px solid #555555' }} />
+                 <PivotSetting
+                   actions={this.props.actions}
+                   form_data={this.props.form_data}
+                 />
+               </div>
+             }
            </div>
          }
         </Modal.Body>

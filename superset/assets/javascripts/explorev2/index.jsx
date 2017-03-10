@@ -217,12 +217,14 @@ function parseHeaderSettings(form_data) {
         id: form_data[`headerSetting_id_${i}`],
         parentName: form_data[`headerSetting_parentName_${i}`],
         children: form_data[`headerSetting_children_${i}`],
+        items: form_data[`headerSetting_items_${i}`],
       });
     }
     /* eslint no-param-reassign: 0 */
     delete form_data[`headerSetting_id_${i}`];
     delete form_data[`headerSetting_parentName_${i}`];
     delete form_data[`headerSetting_children_${i}`];
+    delete form_data[`headerSetting_items_${i}`];
   }
   return headerSettings;
 }
@@ -236,6 +238,48 @@ function getHeaderSettings(form_data, datasource_type) {
 
 bootstrappedState.viz.form_data.headerSettings =
   getHeaderSettings(bootstrappedState.viz.form_data, bootstrapData.datasource_type);
+
+function parsePivotSetting(form_data) {
+  const pivotSetting = {
+    groupby: form_data.pivotSetting_groupby,
+    columns: form_data.pivotSetting_columns,
+    values: form_data.pivotSetting_values,
+  };
+  delete form_data.pivotSetting_groupby;
+  delete form_data.pivotSetting_columns;
+  delete form_data.pivotSetting_values;
+  return pivotSetting;
+}
+
+function getPivotSettings(form_data, datasource_type) {
+  if (datasource_type === 'table') {
+    return parsePivotSetting(form_data);
+  }
+  return null;
+}
+
+bootstrappedState.viz.form_data.pivotSetting =
+  getPivotSettings(bootstrappedState.viz.form_data, bootstrapData.datasource_type);
+
+function parsePinned(form_data) {
+  const pinned = {
+    left: form_data.pinned_left,
+    right: form_data.pinned_right,
+  };
+  delete form_data.pinned_left;
+  delete form_data.chartStatuspinned_right;
+  return pinned;
+}
+
+function getPinned(form_data, datasource_type) {
+  if (datasource_type === 'table') {
+    return parsePinned(form_data);
+  }
+  return null;
+}
+
+bootstrappedState.viz.form_data.pinned =
+  getPinned(bootstrappedState.viz.form_data, bootstrapData.datasource_type);
 
 function parsePromptColStyles(form_data) {
   const promptColStyles = [];
