@@ -1,6 +1,7 @@
 const $ = require('jquery');
 import React from 'react';
 import ReactDOM from 'react-dom';
+// import d3 from 'd3';
 
 import { AgGridReact } from 'ag-grid-react';
 import 'ag-grid-enterprise';
@@ -68,6 +69,7 @@ class AgGrid extends React.Component {
   initTableColumnDefs() {
     const fd = this.props.form_data;
     const TableFunctions = Table(this.props.slice, 'false').params;
+    const slice = this.props.slice;
 
     // get compare info from form_data
     const compareMetricLefts = [];
@@ -200,6 +202,15 @@ class AgGrid extends React.Component {
       };
 
       props.cellRenderer = function (params) {
+        // format number
+        // let value = slice.d3format(columnName, params.value);
+        let value = params.value;
+        if ($.inArray(columnName, fd.metrics) != -1 && !isNaN(value)) {
+          if (value.toString().split('.')[1] != undefined
+              && value.toString().split('.')[1].length >2) {
+            value = new Number(value).toFixed(2);
+          }
+        }
         // set link style
         for (let i = 1; i < 10; i++) {
           if (params.value === undefined || params.value === null) {
@@ -211,12 +222,12 @@ class AgGrid extends React.Component {
               expr = expr.replace(/=/g, '==').replace(/>==/g, '>=').replace(/<==/g, '<=');
               if ((expr.indexOf('$.inArray') === -1 && eval(expr))
                 || (expr.indexOf('$.inArray') !== -1 && eval(expr) !== -1)) {
-                return '<a href="#">' + params.value + '</a>';
+                return '<a href="#">' + value + '</a>';
                 break;
               }
             }
           } else {
-            return params.value;
+            return value;
           }
         }
       };
@@ -371,6 +382,7 @@ class AgGrid extends React.Component {
         headerName: val,
         field: val,
       };
+      
       props.aggFunc = 'sum';
       columnDefs.push(props);
     });

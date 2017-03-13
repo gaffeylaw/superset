@@ -74,7 +74,9 @@ class BaseViz(object):
         if not form.validate():
             # print(form.errors.items())
             for k, v in form.errors.items():
-                if not data.get('json') and not data.get('async') and v[0] != 'Not a valid choice':
+                if not data.get('json') and not data.get('async') \
+                    and v[0] != 'Not a valid choice' \
+                    and v[0].find('is not a valid choice for this field') == -1:
                     flasher("{}: {}".format(k, " ".join(v)), 'danger')
         if previous_viz_type != self.viz_type:
             data = {
