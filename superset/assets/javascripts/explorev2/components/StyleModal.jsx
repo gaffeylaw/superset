@@ -325,8 +325,8 @@ class StyleModal extends React.Component {
                </div>
              </div>
              <div className="col-lg-12">
-               <div className="col-lg-2">
-                 <span style={{ marginTop: '15px' }}>冻结左边:</span>
+               <div className="col-lg-2" style={{ marginTop: '15px' }}>
+                 <span>冻结左边:</span>
                </div>
                <div className="col-lg-4">
                  <Select
@@ -341,8 +341,8 @@ class StyleModal extends React.Component {
                    onChange={this.changePinnedLeft.bind(this)}
                  />
                </div>
-               <div className="col-lg-2">
-                 <span style={{ marginTop: '15px' }}>冻结右边:</span>
+               <div className="col-lg-2" style={{ marginTop: '15px' }}>
+                 <span>冻结右边:</span>
                </div>
                <div className="col-lg-4">
                  <Select
