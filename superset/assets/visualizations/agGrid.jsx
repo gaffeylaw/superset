@@ -120,6 +120,24 @@ class AgGrid extends React.Component {
         }
       });
 
+      // set header width
+      for (let i = 1; i < 50; i++) {
+        if (fd['colStyle_value_' + i] !== '') {
+          if (columnName === fd['colStyle_metric_' + i]) {
+            const columnStyleArray = fd['colStyle_value_' + i].split(';');
+            columnStyleArray.forEach(a => {
+              const k = a.split(':');
+              if (k[0] === 'width') {
+                props.width = parseInt(k[1].substring(0,k[1].length - 2));
+              }
+            });
+            break;
+          }
+        } else {
+          break;
+        }
+      }
+
       props.cellStyle = function (params) {
         const styleJson = {};
 
@@ -133,14 +151,16 @@ class AgGrid extends React.Component {
         $.extend(styleJson, bodyStyleJson);
 
         // add column style
-        for (let i = 1; i < 10; i++) {
+        for (let i = 1; i < 50; i++) {
           if (fd['colStyle_value_' + i] !== '') {
             if (columnName === fd['colStyle_metric_' + i]) {
               const columnStyleArray = fd['colStyle_value_' + i].split(';');
               const columnStyleJson = {};
               columnStyleArray.forEach(a => {
                 const k = a.split(':');
-                columnStyleJson[k[0]] = k[1];
+                if (k[0] !== 'width') {
+                  columnStyleJson[k[0]] = k[1];
+                }
               });
               $.extend(styleJson, columnStyleJson);
               break;
@@ -206,10 +226,7 @@ class AgGrid extends React.Component {
         // let value = slice.d3format(columnName, params.value);
         let value = params.value;
         if ($.inArray(columnName, fd.metrics) != -1 && !isNaN(value)) {
-          if (value.toString().split('.')[1] != undefined
-              && value.toString().split('.')[1].length >2) {
-            value = new Number(value).toFixed(2);
-          }
+          value = slice.d3format(columnName, params.value)
         }
         // set link style
         for (let i = 1; i < 10; i++) {
@@ -316,12 +333,12 @@ class AgGrid extends React.Component {
 
     // set parentHeader
     const data = [];
-    for (let i = 1; i < 10; i++) {
+    for (let i = 1; i < 20; i++) {
       if (fd['headerSetting_id_' + i] !== '' && fd['headerSetting_parentName_' + i] !== '') {
         data.push({
           parentName: fd['headerSetting_parentName_' + i],
-          children: fd['headerSetting_children_' + i].split(','),
-          items: fd['headerSetting_items_' + i].split(','),
+          children: fd['headerSetting_children_' + i].split(',').map(a => {return a.toLowerCase()}),
+          items: fd['headerSetting_items_' + i].split(',').map(a => {return a.toLowerCase()}),
         });
       } else {
         break;
@@ -335,8 +352,8 @@ class AgGrid extends React.Component {
       let k = 0;
       const len = columnDefs.length;
       for (let j = 0; j < len; j++) {
-        if ($.inArray(columnDefs[j - k].headerName, data[i].children) !== -1) {
-          if ($.inArray(columnDefs[j - k].headerName, data[i].items) !== -1) {
+        if ($.inArray(columnDefs[j - k].headerName.toLowerCase(), data[i].children) !== -1) {
+          if ($.inArray(columnDefs[j - k].headerName.toLowerCase(), data[i].items) !== -1) {
             columnDefs[j - k].columnGroupShow = 'closed';
             parentProps.children.push(columnDefs[j - k]);
             // give close column another open column
@@ -352,9 +369,9 @@ class AgGrid extends React.Component {
           k++;
         }
       }
-      columnDefs.unshift(parentProps);
+      columnDefs.push(parentProps);
     }
-    // console.log(columnDefs);
+    // console.info(columnDefs);
     return columnDefs;
   }
 
@@ -433,7 +450,7 @@ class AgGrid extends React.Component {
   render() {
     const themeTemplate = (
       <div style={{ height: '30px', float: 'left' }}>
-        Theme:
+        主题:
         <select onChange={this.onThemeChanged.bind(this)} value={this.state.gridTheme}>
           <option value="ag-blue">blue</option>
           <option value="ag-bootstrap">bootstrap</option>
@@ -445,7 +462,7 @@ class AgGrid extends React.Component {
 
     const pageSizeTemplate = (
       <div style={{ height: '30px', marginLeft: '30px', float: 'left' }}>
-        Page Size:
+        页大小:
         <select
           onChange={this.onPageSizeChanged.bind(this)}
           value={this.gridOptions.paginationPageSize}
@@ -461,7 +478,7 @@ class AgGrid extends React.Component {
 
     const filterTemplate = (
       <div style={{ height: '30px', marginLeft: '30px', float: 'left' }}>
-        filter:
+        筛选:
         <input
           type="text"
           onChange={this.onQuickFilterText.bind(this)}
@@ -501,6 +518,7 @@ class AgGrid extends React.Component {
           enableRangeSelection="true" // 多选
           groupIncludeFooter="true"   // footer
           rowModelType="pagination"
+          suppressAutoSize="true"
 
           // all values as React props
           gridOptions={this.gridOptions}

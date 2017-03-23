@@ -1313,18 +1313,6 @@ class FormFactory(object):
                         default=icon_choices[0][0],
                         choices=icon_choices))
                 
-                # colStyle
-                setattr(QueryForm, 'colStyle_id_' + str(i),
-                    TextField(_("Super"), default=''))
-                setattr(QueryForm, 'colStyle_metric_' + str(i),
-                    SelectField(
-                        _('ColStyle 1'),
-                        default=columns_choices[0][0],
-                        choices=columns_choices))
-                setattr(
-                    QueryForm, 'colStyle_value_' + str(i),
-                    TextField(_("Super"), default=''))
-                
                 # compare
                 setattr(QueryForm, 'compare_id_' + str(i),
                     TextField(_("Super"), default=''))
@@ -1379,21 +1367,6 @@ class FormFactory(object):
                         default=open_choices[0][0],
                         choices=open_choices))
 
-                # headerSetting
-                setattr(QueryForm, 'headerSetting_id_' + str(i),
-                    TextField(_("Super"), default=''))
-                setattr(QueryForm, 'headerSetting_parentName_' + str(i),
-                    TextField(_("Super"), default=''))
-                setattr(QueryForm, 'headerSetting_children_' + str(i),
-                    SelectField(
-                        _('header 1'),
-                        default=viz.datasource.metrics_combo[0][0],
-                        choices=viz.datasource.metrics_combo))
-                setattr(QueryForm, 'headerSetting_items_' + str(i),
-                    SelectField(
-                        _('header 1'),
-                        default=viz.datasource.metrics_combo[0][0],
-                        choices=viz.datasource.metrics_combo))
 
                 # promptColStyle
                 setattr(QueryForm, 'promptColStyle_id_' + str(i),
@@ -1412,6 +1385,36 @@ class FormFactory(object):
                     QueryForm, 'promptColStyle_width_' + str(i),
                     TextField(_("Super"), default=''))
             
+            for i in range(20):
+                # headerSetting
+                setattr(QueryForm, 'headerSetting_id_' + str(i),
+                    TextField(_("Super"), default=''))
+                setattr(QueryForm, 'headerSetting_parentName_' + str(i),
+                    TextField(_("Super"), default=''))
+                setattr(QueryForm, 'headerSetting_children_' + str(i),
+                    SelectField(
+                        _('header 1'),
+                        default=viz.datasource.metrics_combo[0][0],
+                        choices=viz.datasource.metrics_combo))
+                setattr(QueryForm, 'headerSetting_items_' + str(i),
+                    SelectField(
+                        _('header 1'),
+                        default=viz.datasource.metrics_combo[0][0],
+                        choices=viz.datasource.metrics_combo))
+            
+            for i in range(50):
+                # colStyle
+                setattr(QueryForm, 'colStyle_id_' + str(i),
+                    TextField(_("Super"), default=''))
+                setattr(QueryForm, 'colStyle_metric_' + str(i),
+                    SelectField(
+                        _('ColStyle 1'),
+                        default=columns_choices[0][0],
+                        choices=columns_choices))
+                setattr(
+                    QueryForm, 'colStyle_value_' + str(i),
+                    TextField(_("Super"), default=''))
+
             # baseStyle
             setattr(
                 QueryForm, 'headerValue',

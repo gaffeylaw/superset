@@ -110,7 +110,7 @@ bootstrappedState.viz.form_data.baseStyle =
 
 function parseColStyles(form_data) {
   const colStyles = [];
-  for (let i = 0; i < 10; i++) {
+  for (let i = 0; i < 50; i++) {
     if (form_data[`colStyle_metric_${i}`] && form_data[`colStyle_value_${i}`]) {
       colStyles.push({
         id: form_data[`colStyle_id_${i}`],
@@ -211,7 +211,7 @@ bootstrappedState.viz.form_data.navigates =
 
 function parseHeaderSettings(form_data) {
   const headerSettings = [];
-  for (let i = 0; i < 10; i++) {
+  for (let i = 0; i < 20; i++) {
     if (form_data[`headerSetting_parentName_${i}`] && form_data[`headerSetting_children_${i}`]) {
       headerSettings.push({
         id: form_data[`headerSetting_id_${i}`],

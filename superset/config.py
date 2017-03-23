@@ -47,7 +47,7 @@ SECRET_KEY = '\2\1thisismyscretkey\1\2\e\y\y\h'  # noqa
 # SQLALCHEMY_DATABASE_URI = 'sqlite:///' + os.path.join(DATA_DIR, 'superset.db')
 # SQLALCHEMY_DATABASE_URI = 'mysql+pymysql://root:root@localhost/superset'
 # SQLALCHEMY_DATABASE_URI = 'postgresql://root:password@localhost/myapp'
-SQLALCHEMY_DATABASE_URI = 'mysql+pymysql://root:123123@localhost:3306/supersetPortal'
+SQLALCHEMY_DATABASE_URI = 'mysql+pymysql://root:rootroot@localhost:3306/superset'
 
 # The limit of queries fetched for query search
 QUERY_SEARCH_LIMIT = 1000
