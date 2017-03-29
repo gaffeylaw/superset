@@ -91,7 +91,7 @@ from superset import views, config  # noqa
 # load store or create store
 from apscheduler.schedulers.blocking import BlockingScheduler
 scheduler = BlockingScheduler()
-url = 'sqlite:///scheduler.sqlite'
+url = 'sqlite:////supersetLog/scheduler.sqlite'
 scheduler.add_jobstore('sqlalchemy', url=url)
 
 # set scheduler to app.config
@@ -102,5 +102,5 @@ app.config.update(
 # let another thread to run scheduler
 import threading
 from superset.scheduler import Scheduler
-t =threading.Thread(target=Scheduler.start)
+t = threading.Thread(target=Scheduler.start)
 t.start()

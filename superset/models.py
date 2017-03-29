@@ -2673,6 +2673,8 @@ class DatasourceAccessRequest(Model, AuditMixinNullable):
 
 class Portal(Model, AuditMixinNullable, ImportMixin):
 
+    """ORM model for portal"""
+
     __tablename__ = 'portal'
     id = Column(Integer, primary_key=True)
     portal_name = Column(String(250))
@@ -2700,7 +2702,10 @@ class Portal(Model, AuditMixinNullable, ImportMixin):
     def setting(self):
         return Markup('<a href="/superset/portal/{self.id}/edit">菜单设置</a>'.format(**locals()))
 
+
 class PortalMenu(Model, AuditMixinNullable, ImportMixin):
+
+    """ORM model for portal menu"""
 
     __tablename__ = 'portal_menu'
     id = Column(Integer, primary_key=True)
@@ -2714,7 +2719,10 @@ class PortalMenu(Model, AuditMixinNullable, ImportMixin):
 
     export_fields = ('menu_name', 'parent_id', 'dashboard_href', 'open_way', 'is_index')
 
+
 class Mail(Model, AuditMixinNullable, ImportMixin):
+
+    """ORM model for warn mail"""
 
     __tablename__ = 'warn_mail'
     id = Column(Integer, primary_key=True)
@@ -2726,7 +2734,10 @@ class Mail(Model, AuditMixinNullable, ImportMixin):
     username = Column(String(255))
     password = Column(String(255))
 
+
 class Scheduler(Model, AuditMixinNullable, ImportMixin):
+
+    """ORM model for warn scheduler"""
 
     __tablename__ = 'warn_scheduler'
     id = Column(Integer, primary_key=True)
@@ -2750,7 +2761,10 @@ class Scheduler(Model, AuditMixinNullable, ImportMixin):
     is_active = Column(Boolean)
     is_running = Column(Boolean)
 
+
 class Condition(Model, AuditMixinNullable, ImportMixin):
+
+    """ORM model for warn condition"""
 
     __tablename__ = 'warn_condition'
     id = Column(Integer, primary_key=True)

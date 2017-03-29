@@ -25,6 +25,33 @@ export default class MailPage extends React.PureComponent {
     // console.log(this.state.mail);
   }
 
+  testMail(e) {
+    e.preventDefault();
+    $.ajax({
+      type: 'POST',
+      url: '/superset/testMail',
+      data: {
+        'server': $('#server').val(),
+        'port': $('#port').val(),
+        'sendName': $('#sendName').val(),
+        'sendAddress': $('#sendAddress').val(),
+        'username': $('#username').val(),
+        'password': $('#password').val(),
+      },
+      dataType: 'json',
+      success: function (data) {
+        if (data) {
+          alert('connect success')
+        } else {
+          alert('connect failed');
+        }
+      },
+      error: function () {
+        alert('unknown error');
+      },
+    });
+  }
+
   modifyMail(e) {
     e.preventDefault();
     let operate = 'modify';
@@ -109,7 +136,12 @@ export default class MailPage extends React.PureComponent {
             <div className="col-lg-12">
               <div className="col-lg-4 text-right">用户名:</div>
               <div className="col-lg-8">
-                <input id="username" type="text" defaultValue={this.state.mail.username} required />
+                <input
+                  id="username"
+                  type="text"
+                  defaultValue={this.state.mail.username}
+                  required
+                />
               </div>
             </div>
             <div className="col-lg-12">
@@ -124,7 +156,18 @@ export default class MailPage extends React.PureComponent {
               </div>
             </div>
             <div className="col-lg-12">
-              <button className="btn btn-primary" type="submit">修改</button>
+              <div style={{ float: 'left' }}>
+                <button
+                  className="btn btn-success"
+                  onClick={this.testMail.bind(this)}
+                  style={{ marginLeft: '120px' }}
+                >
+                  测试连接
+                </button>
+              </div>
+              <div>
+                <button className="btn btn-primary" type="submit">修改</button>
+              </div>
             </div>
           </fieldset>
         </form>

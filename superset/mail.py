@@ -3,8 +3,38 @@ from flask_mail import Mail as FMail, Message
 import dryscrape
 from bs4 import BeautifulSoup
 import json, datetime, time, cairosvg, base64, os
+import logging
+
 
 class Mail:
+
+    "user to get slice content and send mail"
+
+    def testConn(server, port, username, password, senderAddress):
+        app.config.update(
+            # EMAIL SETTINGS
+            MAIL_SERVER=server,
+            MAIL_PORT=port,
+            MAIL_USE_SSL=True,
+            MAIL_USE_SMTP=True,
+            MAIL_USERNAME=username,
+            MAIL_PASSWORD=password,
+        )
+        mail = FMail(app)
+        msg = Message(
+            subject="测试连接",
+            sender=senderAddress,
+            recipients=['zhuo.deng@hand-china.com']
+        )
+        msg.html = '<h3>sorry! this is a test connectin email!</h3>'
+        with app.app_context():
+            try:
+                mail.send(msg)
+                return 'true'
+            except Exception as e:
+                logging.exception(e)
+                return 'false'
+
 
     def findSliceException(scheduler, cookies, userId):
         print('====== monitor slice =====')
@@ -26,8 +56,8 @@ class Mail:
             if eval(expr):
                 print('==============exception has occured=================')
                 # get html content
-                address = 'http://' + app.config.get('SERVER_ADDRESS') +':' +app.config.get('SERVER_PORT')
-                cookie = 'session=' + cookies['session'] +';domain=localhost'
+                address = 'http://' + app.config.get('SERVER_ADDRESS') + ':' + app.config.get('SERVER_PORT')
+                cookie = 'session=' + cookies['session'] + ';domain=localhost'
                 pageContent = Mail.getPageContent(cookie, address, standalone_endpoint, viz_type)
                 htmlName = str(time.time()) + '.html'
                 # write pageContent to a html file
@@ -47,7 +77,7 @@ class Mail:
                 break
 
     def getPageContent(cookie, address, standalone_endpoint, viz_type):
-        sess = dryscrape.Session(base_url = address)
+        sess = dryscrape.Session(base_url=address)
         sess.set_cookie(cookie)
         # print(sess.cookies())
         sess.visit(standalone_endpoint)
@@ -59,14 +89,14 @@ class Mail:
             pageContent = sess.body()
             # set charset
             pageContent = pageContent.replace('<head>', '<head><meta charset="utf-8"/>')
-            pageContent = pageContent.replace('<body>','<body><div style="margin-bottom: 20px;"><a target="_blank" href="' + (address + standalone_endpoint) + '">查看详情</a></div>')
+            pageContent = pageContent.replace('<body>', '<body><div style="margin-bottom: 20px;"><a target="_blank" href="' + (address + standalone_endpoint) + '">查看详情</a></div>')
         else:
             # make svg to img and make img to base64
             soup = BeautifulSoup(sess.body(), 'html.parser')
             svgContent = str(soup.svg)
             timestamp = str(time.time())
-            cairosvg.svg2png(bytestring=svgContent, write_to= '/' +timestamp + '.png')
-            f = open('/' + timestamp + '.png', 'rb')  
+            cairosvg.svg2png(bytestring = svgContent, write_to = '/' + timestamp + '.png')
+            f = open('/' + timestamp + '.png', 'rb')
             img = str(base64.b64encode(f.read()))
             f.close()
             try:
@@ -82,13 +112,13 @@ class Mail:
 
     def send(mailInfo, pageContent, sliceName, receive_address, htmlName):
         app.config.update(
-            #EMAIL SETTINGS
+            # EMAIL SETTINGS
             MAIL_SERVER=mailInfo.smtp_server,
             MAIL_PORT=mailInfo.port,
             MAIL_USE_SSL=True,
             MAIL_USE_SMTP=True,
-            MAIL_USERNAME = mailInfo.username,
-            MAIL_PASSWORD = mailInfo.password
+            MAIL_USERNAME=mailInfo.username,
+            MAIL_PASSWORD=mailInfo.password
         )
         sender = mailInfo.send_address
         receiver = receive_address.split(',')
@@ -99,7 +129,7 @@ class Mail:
             sender=sender,
             recipients=receiver
         )
-        
+
         msg.html = pageContent
         with app.open_resource('/' + htmlName) as fp:
             msg.attach("slice.html", "text/html", fp.read())
@@ -113,7 +143,7 @@ class Mail:
                 if os.path.exists('/' + htmlName):
                     os.remove('/' + htmlName)
                 print('====================== mail has sended ! ========================')
-                timeStr = str(datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")) 
+                timeStr = str(datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
                 f2.writelines(timeStr + '    ' + '邮件发送成功\n\n')
             except Exception as e:
                 f2.writelines(timeStr + '    ' + '邮件发送失败, 原因：' + e + '\n\n')

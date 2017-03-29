@@ -2868,6 +2868,12 @@ class Superset(BaseSupersetView):
             return 'false'
 
     @has_access
+    @expose("/testMail", methods=['GET', 'POST'])
+    def testMail(self):
+        from superset.mail import Mail
+        return Mail.testConn(request.form['server'], request.form['port'], request.form['username'], request.form['password'], request.form['sendAddress'])
+    
+    @has_access
     @expose("/myEmail/<operate>", methods=['GET', 'POST'])
     def myEMail(self, operate):
         if operate == 'show':
@@ -2890,12 +2896,12 @@ class Superset(BaseSupersetView):
             try:
                 if operate == 'add':
                     db.session.execute("insert into warn_mail (user_id, smtp_server, port, send_name, send_address, username, password) \
-                        values (%s, '%s', %s, '%s', '%s', '%s', '%s')" %(g.user.get_id(), request.form['server'], request.form['port'],
+                        values (%s, '%s', %s, '%s', '%s', '%s', '%s')" % (g.user.get_id(), request.form['server'], request.form['port'],
                         request.form['sendName'], request.form['sendAddress'], request.form['username'], request.form['password']))
                 elif operate == 'modify':
                     db.session.execute("update warn_mail set smtp_server = '%s', port = %s, send_name = '%s', send_address = '%s', \
                         username = '%s', password = '%s' where id = %s"
-                        %(request.form['server'], request.form['port'], request.form['sendName'], request.form['sendAddress'],
+                        % (request.form['server'], request.form['port'], request.form['sendName'], request.form['sendAddress'],
                         request.form['username'], request.form['password'], request.form['id']))
                 db.session.commit()
                 data['status'] = 'true'
@@ -2903,7 +2909,6 @@ class Superset(BaseSupersetView):
                 logging.exception(e)
                 data['status'] = 'false'
             return json.dumps(data)
-
 
     @has_access
     @expose("/mySchedulers/<operate>/<id>", methods=['GET', 'POST'])
@@ -2930,11 +2935,11 @@ class Superset(BaseSupersetView):
                         ms = json.loads(s.params)['metrics']
                         for m in ms:
                             metrics += m + ','
-                        metrics = metrics[0 : len(metrics)-1]
-                    except Exception as e:
+                        metrics = metrics[0:len(metrics)-1]
+                    except Exception:
                         try:
                             metrics = json.loads(s.params)['metric']
-                        except Exception as e:
+                        except Exception:
                             # default metrics
                             metrics = 'count'
                     newSlices.append({
@@ -2954,7 +2959,7 @@ class Superset(BaseSupersetView):
         if operate == 'list':
             schedulers = db.session.query(models.Scheduler).filter_by(user_id=g.user.get_id()).all()
             d = {
-                'schedulers':[
+                'schedulers': [
                     {
                         'id': s.id,
                         'mode': s.mode,
@@ -2998,7 +3003,7 @@ class Superset(BaseSupersetView):
                 'dashboards': newDashboards,
                 'slices': sendSlices,
             }
-            
+
         return self.render_template(
             'superset/scheduler.html',
             bootstrap_data=json.dumps(d, default=utils.json_iso_dttm_ser),
@@ -3012,7 +3017,7 @@ class Superset(BaseSupersetView):
         if operate == 'add':
             try:
                 # update is_active and is_running
-                db.session.execute('update warn_scheduler set is_active = True, is_running = True where id = %s' %(id))
+                db.session.execute('update warn_scheduler set is_active = True, is_running = True where id = %s' % (id))
                 Scheduler.add(id)
                 db.session.commit()
                 return 'true'
@@ -3023,13 +3028,13 @@ class Superset(BaseSupersetView):
         elif operate == 'delete':
             try:
                 # delete job
-                s = db.session.query(models.Scheduler).filter_by(id=id).one()
-                if s.is_active == True:
+                try:
                     Scheduler.delete(id)
+                except Exception as e:
+                    logging.exception(e)
                 # delete table(scheduler, mail and condition)
                 db.session.execute('delete from warn_condition where warn_scheduler_id = ' + str(id))
                 db.session.execute('delete from warn_scheduler where id = ' + str(id))
-                
                 db.session.commit()
                 return 'true'
             except Exception as e:
@@ -3037,12 +3042,12 @@ class Superset(BaseSupersetView):
                 db.session.rollback()
                 return 'false'
         elif operate == 'resume':
-            db.session.execute('update warn_scheduler set is_running = True where id = %s' %(id))
+            db.session.execute('update warn_scheduler set is_running = True where id = %s' % (id))
             Scheduler.resume(id)
             db.session.commit()
             return 'true'
         elif operate == 'pause':
-            db.session.execute('update warn_scheduler set is_running = False where id = %s' %(id))
+            db.session.execute('update warn_scheduler set is_running = False where id = %s' % (id))
             Scheduler.pause(id)
             db.session.commit()
             return 'true'
@@ -3054,11 +3059,11 @@ class Superset(BaseSupersetView):
         try:
             if request.form['mode'] == 'cron':
                 # example: month='6-8,11-12', day='3rd fri', hour='0-3'
-                cron_year=cron_month=cron_day=cron_week=cron_day_of_week=cron_hour=cron_minute=cron_second=start_date=end_date='NULL'
+                cron_year = cron_month = cron_day = cron_week = cron_day_of_week = cron_hour = cron_minute = cron_second = start_date = end_date = 'NULL'
                 cronArray = request.form['expr'].split('&&')
                 for cron in cronArray:
                     key = cron.split('=')[0].strip()
-                    value = cron.split('=')[1].strip()  
+                    value = cron.split('=')[1].strip()
                     if key == 'year':
                         cron_year = value
                     elif key == 'month':
@@ -3082,14 +3087,14 @@ class Superset(BaseSupersetView):
                 if operate == 'insert':
                     db.session.execute("insert into warn_scheduler (user_id, mode, cron_year, cron_month ,cron_day, \
                         cron_week, cron_day_of_week, cron_hour, cron_minute, cron_second, start_date, end_date, is_active, is_running) \
-                        values (%s, '%s', %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)" 
-                        %(g.user.get_id(), request.form['mode'], cron_year, cron_month, cron_day, cron_week,
+                        values (%s, '%s', %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"
+                        % (g.user.get_id(), request.form['mode'], cron_year, cron_month, cron_day, cron_week,
                         cron_day_of_week, cron_hour, cron_minute, cron_second, start_date, end_date, False, False))
                 elif operate == 'modify':
                     db.session.execute("update warn_scheduler set mode = '%s', cron_year = %s, cron_month = %s, cron_day = %s, \
                         cron_week = %s, cron_day_of_week = %s, cron_hour = %s, cron_minute = %s, cron_second = %s, start_date = %s, \
-                        end_date = %s where id = %s" 
-                        %(request.form['mode'], cron_year, cron_month, cron_day, cron_week,
+                        end_date = %s where id = %s"
+                        % (request.form['mode'], cron_year, cron_month, cron_day, cron_week,
                         cron_day_of_week, cron_hour, cron_minute, cron_second, start_date, end_date, request.form['id']))
             elif request.form['mode'] == 'interval':
                 # example: hours=2, start_date='2017-3-20'
@@ -3106,20 +3111,20 @@ class Superset(BaseSupersetView):
                         interval_expr = expr.strip()
                 if operate == 'insert':
                     db.session.execute("insert into warn_scheduler (user_id, mode, interval_expr, start_date, end_date, is_active, is_running) \
-                        values (%s, '%s', '%s', %s, %s, %s, %s)" %(g.user.get_id(), request.form['mode'], interval_expr,
+                        values (%s, '%s', '%s', %s, %s, %s, %s)" % (g.user.get_id(), request.form['mode'], interval_expr,
                         start_date, end_date, False, False))
                 elif operate == 'modify':
                     db.session.execute("update warn_scheduler set mode = '%s', interval_expr = '%s', start_date = %s, end_date = %s where id = %s"
-                        %(request.form['mode'], interval_expr, start_date, end_date, request.form['id']))
+                        % (request.form['mode'], interval_expr, start_date, end_date, request.form['id']))
             else:
                 # example: run_date='2017-3-20 12:00:00'
                 date_run_date = request.form['expr'].split('=')[1].strip()
                 if operate == 'insert':
                     db.session.execute("insert into warn_scheduler (user_id, mode, date_run_date, is_active, is_running) \
-                        values (%s, '%s', %s, %s, %s)" %(g.user.get_id(), request.form['mode'], date_run_date, False, False))
+                        values (%s, '%s', %s, %s, %s)" % (g.user.get_id(), request.form['mode'], date_run_date, False, False))
                 elif operate == 'modify':
                     db.session.execute("update warn_scheduler set mode = '%s', date_run_date = %s where id = %s"
-                        %(request.form['mode'], date_run_date, request.form['id']))
+                        % (request.form['mode'], date_run_date, request.form['id']))
             db.session.commit()
             data['status'] = 'true'
             if operate == 'insert':
@@ -3138,11 +3143,11 @@ class Superset(BaseSupersetView):
         try:
             if operate == 'insert':
                 db.session.execute("insert into warn_condition (warn_scheduler_id, dashboard_id, slice_id, metric, expr, receive_address, send_slice_id) \
-                    values (%s, %s, %s, '%s', '%s', '%s', %s)" %(request.form['schedulerId'], request.form['dashboardId'], request.form['sliceId'],
+                    values (%s, %s, %s, '%s', '%s', '%s', %s)" % (request.form['schedulerId'], request.form['dashboardId'], request.form['sliceId'],
                     request.form['metric'], request.form['expr'], request.form['receiveAddress'], request.form['sendSliceId']))
             elif operate == 'modify':
                 db.session.execute("update warn_condition set dashboard_id = %s, slice_id = %s, metric = '%s', expr = '%s', receive_address = '%s', send_slice_id = %s where id = %s"
-                    %(request.form['dashboardId'], request.form['sliceId'], request.form['metric'], request.form['expr'], request.form['receiveAddress'], request.form['sendSliceId'], request.form['id'])) 
+                    % (request.form['dashboardId'], request.form['sliceId'], request.form['metric'], request.form['expr'], request.form['receiveAddress'], request.form['sendSliceId'], request.form['id'])) 
             db.session.commit()
             data['status'] = 'true'
         except Exception as e:
