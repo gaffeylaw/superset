@@ -87,3 +87,20 @@ module_datasource_map.update(app.config.get("ADDITIONAL_MODULE_DS_MAP"))
 SourceRegistry.register_sources(module_datasource_map)
 
 from superset import views, config  # noqa
+
+# load store or create store
+from apscheduler.schedulers.blocking import BlockingScheduler
+scheduler = BlockingScheduler()
+url = 'sqlite:///scheduler.sqlite'
+scheduler.add_jobstore('sqlalchemy', url=url)
+
+# set scheduler to app.config
+app.config.update(
+    scheduler=scheduler
+)
+
+# let another thread to run scheduler
+import threading
+from superset.scheduler import Scheduler
+t =threading.Thread(target=Scheduler.start)
+t.start()

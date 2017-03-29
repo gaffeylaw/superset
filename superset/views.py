@@ -2844,7 +2844,8 @@ class Superset(BaseSupersetView):
                 db.session.execute('delete from portal_menu where id = ' + menu['id'])
             db.session.commit()
             return 'true'
-        except Exception:
+        except Exception as e:
+            logging.exception(e)
             return 'false'
 
     @has_access
@@ -2862,8 +2863,292 @@ class Superset(BaseSupersetView):
                 os.mkdir(os.path.join(os.path.abspath(os.path.dirname(__file__)) + '/static/logo'))
             file.save(os.path.join(os.path.abspath(os.path.dirname(__file__)) + '/static/logo/', filename))
             return 'true'
-        except Exception: 
+        except Exception as e:
+            logging.exception(e)
             return 'false'
+
+    @has_access
+    @expose("/myEmail/<operate>", methods=['GET', 'POST'])
+    def myEMail(self, operate):
+        if operate == 'show':
+            try:
+                mail = db.session.query(models.Mail).filter_by(user_id=g.user.get_id()).one()
+                m = mail.__dict__
+                del(m['_sa_instance_state'])
+            except Exception as e:
+                m = None
+            d = {
+                'mailPage': 'true',
+                'mail': m
+            }
+            return self.render_template(
+                'superset/scheduler.html',
+                bootstrap_data=json.dumps(d, default=utils.json_iso_dttm_ser),
+            )
+        else:
+            data = {}
+            try:
+                if operate == 'add':
+                    db.session.execute("insert into warn_mail (user_id, smtp_server, port, send_name, send_address, username, password) \
+                        values (%s, '%s', %s, '%s', '%s', '%s', '%s')" %(g.user.get_id(), request.form['server'], request.form['port'],
+                        request.form['sendName'], request.form['sendAddress'], request.form['username'], request.form['password']))
+                elif operate == 'modify':
+                    db.session.execute("update warn_mail set smtp_server = '%s', port = %s, send_name = '%s', send_address = '%s', \
+                        username = '%s', password = '%s' where id = %s"
+                        %(request.form['server'], request.form['port'], request.form['sendName'], request.form['sendAddress'],
+                        request.form['username'], request.form['password'], request.form['id']))
+                db.session.commit()
+                data['status'] = 'true'
+            except Exception as e:
+                logging.exception(e)
+                data['status'] = 'false'
+            return json.dumps(data)
+
+
+    @has_access
+    @expose("/mySchedulers/<operate>/<id>", methods=['GET', 'POST'])
+    def getMyScheduler(self, operate, id):
+        # get all dashboards, slices and metrics
+        newDashboards = []
+        sendSlices = []
+        if operate == 'add' or operate == 'modify':
+            for s in db.session.query(models.Slice).all():
+                sendSlices.append({
+                    'id': s.id,
+                    'name': s.slice_name
+                })
+            for dashboard in db.session.query(models.Dashboard).all():
+                query_result = db.session.execute('select slice_id from dashboard_slices where dashboard_id = ' + str(dashboard.id))
+                sliceIds = [row[0] for row in query_result]
+                # print(sliceIds)
+                slices = db.session.query(models.Slice).filter(models.Slice.id.in_(sliceIds)).all()
+                # print(slices)
+                newSlices = []
+                for s in slices:
+                    metrics = ''
+                    try:
+                        ms = json.loads(s.params)['metrics']
+                        for m in ms:
+                            metrics += m + ','
+                        metrics = metrics[0 : len(metrics)-1]
+                    except Exception as e:
+                        try:
+                            metrics = json.loads(s.params)['metric']
+                        except Exception as e:
+                            # default metrics
+                            metrics = 'count'
+                    newSlices.append({
+                        'id': s.id,
+                        'name': s.slice_name,
+                        'metrics': metrics
+                    })
+
+                newDashboards.append({
+                    'id': dashboard.id,
+                    'name': dashboard.dashboard_title,
+                    'slices': newSlices
+                })
+            # print(sendSlices)
+            # print(newDashboards)
+
+        if operate == 'list':
+            schedulers = db.session.query(models.Scheduler).filter_by(user_id=g.user.get_id()).all()
+            d = {
+                'schedulers':[
+                    {
+                        'id': s.id,
+                        'mode': s.mode,
+                        'cron_year': s.cron_year,
+                        'cron_month': s.cron_month,
+                        'cron_day': s.cron_day,
+                        'cron_week': s.cron_week,
+                        'cron_day_of_week': s.cron_day_of_week,
+                        'cron_hour': s.cron_hour,
+                        'cron_minute': s.cron_minute,
+                        'cron_second': s.cron_second,
+                        'start_date': s.start_date,
+                        'end_date': s.end_date,
+                        'interval_expr': s.interval_expr,
+                        'date_run_date': s.date_run_date,
+                        'isActive': s.is_active,
+                        'isRunning': s.is_running
+                    } for s in schedulers
+                ],
+                'type': 'list',
+            }
+        elif operate == 'add':
+            d = {
+                'type': 'add',
+                'dashboards': newDashboards,
+                'slices': sendSlices,
+            }
+        elif operate == 'modify':
+            scheduler = db.session.query(models.Scheduler).filter_by(id=id).one()
+            condition = db.session.query(models.Condition).filter_by(warn_scheduler_id=id).one()
+
+            s = scheduler.__dict__
+            c = condition.__dict__
+            del(s['_sa_instance_state'])
+            del(c['_sa_instance_state'])
+
+            d = {
+                'type': 'modify',
+                'scheduler': s,
+                'condition': c,
+                'dashboards': newDashboards,
+                'slices': sendSlices,
+            }
+            
+        return self.render_template(
+            'superset/scheduler.html',
+            bootstrap_data=json.dumps(d, default=utils.json_iso_dttm_ser),
+        )
+
+    @has_access
+    @expose("/job/<operate>/<id>", methods=['GET'])
+    def operateJob(self, operate, id):
+        # scheduler = db.session.query(models.Scheduler).filter_by(id = id).one()
+        from superset.scheduler import Scheduler
+        if operate == 'add':
+            try:
+                # update is_active and is_running
+                db.session.execute('update warn_scheduler set is_active = True, is_running = True where id = %s' %(id))
+                Scheduler.add(id)
+                db.session.commit()
+                return 'true'
+            except Exception as e:
+                logging.exception(e)
+                db.session.rollback()
+                return 'false'
+        elif operate == 'delete':
+            try:
+                # delete job
+                s = db.session.query(models.Scheduler).filter_by(id=id).one()
+                if s.is_active == True:
+                    Scheduler.delete(id)
+                # delete table(scheduler, mail and condition)
+                db.session.execute('delete from warn_condition where warn_scheduler_id = ' + str(id))
+                db.session.execute('delete from warn_scheduler where id = ' + str(id))
+                
+                db.session.commit()
+                return 'true'
+            except Exception as e:
+                logging.exception(e)
+                db.session.rollback()
+                return 'false'
+        elif operate == 'resume':
+            db.session.execute('update warn_scheduler set is_running = True where id = %s' %(id))
+            Scheduler.resume(id)
+            db.session.commit()
+            return 'true'
+        elif operate == 'pause':
+            db.session.execute('update warn_scheduler set is_running = False where id = %s' %(id))
+            Scheduler.pause(id)
+            db.session.commit()
+            return 'true'
+
+    @has_access
+    @expose('/insertOrModifyScheduler/<operate>', methods=['POST'])
+    def insertOrModifyScheduler(self, operate):
+        data = {}
+        try:
+            if request.form['mode'] == 'cron':
+                # example: month='6-8,11-12', day='3rd fri', hour='0-3'
+                cron_year=cron_month=cron_day=cron_week=cron_day_of_week=cron_hour=cron_minute=cron_second=start_date=end_date='NULL'
+                cronArray = request.form['expr'].split('&&')
+                for cron in cronArray:
+                    key = cron.split('=')[0].strip()
+                    value = cron.split('=')[1].strip()  
+                    if key == 'year':
+                        cron_year = value
+                    elif key == 'month':
+                        cron_month = value
+                    elif key == 'day':
+                        cron_day = value
+                    elif key == 'week':
+                        cron_week = value
+                    elif key == 'day_of_week':
+                        cron_day_of_week = value
+                    elif key == 'hour':
+                        cron_hour = value
+                    elif key == 'minute':
+                        cron_minute = value
+                    elif key == 'second':
+                        cron_second = value
+                    elif key == 'start_date':
+                        start_date = value
+                    elif key == 'end_date':
+                        end_date = value
+                if operate == 'insert':
+                    db.session.execute("insert into warn_scheduler (user_id, mode, cron_year, cron_month ,cron_day, \
+                        cron_week, cron_day_of_week, cron_hour, cron_minute, cron_second, start_date, end_date, is_active, is_running) \
+                        values (%s, '%s', %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)" 
+                        %(g.user.get_id(), request.form['mode'], cron_year, cron_month, cron_day, cron_week,
+                        cron_day_of_week, cron_hour, cron_minute, cron_second, start_date, end_date, False, False))
+                elif operate == 'modify':
+                    db.session.execute("update warn_scheduler set mode = '%s', cron_year = %s, cron_month = %s, cron_day = %s, \
+                        cron_week = %s, cron_day_of_week = %s, cron_hour = %s, cron_minute = %s, cron_second = %s, start_date = %s, \
+                        end_date = %s where id = %s" 
+                        %(request.form['mode'], cron_year, cron_month, cron_day, cron_week,
+                        cron_day_of_week, cron_hour, cron_minute, cron_second, start_date, end_date, request.form['id']))
+            elif request.form['mode'] == 'interval':
+                # example: hours=2, start_date='2017-3-20'
+                interval_expr = start_date = end_date = 'NULL'
+                exprArray = request.form['expr'].split('&&')
+                for expr in exprArray:
+                    key = expr.split('=')[0].strip()
+                    value = expr.split('=')[1].strip()
+                    if key == 'start_date':
+                        start_date = value
+                    elif key == 'end_date':
+                        end_date = value
+                    else:
+                        interval_expr = expr.strip()
+                if operate == 'insert':
+                    db.session.execute("insert into warn_scheduler (user_id, mode, interval_expr, start_date, end_date, is_active, is_running) \
+                        values (%s, '%s', '%s', %s, %s, %s, %s)" %(g.user.get_id(), request.form['mode'], interval_expr,
+                        start_date, end_date, False, False))
+                elif operate == 'modify':
+                    db.session.execute("update warn_scheduler set mode = '%s', interval_expr = '%s', start_date = %s, end_date = %s where id = %s"
+                        %(request.form['mode'], interval_expr, start_date, end_date, request.form['id']))
+            else:
+                # example: run_date='2017-3-20 12:00:00'
+                date_run_date = request.form['expr'].split('=')[1].strip()
+                if operate == 'insert':
+                    db.session.execute("insert into warn_scheduler (user_id, mode, date_run_date, is_active, is_running) \
+                        values (%s, '%s', %s, %s, %s)" %(g.user.get_id(), request.form['mode'], date_run_date, False, False))
+                elif operate == 'modify':
+                    db.session.execute("update warn_scheduler set mode = '%s', date_run_date = %s where id = %s"
+                        %(request.form['mode'], date_run_date, request.form['id']))
+            db.session.commit()
+            data['status'] = 'true'
+            if operate == 'insert':
+                schedulerId = db.session.execute('select last_insert_id()').fetchone()[0]
+                # print(schedulerId)
+                data['schedulerId'] = schedulerId
+        except Exception as e:
+            logging.exception(e)
+            data['status'] = 'false'
+        return json.dumps(data)
+
+    @has_access
+    @expose('/insertOrModifyCondition/<operate>', methods=['POST'])
+    def insertOrModifyCondition(self, operate):
+        data = {}
+        try:
+            if operate == 'insert':
+                db.session.execute("insert into warn_condition (warn_scheduler_id, dashboard_id, slice_id, metric, expr, receive_address, send_slice_id) \
+                    values (%s, %s, %s, '%s', '%s', '%s', %s)" %(request.form['schedulerId'], request.form['dashboardId'], request.form['sliceId'],
+                    request.form['metric'], request.form['expr'], request.form['receiveAddress'], request.form['sendSliceId']))
+            elif operate == 'modify':
+                db.session.execute("update warn_condition set dashboard_id = %s, slice_id = %s, metric = '%s', expr = '%s', receive_address = '%s', send_slice_id = %s where id = %s"
+                    %(request.form['dashboardId'], request.form['sliceId'], request.form['metric'], request.form['expr'], request.form['receiveAddress'], request.form['sendSliceId'], request.form['id'])) 
+            db.session.commit()
+            data['status'] = 'true'
+        except Exception as e:
+            logging.exception(e)
+            data['status'] = 'false'
+        return json.dumps(data)
 
     @expose("/rest/api")
     def restIndex(self):
@@ -3065,12 +3350,29 @@ appbuilder.add_link(
     category_icon="fa-flask",
     icon="fa-flask",
     category='SQL Lab')
+
 appbuilder.add_link(
     'Query Search',
     href='/superset/sqllab#search',
     icon="fa-search",
     category_icon="fa-flask",
     category='SQL Lab')
+
+# appbuilder.add_separator("Warn")
+
+appbuilder.add_link(
+    'My Email',
+    href='/superset/myEmail/show',
+    category_icon="fa-flask",
+    icon="fa-flask",
+    category='Warn')
+
+appbuilder.add_link(
+    'My Scheduler',
+    href='/superset/mySchedulers/list/1',
+    icon="fa-search",
+    category_icon="fa-flask",
+    category='Warn')
 
 @app.after_request
 def apply_caching(response):

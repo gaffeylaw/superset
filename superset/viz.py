@@ -330,6 +330,7 @@ class BaseViz(object):
                 'query': self.query,
                 'standalone_endpoint': self.standalone_endpoint,
                 'column_formats': self.data['column_formats'],
+                'json_data': self.get_json_data(), 
             }
             payload['cached_dttm'] = datetime.now().isoformat().split('.')[0]
             logging.info("Caching for the next {} seconds".format(
@@ -353,7 +354,11 @@ class BaseViz(object):
 
     def json_dumps(self, obj):
         """Used by get_json, can be overridden to use specific switches"""
-        return json.dumps(obj, default=utils.json_int_dttm_ser, ignore_nan=True)
+        try:
+            return json.dumps(obj, default=utils.json_int_dttm_ser, ignore_nan=True)
+        except Exception as e:
+            obj['json_data'] = None
+            return json.dumps(obj, default=utils.json_int_dttm_ser, ignore_nan=True)
 
     @property
     def data(self):
@@ -380,6 +385,13 @@ class BaseViz(object):
 
     def get_data(self):
         return []
+    
+    def get_json_data(self):
+        df = self.get_df()
+        return dict(
+            records=df.to_dict(orient="records"),
+            columns=list(df.columns),
+        )
 
     @property
     def json_endpoint(self):
