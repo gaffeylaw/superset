@@ -1539,18 +1539,56 @@ class DistributionMultiViz(DistributionBarViz):
         )
     },)
 
-class agGridViz(TableViz):
+class agGridViz(BaseViz):
 
     viz_type = "ag_grid"
     verbose_name = _("ag_grid View")
     credits = 'a <a href="https://github.com/airbnb/superset">Superset</a> original'
-
+    fieldsets = ({
+        'label': _("GROUP BY"),
+        'description': _('Use this section if you want a query that aggregates'),
+        'fields': (
+            ('groupby', 'metrics'),
+            'order_by_cols',
+        )
+    }, {
+        'label': _("Options"),
+        'fields': (
+            'table_timestamp_format',
+            'row_limit',       
+        )
+    })
     form_overrides = ({
         'metrics': {
             'default': [],
         },
     })
     is_timeseries = False
+
+    def query_obj(self):
+        d = super(agGridViz, self).query_obj()
+        fd = self.form_data
+        order_by_cols = fd.get('order_by_cols') or []
+        d['orderby'] = [json.loads(t) for t in order_by_cols]
+        return d
+
+    def get_df(self, query_obj=None):
+        df = super(agGridViz, self).get_df(query_obj)
+        if (
+                self.form_data.get("granularity") == "all" and
+                DTTM_ALIAS in df):
+            del df[DTTM_ALIAS]
+        return df
+
+    def get_data(self):
+        df = self.get_df()
+        return dict(
+            records=df.to_dict(orient="records"),
+            columns=list(df.columns),
+        )
+
+    def json_dumps(self, obj):
+        return json.dumps(obj, default=utils.json_iso_dttm_ser)
 
 class SunburstViz(BaseViz):
 
