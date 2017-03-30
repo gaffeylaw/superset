@@ -794,6 +794,17 @@ function tableVis(slice, flag) {
         scrollY: height + 'px',
         scrollCollapse: true,
         scrollX: true,
+        language: {
+          lengthMenu: "显示 _MENU_ 条数",
+          search: '查找',
+          zeroRecords: '没有数据',
+          paginate: {  
+              first: '第一页',  
+              last: '最后一页',  
+              next: '下一页',  
+              previous: '上一页',  
+          }, 
+      }  
       });
       fixDataTableBodyHeight(
           container.find('.dataTables_wrapper'), height);

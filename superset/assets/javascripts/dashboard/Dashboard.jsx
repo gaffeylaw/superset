@@ -164,7 +164,7 @@ export function dashboardContainer(dashboard) {
       } else {
         refresh
         .removeClass('danger')
-        .attr('title', 'Click to force refresh')
+        .attr('title', '刷新数据')
         .tooltip('fixTitle');
       }
     },

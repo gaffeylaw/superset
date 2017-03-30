@@ -160,7 +160,7 @@ export default class MailPage extends React.PureComponent {
                 <button
                   className="btn btn-success"
                   onClick={this.testMail.bind(this)}
-                  style={{ marginLeft: '120px' }}
+                  style={{ marginLeft: '110px' }}
                 >
                   测试连接
                 </button>
