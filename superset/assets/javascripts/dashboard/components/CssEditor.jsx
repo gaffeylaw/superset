@@ -28,6 +28,7 @@ class CssEditor extends React.PureComponent {
       css: props.initialCss,
       cssTemplateOptions: [],
     };
+    console.log('========')
   }
   componentWillMount() {
     this.updateDom();

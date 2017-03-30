@@ -121,6 +121,8 @@ class BaseViz(object):
             del d['action']
         if 'slice_id' in d:
             del d['slice_id']
+        if 'standalone' in d:
+            del d['standalone']
         d.update(kwargs)
         # Remove unchecked checkboxes because HTML is weird like that
         od = MultiDict()
@@ -178,7 +180,7 @@ class BaseViz(object):
         # If the datetime format is unix, the parse will use the corresponding
         # parsing logic.
         if df is None or df.empty:
-            raise utils.NoDataException("No data.")
+            raise utils.NoDataException("没有数据")
         else:
             if DTTM_ALIAS in df.columns:
                 if timestamp_format in ("epoch_s", "epoch_ms"):
@@ -330,6 +332,7 @@ class BaseViz(object):
                 'query': self.query,
                 'standalone_endpoint': self.standalone_endpoint,
                 'column_formats': self.data['column_formats'],
+                'json_data': self.get_json_data(),
             }
             payload['cached_dttm'] = datetime.now().isoformat().split('.')[0]
             logging.info("Caching for the next {} seconds".format(
@@ -353,7 +356,11 @@ class BaseViz(object):
 
     def json_dumps(self, obj):
         """Used by get_json, can be overridden to use specific switches"""
-        return json.dumps(obj, default=utils.json_int_dttm_ser, ignore_nan=True)
+        try:
+            return json.dumps(obj, default=utils.json_int_dttm_ser, ignore_nan=True)
+        except Exception:
+            obj['json_data'] = None
+            return json.dumps(obj, default=utils.json_int_dttm_ser, ignore_nan=True)
 
     @property
     def data(self):
@@ -380,6 +387,13 @@ class BaseViz(object):
 
     def get_data(self):
         return []
+
+    def get_json_data(self):
+        df = self.get_df()
+        return dict(
+            records=df.to_dict(orient="records"),
+            columns=list(df.columns),
+        )
 
     @property
     def json_endpoint(self):
@@ -1878,17 +1892,20 @@ class FilterBoxViz(BaseViz):
                 for row in array:
                     k.append(tuple(row))
                 s = set(k)
-            # print(s)
+            # set to list and sorted
+            l = []
+            for row in s:
+                l.append(str(row))
+            l.sort()
             d[flt] = [
                 {
                     'id': row,
                     'text': row,
                     'filter': flt,
                     'metric': 0
-                } for row in s
+                } for row in l
             ] 
             
-        
         # for flt in filters:
         #     print("===========")
         #     print(flt)
