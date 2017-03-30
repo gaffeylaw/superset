@@ -128,7 +128,7 @@ class AgGrid extends React.Component {
             columnStyleArray.forEach(a => {
               const k = a.split(':');
               if (k[0] === 'width') {
-                props.width = parseInt(k[1].substring(0,k[1].length - 2));
+                props.width = parseInt(k[1].substring(0, k[1].length - 2));
               }
             });
             break;
@@ -225,7 +225,7 @@ class AgGrid extends React.Component {
         // format number
         // let value = slice.d3format(columnName, params.value);
         let value = params.value;
-        if ($.inArray(columnName, fd.metrics) != -1 && !isNaN(value)) {
+        if ($.inArray(columnName, fd.metrics) !== -1 && !isNaN(value)) {
           value = slice.d3format(columnName, params.value)
         }
         // set link style
@@ -337,8 +337,8 @@ class AgGrid extends React.Component {
       if (fd['headerSetting_id_' + i] !== '' && fd['headerSetting_parentName_' + i] !== '') {
         data.push({
           parentName: fd['headerSetting_parentName_' + i],
-          children: fd['headerSetting_children_' + i].split(',').map(a => {return a.toLowerCase()}),
-          items: fd['headerSetting_items_' + i].split(',').map(a => {return a.toLowerCase()}),
+          children: fd['headerSetting_children_' + i].split(',').map(a => { return a.toLowerCase() }),
+          items: fd['headerSetting_items_' + i].split(',').map(a => { return a.toLowerCase() }),
         });
       } else {
         break;

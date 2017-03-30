@@ -1,0 +1,49 @@
+/* list */
+table {
+    width: 95%; 
+    margin-top: 30px; 
+    margin-left: 50px;
+}
+.table > thead > tr > th, .table > tbody > tr > th, .table > tfoot > tr > th, .table > thead > tr > td, .table > tbody > tr > td, .table > tfoot > tr > td {
+    line-height: 40px;
+}
+table button {
+    height: 40px;
+}
+h1 {
+    color:red;
+}
+
+/* add */
+.addDiv {
+    width: 80%;
+    margin-top: 20px;
+    margin-left: 50px;
+    overflow: hidden;
+}
+fieldset {
+    border: 1px solid #ccc;
+    height: 400px;
+}
+legend {
+    width: 90px;
+    margin-left: 20px;
+    border-bottom: 0px solid gray;
+}
+form {
+    width: 30%;
+    float: left;
+    margin-right: 20px;
+}
+form .col-lg-12 {
+    height: 35px;
+}
+form button {
+    float: right;
+    margin-right: 50px;
+    height: 40px;
+}
+form textarea {
+    width: 200px;
+    height: 100px;
+}

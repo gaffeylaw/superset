@@ -2673,6 +2673,8 @@ class DatasourceAccessRequest(Model, AuditMixinNullable):
 
 class Portal(Model, AuditMixinNullable, ImportMixin):
 
+    """ORM model for portal"""
+
     __tablename__ = 'portal'
     id = Column(Integer, primary_key=True)
     portal_name = Column(String(250))
@@ -2700,7 +2702,10 @@ class Portal(Model, AuditMixinNullable, ImportMixin):
     def setting(self):
         return Markup('<a href="/superset/portal/{self.id}/edit">菜单设置</a>'.format(**locals()))
 
+
 class PortalMenu(Model, AuditMixinNullable, ImportMixin):
+
+    """ORM model for portal menu"""
 
     __tablename__ = 'portal_menu'
     id = Column(Integer, primary_key=True)
@@ -2713,3 +2718,60 @@ class PortalMenu(Model, AuditMixinNullable, ImportMixin):
     icon = Column(String(32))
 
     export_fields = ('menu_name', 'parent_id', 'dashboard_href', 'open_way', 'is_index')
+
+
+class Mail(Model, AuditMixinNullable, ImportMixin):
+
+    """ORM model for warn mail"""
+
+    __tablename__ = 'warn_mail'
+    id = Column(Integer, primary_key=True)
+    user_id = Column(Integer, ForeignKey('ab_user.id'))
+    smtp_server = Column(String(255))
+    port = Column(Integer)
+    send_name = Column(String(255))
+    send_address = Column(String(255))
+    username = Column(String(255))
+    password = Column(String(255))
+
+
+class Scheduler(Model, AuditMixinNullable, ImportMixin):
+
+    """ORM model for warn scheduler"""
+
+    __tablename__ = 'warn_scheduler'
+    id = Column(Integer, primary_key=True)
+    user_id = Column(Integer, ForeignKey('ab_user.id'))
+    mode = Column(String(255))
+
+    cron_year = Column(String(255))
+    cron_month = Column(String(255))
+    cron_day = Column(String(255))
+    cron_week = Column(String(255))
+    cron_day_of_week = Column(String(255))
+    cron_hour = Column(String(255))
+    cron_minute = Column(String(255))
+    cron_second = Column(String(255))
+    start_date = Column(String(255))
+    end_date = Column(String(255))
+
+    interval_expr = Column(String(255))
+
+    date_run_date = Column(String(255))
+    is_active = Column(Boolean)
+    is_running = Column(Boolean)
+
+
+class Condition(Model, AuditMixinNullable, ImportMixin):
+
+    """ORM model for warn condition"""
+
+    __tablename__ = 'warn_condition'
+    id = Column(Integer, primary_key=True)
+    warn_scheduler_id = Column(Integer, ForeignKey('warn_scheduler.id'))
+    dashboard_id = Column(Integer, ForeignKey('dashboards.id'))
+    slice_id = Column(Integer, ForeignKey('slices.id'))
+    metric = Column(String(255))
+    expr = Column(String(255))
+    receive_address = Column(String(255))
+    send_slice_id = Column(Integer, ForeignKey('slices.id'))

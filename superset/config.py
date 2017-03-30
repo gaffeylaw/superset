@@ -40,6 +40,13 @@ SUPERSET_WEBSERVER_TIMEOUT = 60
 CUSTOM_SECURITY_MANAGER = None
 # ---------------------------------------------------------
 
+# send mail log path
+SEND_MAIL_LOG = '/supersetLog/mail.log'
+
+# set ip and port
+SERVER_ADDRESS = 'localhost'
+SERVER_PORT = '8088'
+
 # Your App secret key
 SECRET_KEY = '\2\1thisismyscretkey\1\2\e\y\y\h'  # noqa
 
@@ -47,7 +54,7 @@ SECRET_KEY = '\2\1thisismyscretkey\1\2\e\y\y\h'  # noqa
 # SQLALCHEMY_DATABASE_URI = 'sqlite:///' + os.path.join(DATA_DIR, 'superset.db')
 # SQLALCHEMY_DATABASE_URI = 'mysql+pymysql://root:root@localhost/superset'
 # SQLALCHEMY_DATABASE_URI = 'postgresql://root:password@localhost/myapp'
-SQLALCHEMY_DATABASE_URI = 'mysql+pymysql://root:rootroot@localhost:3306/superset'
+SQLALCHEMY_DATABASE_URI = 'mysql+pymysql://root:123123@localhost:3306/supersetScheduler'
 
 # The limit of queries fetched for query search
 QUERY_SEARCH_LIMIT = 1000
