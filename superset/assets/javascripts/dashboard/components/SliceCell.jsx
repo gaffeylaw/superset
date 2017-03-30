@@ -20,10 +20,10 @@ function SliceCell({ expandedSlices, removeSlice, slice, doPrint, isManager }) {
             <div className="pull-right">
               {isManager &&
                 <span>
-                  <a title="Move chart" data-toggle="tooltip">
+                  <a title="移动报表" data-toggle="tooltip">
                     <i className="fa fa-arrows drag" />
                   </a>
-                  <a className="refresh" title="Force refresh data" data-toggle="tooltip">
+                  <a className="refresh" title="刷新数据" data-toggle="tooltip">
                     <i className="fa fa-repeat" />
                   </a>
                 </span>
@@ -41,17 +41,17 @@ function SliceCell({ expandedSlices, removeSlice, slice, doPrint, isManager }) {
                 <span>
                   <a
                     href={slice.edit_url}
-                    title="Edit chart"
+                    title="编辑报表"
                     data-toggle="tooltip"
                   >
                     <i className="fa fa-pencil" />
                   </a>
-                  <a href={slice.slice_url} title="Explore chart" data-toggle="tooltip">
+                  <a href={slice.slice_url} title="导航至切片" data-toggle="tooltip">
                     <i className="fa fa-share" />
                   </a>
                 </span>
               }
-              <a title="print chart" data-toggle="tooltip">
+              <a title="打印报表" data-toggle="tooltip">
                 <i
                   className="fa fa-print"
                   onClick={() => { doPrint(slice.slice_id); }}
@@ -60,7 +60,7 @@ function SliceCell({ expandedSlices, removeSlice, slice, doPrint, isManager }) {
               {isManager &&
                 <a
                   className="remove-chart"
-                  title="Remove chart from dashboard"
+                  title="移除报表"
                   data-toggle="tooltip"
                 >
                   <i

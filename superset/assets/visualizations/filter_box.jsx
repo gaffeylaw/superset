@@ -95,7 +95,7 @@ class FilterBox extends React.Component {
         float: 'left', paddingLeft: '15px' }}>
           {filter}
           <Select
-            placeholder={`Select [${filter}]`}
+            placeholder={`[${filter}]`}
             key={filter}
             multi={multi}
             value={this.state.selectedValues[filter]}

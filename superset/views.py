@@ -1146,27 +1146,27 @@ class PortalModelView(SupersetModelView, DeleteMixin):  # noqa
         'portal_href': _("portal_href"),
     }
 
-appbuilder.add_view(
-    PortalModelManageView,
-    "Portal Manage",
-    label= _("manage"),
-    icon="fa-wrench",
-    category="Portal",
-    category_label=_("Portal"),
-    category_icon='fa-user',
-)
+# appbuilder.add_view(
+#     PortalModelManageView,
+#     "Portal Manage",
+#     label= _("manage"),
+#     icon="fa-wrench",
+#     category="Portal",
+#     category_label=_("Portal"),
+#     category_icon='fa-user',
+# )
 
-appbuilder.add_view(
-    PortalModelView,
-    "Portal list",
-    label=__("to_view"),
-    icon="fa-database",
-    category="Portal",
-    category_label=__("Portal"),
-    category_icon='fa-user',
-)
+# appbuilder.add_view(
+#     PortalModelView,
+#     "Portal list",
+#     label=__("to_view"),
+#     icon="fa-database",
+#     category="Portal",
+#     category_label=__("Portal"),
+#     category_icon='fa-user',
+# )
 
-appbuilder.add_separator("Portal")
+# appbuilder.add_separator("Portal")
 
 
 class R(BaseSupersetView):
@@ -3365,19 +3365,19 @@ appbuilder.add_link(
 
 # appbuilder.add_separator("Warn")
 
-appbuilder.add_link(
-    'My Email',
-    href='/superset/myEmail/show',
-    category_icon="fa-flask",
-    icon="fa-flask",
-    category='Warn')
+# appbuilder.add_link(
+#     'My Email',
+#     href='/superset/myEmail/show',
+#     category_icon="fa-flask",
+#     icon="fa-flask",
+#     category='Warn')
 
-appbuilder.add_link(
-    'My Scheduler',
-    href='/superset/mySchedulers/list/1',
-    icon="fa-search",
-    category_icon="fa-flask",
-    category='Warn')
+# appbuilder.add_link(
+#     'My Scheduler',
+#     href='/superset/mySchedulers/list/1',
+#     icon="fa-search",
+#     category_icon="fa-flask",
+#     category='Warn')
 
 @app.after_request
 def apply_caching(response):
