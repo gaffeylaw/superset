@@ -35,16 +35,13 @@ class AgGrid extends React.Component {
     };
     this.gridOptions = {
       paginationPageSize: this.props.form_data.pageSize,
-      // onModelUpdated: function () {
-      // 		console.log('event onModelUpdated received');
-      // },
       rowBuffer: 10, // no need to set this, the default is fine for almost all scenarios
       floatingTopRowData: [],
       floatingBottomRowData: [],
       // columnDefs: this.initColumnDefs(),
-      rowGroupPanelShow: 'always',
+      // rowGroupPanelShow: 'always',
       enableColResize: true,
-      pivotPanelShow: 'always',
+      // pivotPanelShow: 'always',
     };
     if (this.props.form_data.isPivot !== 'true') {
       // table

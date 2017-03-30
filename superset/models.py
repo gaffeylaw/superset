@@ -1141,9 +1141,13 @@ class SqlaTable(Model, Queryable, AuditMixinNullable, ImportMixin):
         else:
             qry = qry.where(and_(*where_clause_and))
         qry = qry.having(and_(*having_clause_and))
-        if groupby:
-            qry = qry.order_by(desc(main_metric_expr))
-        elif orderby:
+        # if groupby:
+        #     qry = qry.order_by(desc(main_metric_expr))
+        # elif orderby:
+        #     for col, ascending in orderby:
+        #         direction = asc if ascending else desc
+        #         qry = qry.order_by(direction(col))
+        if orderby:
             for col, ascending in orderby:
                 direction = asc if ascending else desc
                 qry = qry.order_by(direction(col))
