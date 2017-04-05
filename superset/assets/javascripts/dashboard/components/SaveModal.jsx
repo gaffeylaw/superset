@@ -81,7 +81,7 @@ class SaveModal extends React.PureComponent {
     const positions = dashboard.reactGridLayout.serialize();
     const data = {
       positions,
-      css: this.state.css,
+      css: this.props.css,
       expanded_slices: expandedSlices,
     };
     let url = null;

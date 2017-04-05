@@ -790,7 +790,8 @@ function tableVis(slice, flag) {
         pageLength,
         aaSorting: [],
         searching: fd.include_search,
-        bInfo: false,
+        info: true, //页脚信息
+        autoWidth: true, //自动宽度
         scrollY: height + 'px',
         scrollCollapse: true,
         scrollX: true,
@@ -803,7 +804,10 @@ function tableVis(slice, flag) {
               last: '最后一页',  
               next: '下一页',  
               previous: '上一页',  
-          }, 
+          },
+          info: '第 _PAGE_ 页 / 总 _PAGES_ 页, 共 _TOTAL_ 条数据',
+          infoEmpty: '没有数据',
+          infoFiltered: '(过滤总条数 _MAX_ 条)' 
       }  
       });
       fixDataTableBodyHeight(

@@ -38,7 +38,7 @@ class FilterBox extends React.Component {
       if (Array.isArray(options)) {
         vals = options.map((opt) => opt.value);
       } else {
-        vals = options.value;
+        vals = [options.value];
       }
     }
     const selectedValues = Object.assign({}, this.state.selectedValues);
@@ -90,6 +90,12 @@ class FilterBox extends React.Component {
       maxes[filter] = d3.max(data, function (d) {
         return d.metric;
       });
+      let filterValue = this.state.selectedValues[filter];
+      if (!multi) {
+        if (this.state.selectedValues[filter] != undefined) {
+          filterValue = this.state.selectedValues[filter][0];
+        }
+      }
       return (
         <div key={filter} className="m-b-5" style={{ width: `${styles.width}`,
         float: 'left', paddingLeft: '15px' }}>
@@ -98,7 +104,7 @@ class FilterBox extends React.Component {
             placeholder={`[${filter}]`}
             key={filter}
             multi={multi}
-            value={this.state.selectedValues[filter]}
+            value={filterValue}
             options={data.map((opt) => {
               const perc = Math.round((opt.metric / maxes[opt.filter]) * 100);
               const backgroundImage = (

@@ -186,7 +186,7 @@ class ChartContainer extends React.Component {
           id={this.props.containerId}
           ref={(ref) => { this.chartContainerRef = ref; }}
           className={this.props.viz_type}
-          style={{ overflowX: 'auto' }}
+          style={{ overflowX: 'auto', minHeight: '300px' }}
         />
       </div>
     );

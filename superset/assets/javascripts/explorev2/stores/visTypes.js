@@ -281,18 +281,12 @@ const visTypes = {
         ],
       },
       {
-        label: 'NOT GROUPED BY',
-        description: 'Use this section if you want to query atomic rows',
-        fieldSetRows: [
-          ['all_columns', 'order_by_cols'],
-        ],
-      },
-      {
         label: 'Options',
         fieldSetRows: [
           ['table_timestamp_format'],
           ['row_limit'],
           ['page_length'],
+          ['order_by_cols'],
           ['include_search', 'table_filter'],
         ],
       },

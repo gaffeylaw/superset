@@ -123,6 +123,8 @@ class BaseViz(object):
             del d['slice_id']
         if 'standalone' in d:
             del d['standalone']
+        if 'extra_filters' in d:
+            del d['extra_filters']
         d.update(kwargs)
         # Remove unchecked checkboxes because HTML is weird like that
         od = MultiDict()
@@ -428,16 +430,13 @@ class TableViz(BaseViz):
         'label': _("GROUP BY"),
         'description': _('Use this section if you want a query that aggregates'),
         'fields': ('groupby', 'metrics')
-    }, {
-        'label': _("NOT GROUPED BY"),
-        'description': _('Use this section if you want to query atomic rows'),
-        'fields': ('all_columns', 'order_by_cols'),
-    }, {
+    },{
         'label': _("Options"),
         'fields': (
             'table_timestamp_format',
             'row_limit',
             'page_length',
+            'order_by_cols',
             ('include_search', 'table_filter'),
         )
     })
@@ -458,8 +457,8 @@ class TableViz(BaseViz):
         if fd.get('all_columns'):
             d['columns'] = fd.get('all_columns')
             d['groupby'] = []
-            order_by_cols = fd.get('order_by_cols') or []
-            d['orderby'] = [json.loads(t) for t in order_by_cols]
+        order_by_cols = fd.get('order_by_cols') or []
+        d['orderby'] = [json.loads(t) for t in order_by_cols]
         return d
 
     def get_df(self, query_obj=None):
