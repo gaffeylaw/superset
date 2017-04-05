@@ -34,6 +34,7 @@ class AgGrid extends React.Component {
       quickFilterText: null,
     };
     this.gridOptions = {
+      pagination: true,
       paginationPageSize: this.props.form_data.pageSize,
       rowBuffer: 10, // no need to set this, the default is fine for almost all scenarios
       floatingTopRowData: [],
@@ -432,14 +433,11 @@ class AgGrid extends React.Component {
       getRows: function (params) {
         setTimeout (function () {
           rowsThisPage = allOfTheData.slice(params.startRow, params.endRow);
-          let lastRow = -1;
-          if (allOfTheData.length <= params.endRow) {
-            lastRow = allOfTheData.length;
-          }
-          params.successCallback(rowsThisPage, lastRow);
+          params.successCallback(rowsThisPage, allOfTheData.length);
         }, 500);
       },
     };
+    
     this.setState({ rowData: this.dataSource });
     this.gridOptions.api.setDatasource(dataSource);
   }
@@ -447,7 +445,7 @@ class AgGrid extends React.Component {
   render() {
     const themeTemplate = (
       <div style={{ height: '30px', float: 'left' }}>
-        主题:
+        主题:&nbsp;
         <select onChange={this.onThemeChanged.bind(this)} value={this.state.gridTheme}>
           <option value="ag-blue">blue</option>
           <option value="ag-bootstrap">bootstrap</option>
@@ -459,7 +457,7 @@ class AgGrid extends React.Component {
 
     const pageSizeTemplate = (
       <div style={{ height: '30px', marginLeft: '30px', float: 'left' }}>
-        页大小:
+        页大小:&nbsp;
         <select
           onChange={this.onPageSizeChanged.bind(this)}
           value={this.gridOptions.paginationPageSize}
@@ -475,11 +473,11 @@ class AgGrid extends React.Component {
 
     const filterTemplate = (
       <div style={{ height: '30px', marginLeft: '30px', float: 'left' }}>
-        筛选:
+        筛选:&nbsp;
         <input
           type="text"
           onChange={this.onQuickFilterText.bind(this)}
-          placeholder="Type text to filter..." style={{ height: '22px' }}
+          placeholder="" style={{ height: '22px' }}
         />
       </div>
     );
