@@ -98,15 +98,10 @@ function tableVis(slice, flag) {
               vals.push(val);
             }
           }
-
           slc[extCol] = vals;
-          console.log(extCol)
-          console.log(slc[extCol])
         }
         filter[filterId] = slc;
-        console.log(JSON.stringify(filter))
       }
-      console.log(JSON.stringify(filter))
       url += '?preselect_filters=' + JSON.stringify(filter);
       return url;
     }
