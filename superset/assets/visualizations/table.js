@@ -84,24 +84,29 @@ function tableVis(slice, flag) {
       //     }
       //   }
       const filter = {};
-      for (let i = 0; i < groupby.length; i++) {
-        const extCol = groupby[i];
-        for (let j = 0; j < dash.slcs.length; j++) {
-          const sliceId = dash.slcs[j].sliceId;
+      for (let j = 0; j < dash.slcs.length; j++) {
+        const filterId = dash.slcs[j].sliceId;
+        const slc = {};
+        for (let i = 0; i < groupby.length; i++) {
           const vals = [];
+          const extCol = groupby[i];
           const val = (groupbyValue === null
               ? clickTarget.parentNode.childNodes[i].textContent : groupbyValue[i]);
           for (let k = 0; k < dash.slcs[j].columns.length; k++) {
             // make slice column equals dashboard filter column
             if (extCol === dash.slcs[j].columns[k].extCol) {
-              const slc = {};
               vals.push(val);
-              slc[extCol] = vals;
-              filter[sliceId] = slc;
             }
           }
+
+          slc[extCol] = vals;
+          console.log(extCol)
+          console.log(slc[extCol])
         }
+        filter[filterId] = slc;
+        console.log(JSON.stringify(filter))
       }
+      console.log(JSON.stringify(filter))
       url += '?preselect_filters=' + JSON.stringify(filter);
       return url;
     }

@@ -93,6 +93,7 @@ from apscheduler.schedulers.blocking import BlockingScheduler
 scheduler = BlockingScheduler()
 url = 'sqlite:////supersetLog/scheduler.sqlite'
 scheduler.add_jobstore('sqlalchemy', url=url)
+# if apper 'extra' does not exits ...upgrade pip  and command pip install -U pip --force-reinstall
 
 # set scheduler to app.config
 app.config.update(
