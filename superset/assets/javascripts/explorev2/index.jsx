@@ -6,6 +6,9 @@ import { createStore, applyMiddleware, compose } from 'redux';
 import { Provider } from 'react-redux';
 import thunk from 'redux-thunk';
 import { now } from '../modules/dates';
+import zh_CN from './stores/zh_CN';
+import en_US from './stores/en_US';
+import { chooseMessage, chooseLocale} from './stores/language';
 
 // jquery and bootstrap required to make bootstrap dropdown menu's work
 const $ = window.$ = require('jquery'); // eslint-disable-line
@@ -260,6 +263,10 @@ function getPivotSettings(form_data, datasource_type) {
 
 bootstrappedState.viz.form_data.pivotSetting =
   getPivotSettings(bootstrappedState.viz.form_data, bootstrapData.datasource_type);
+
+bootstrappedState.viz.form_data.localeMessage = chooseMessage();
+  console.log(bootstrappedState.viz.form_data.localeMessage);
+  console.log(chooseMessage())
 
 function parsePinned(form_data) {
   const pinned = {

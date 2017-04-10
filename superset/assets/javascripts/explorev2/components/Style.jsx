@@ -2,6 +2,16 @@ import React from 'react';
 // import { Tab, Row, Col, Nav, NavItem } from 'react-bootstrap';
 import Select from 'react-select';
 import { Button } from 'react-bootstrap';
+import { render } from 'react-dom';
+import zh_CN from '../stores/zh_CN';
+import en_US from '../stores/en_US';
+import intl from 'intl';
+import en from 'react-intl/locale-data/en';
+import zh from 'react-intl/locale-data/zh';
+import { injectIntl, intlShape, defineMessages, IntlProvider,
+  FormattedMessage, addLocaleData } from 'react-intl';
+import { chooseMessage, chooseLocale} from '../stores/language';
+addLocaleData([...en, ...zh]);
 
 const propTypes = {
   actions: React.PropTypes.object.isRequired,
@@ -12,15 +22,7 @@ const propTypes = {
 export default class Style extends React.Component {
   constructor(props) {
     super(props);
-    const iconChoices = [{ key: '无', value: '' },
-                         { key: '上升(单箭头)', value: 'fa fa-arrow-up' },
-                         { key: '下降(单箭头)', value: 'fa fa-arrow-down' },
-                         { key: '上升(双箭头)', value: 'fa fa-angle-double-up' },
-                         { key: '下降(双箭头)', value: 'fa fa-angle-double-down' },
-                         { key: '条形图', value: 'fa fa-bar-chart' },
-                         { key: '折线图', value: 'fa fa-line-chart' },
-                         { key: '饼状图', value: 'fa fa-pie-chart' },
-                         { key: '区域图', value: 'fa fa-area-chart' }];
+    const iconChoices = chooseLocale == 'cn' ? zh_CN.iconChoices : en_US.iconChoices;
     this.state = {
       iconChoices,
     };
@@ -52,60 +54,79 @@ export default class Style extends React.Component {
   }
   render() {
     return (
-      <div>
-        <div className="row space-1">
-          <Select
-            className="col-lg-7"
-            multi={false}
-            name="select-column"
-            placeholder="指标"
-            options={this.props.form_data.metrics.map((o) => ({ value: o, label: o }))}
-            value={this.props.style.metric}
-            autosize={false}
-            onChange={this.changeMetric.bind(this, this.props.style)}
-          />
-          <div className="col-lg-5">
-            <input
-              type="text"
-              onChange={this.changeExpr.bind(this, this.props.style)}
-              value={this.props.style.expr}
-              className="form-control input-sm"
-              placeholder="阀值"
-            />
-          </div>
-        </div>
-        <div className="row space-1">
-          <div className="col-lg-7">
-            <input
-              type="text"
-              onChange={this.changeValue.bind(this, this.props.style)}
-              value={this.props.style.value}
-              className="form-control input-sm"
-              placeholder="样式"
-            />
-          </div>
-          <Select
-            className="col-lg-4"
-            multi={false}
-            name="select-column"
-            placeholder="图标"
-            options={this.state.iconChoices.map((o) => ({ label: o.key, value: o.value }))}
-            optionRenderer={this.renderOption.bind(this)}
-            value={this.props.style.icon}
-            autosize={false}
-            onChange={this.changeIcon.bind(this, this.props.style)}
-          />
-          <div className="col-lg-1">
-            <Button
-              id="remove-button"
-              bsSize="small"
-              onClick={this.removeStyle.bind(this, this.props.style)}
+      <IntlProvider 
+        locale={ chooseLocale() } 
+        messages={ chooseMessage() }
+       >
+        <div>
+          <div className="row space-1">
+            <FormattedMessage
+              id = 'metric'
             >
-              <i className="fa fa-minus" />
-            </Button>
+              {(message) =><Select
+                className="col-lg-7"
+                multi={false}
+                name="select-column"
+                placeholder={message}
+                options={this.props.form_data.metrics.map((o) => ({ value: o, label: o }))}
+                value={this.props.style.metric}
+                autosize={false}
+                onChange={this.changeMetric.bind(this, this.props.style)}
+              />}
+            </FormattedMessage>
+            <div className="col-lg-5">
+              <FormattedMessage
+                id = 'threshold'
+              >
+              {(message) => 
+                <input tyle = "text" placeholder={ message }
+                onChange={this.changeExpr.bind(this, this.props.style)}
+                value={this.props.style.expr}
+                className="form-control input-sm"
+              />}
+              </FormattedMessage>
+            </div>
+          </div>
+          <div className="row space-1">
+            <div className="col-lg-7">
+              <FormattedMessage
+                id = 'style'
+              >
+              {(message) => 
+                <input tyle = "text" placeholder={ message }
+                onChange={this.changeValue.bind(this, this.props.style)}
+                value={this.props.style.value}
+                className="form-control input-sm"
+              />}
+              </FormattedMessage>
+            </div>
+            <FormattedMessage
+              id = 'icon'
+            >
+              {(message) =><Select
+                className="col-lg-4"
+                multi={false}
+                name="select-column"
+                placeholder={message}
+                options={this.state.iconChoices.map((o) => ({ label: o.key, value: o.value }))}
+                optionRenderer={this.renderOption.bind(this)}
+                value={this.props.style.icon}
+                autosize={false}
+                onChange={this.changeIcon.bind(this, this.props.style)}
+              />}
+            </FormattedMessage>
+            <div className="col-lg-1">
+              <Button
+                id="remove-button"
+                bsSize="small"
+                onClick={this.removeStyle.bind(this, this.props.style)}
+              >
+                <i className="fa fa-minus" />
+              </Button>
+            </div>
           </div>
         </div>
-      </div>
+        </IntlProvider>
     );
   }
 }

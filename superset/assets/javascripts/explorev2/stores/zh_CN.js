@@ -1,0 +1,60 @@
+const zh_CN = {
+    header_style: '表头样式',
+    table_style: '表样式',
+    col_style: '列样式:',
+    add_col_style: ' 添加列样式',
+    metric: '指标',
+    style: '样式',
+    threshold : '阀值',
+    icon: '图标',
+    base_style: '基本样式',
+    condition_style: '条件样式',
+    compare_style: '列间比较',
+    slice_navigator: '切片导航',
+    ag_setting: 'ag-grid设置',
+    add_base_style: ' 添加基本样式',
+    add_condition_style: ' 添加条件样式',
+    add_compare_style: ' 添加列间比较',
+    add_slice_navigator: ' 添加导航',
+    grid_theme : 'grid主题:',
+    theme: '主题',
+    page_count: '页面条数',
+    count: '条数',
+    frozen_left: '冻结左边',
+    frozen_col: '选择列',
+    frozen_right: '冻结右边',
+    enable_piovttable: '启用数据透视表',
+    add_table_header_setting: ' 添加表头设置',
+    metric1: '指标1',
+    metric2: '指标2',
+    compare_expressoin: '表达式(用x,y表示两列)',
+    iconChoices: [
+        { key: '无', value: '' },
+        { key: '上升(单箭头)', value: 'fa fa-arrow-up' },
+        { key: '下降(单箭头)', value: 'fa fa-arrow-down' },
+        { key: '上升(双箭头)', value: 'fa fa-angle-double-up' },
+        { key: '下降(双箭头)', value: 'fa fa-angle-double-down' },
+        { key: '条形图', value: 'fa fa-bar-chart' },
+        { key: '折线图', value: 'fa fa-line-chart' },
+        { key: '饼状图', value: 'fa fa-pie-chart' },
+        { key: '区域图', value: 'fa fa-area-chart' }
+    ],
+    navigateChoices: [
+        { key: '报表', value: 'dashboard' },
+        { key: '切片', value: 'slice' }
+    ],
+    openChoices: [
+        { key: '弹框', value: 'modal' },
+        { key: '新窗口', value: 'newWindow' }
+    ],
+    navigate_slice: '导航切片',
+    navigate_dashboard: '导航报表',
+    width: '宽度',
+    height: '高度',
+    navigate_type: '导航类型',
+    open_type: '打开方式',
+    viz_type_description: '要显示的可视化类型',
+    
+}
+
+export default zh_CN;  
