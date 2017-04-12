@@ -1852,7 +1852,6 @@ class FilterBoxViz(BaseViz):
         'fields': (
             ('date_filter', None),
             'groupby',
-            'metric',
         )
     },)
     form_overrides = {
@@ -1868,8 +1867,9 @@ class FilterBoxViz(BaseViz):
         groupby = self.form_data.get('groupby')
         if len(groupby) < 1 and not self.form_data.get('date_filter'):
             raise Exception("Pick at least one filter field")
-        qry['metrics'] = [
-            self.form_data['metric']]
+        # qry['metrics'] = [
+        #     self.form_data['metric']]
+        qry['viz_type'] = 'filter_box'
         return qry
 
     def get_data(self):

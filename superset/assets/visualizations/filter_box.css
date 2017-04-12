@@ -30,3 +30,6 @@ ul.select2-results div.filter_box{
 .m-b-5 {
     margin-bottom: 5px;
 }
+.datePicker {
+    height: 30px;
+}
