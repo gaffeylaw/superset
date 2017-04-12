@@ -94,6 +94,7 @@ class FilterBox extends React.Component {
               showMonthDropdown 
               showYearDropdown
               isClearable={true}
+              placeholderText={'  [' + field.replace('__', '') + ']'}
             />
           </div>
         )

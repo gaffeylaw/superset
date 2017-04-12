@@ -182,7 +182,11 @@ class BaseViz(object):
         # If the datetime format is unix, the parse will use the corresponding
         # parsing logic.
         if df is None or df.empty:
-            raise utils.NoDataException("没有数据")
+            try:
+                if query_obj['viz_type'] == 'filter_box':
+                    pass
+            except Exception as e:
+                raise utils.NoDataException("没有数据")
         else:
             if DTTM_ALIAS in df.columns:
                 if timestamp_format in ("epoch_s", "epoch_ms"):
@@ -1852,6 +1856,7 @@ class FilterBoxViz(BaseViz):
         'fields': (
             ('date_filter', None),
             'groupby',
+            'metric',
         )
     },)
     form_overrides = {
@@ -1867,8 +1872,8 @@ class FilterBoxViz(BaseViz):
         groupby = self.form_data.get('groupby')
         if len(groupby) < 1 and not self.form_data.get('date_filter'):
             raise Exception("Pick at least one filter field")
-        # qry['metrics'] = [
-        #     self.form_data['metric']]
+        qry['metrics'] = [
+            self.form_data['metric']]
         qry['viz_type'] = 'filter_box'
         return qry
 
@@ -1903,8 +1908,7 @@ class FilterBoxViz(BaseViz):
                     'filter': flt,
                     'metric': 0
                 } for row in l
-            ] 
-            
+            ]
         # for flt in filters:
         #     print("===========")
         #     print(flt)
