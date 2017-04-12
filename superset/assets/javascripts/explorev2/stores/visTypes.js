@@ -635,6 +635,7 @@ const visTypes = {
         fieldSetRows: [
           ['date_filter'],
           ['groupby'],
+          ['metric'],
         ],
       },
     ],

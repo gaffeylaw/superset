@@ -151,72 +151,71 @@ export function dashboardContainer(dashboard) {
         const thisObj = this;
         filterBoxData.forEach(f => {
           const fd = f.formData;
-          if (!fd.date_filter) {
-            // string filter
-            const defaultValues = [];
-            for (let i = 1; i < 10; i++) {
-              if (fd[`promptDefaultValue_id_${i}`]) {
-                defaultValues.push({
-                  id: fd[`promptDefaultValue_id_${i}`],
-                  field: fd[`promptDefaultValue_field_${i}`],
-                  type: fd[`promptDefaultValue_type_${i}`],
-                  value1: fd[`promptDefaultValue_value1_${i}`],
-                  value2: fd[`promptDefaultValue_value2_${i}`],
+          // string filter
+          const defaultValues = [];
+          for (let i = 1; i < 10; i++) {
+            if (fd[`promptDefaultValue_id_${i}`]) {
+              defaultValues.push({
+                id: fd[`promptDefaultValue_id_${i}`],
+                field: fd[`promptDefaultValue_field_${i}`],
+                type: fd[`promptDefaultValue_type_${i}`],
+                value1: fd[`promptDefaultValue_value1_${i}`],
+                value2: fd[`promptDefaultValue_value2_${i}`],
+              });
+            }
+          }
+          console.info(defaultValues);
+          // array to json(example: [ {name:'dz'}, {age: 21} ] => { name: 'dz', age: 21 })
+          const d = {};
+          for (const m in defaultValues) {
+            let field;
+            let type;
+            let value = '';
+            for (const n in defaultValues[m]) {
+              if (n === 'field') {
+                field = defaultValues[m][n];
+              }
+              if (n === 'type') {
+                type = defaultValues[m][n];
+              }
+              // get default value from set
+              if (n === 'value1' && type === 'true') {
+                value = defaultValues[m][n];
+                if (value !== '') {
+                  d[field] = value.split(',');
+                  thisObj.setDefaultValue(d, f.sliceId);
+                }
+              }
+              // get default value from sql query
+              if (n === 'value2' && type === 'false') {
+                const sql = defaultValues[m][n];
+                $.ajax({
+                  url: '/superset/prompt/query',
+                  type: 'POST',
+                  data: { sql: sql },
+                  dataType: 'json',
+                  success: function(data) {
+                    if (data.length > 0) {
+                      for (let i = 0; i < data.length; i++) {
+                        for (const k in data[i]) {
+                          value += data[i][k] + ',';
+                        }
+                      }
+                      value = value.substr(0, value.length - 1);
+                      d[field] = value.split(',');
+                      thisObj.setDefaultValue(d, f.sliceId);
+                    }
+                  },
+                  error: function() {
+                    alert('error');
+                  },
                 });
               }
             }
-            // console.info(defaultValues);
-            // array to json(example: [ {name:'dz'}, {age: 21} ] => { name: 'dz', age: 21 })
-            const d = {};
-            for (const m in defaultValues) {
-              let field;
-              let type;
-              let value = '';
-              for (const n in defaultValues[m]) {
-                if (n === 'field') {
-                  field = defaultValues[m][n];
-                }
-                if (n === 'type') {
-                  type = defaultValues[m][n];
-                }
-                // get default value from set
-                if (n === 'value1' && type === 'true') {
-                  value = defaultValues[m][n];
-                  if (value !== '') {
-                    d[field] = value.split(',');
-                    thisObj.setDefaultValue(d, f.sliceId);
-                  }
-                }
-                // get default value from sql query
-                if (n === 'value2' && type === 'false') {
-                  const sql = defaultValues[m][n];
-                  $.ajax({
-                    url: '/superset/prompt/query',
-                    type: 'POST',
-                    data: { sql: sql },
-                    dataType: 'json',
-                    success: function(data) {
-                      if (data.length > 0) {
-                        for (let i = 0; i < data.length; i++) {
-                          for (const k in data[i]) {
-                            value += data[i][k] + ',';
-                          }
-                        }
-                        value = value.substr(0, value.length - 1);
-                        d[field] = value.split(',');
-                        thisObj.setDefaultValue(d, f.sliceId);
-                      }
-                    },
-                    error: function() {
-                      alert('error');
-                    },
-                  });
-                }
-              }
-            }
-          } else {
+          }
+          
+          if (fd.date_filter) {
             // date filter
-            const d = {};
             d['__from'] = fd.promptDateFrom === '' ? null : fd.promptDateFrom;
             d['__to'] = fd.promptDateTo === '' ? null : fd.promptDateTo;
             thisObj.setDefaultValue(d, f.sliceId);
@@ -236,7 +235,7 @@ export function dashboardContainer(dashboard) {
       }
     },
     setDefaultValue(d, sliceId) {
-      // console.info(d);
+      console.info(d);
       if (d !== undefined && d !== '') {
         for (const col in d) {
           this.setFilter(sliceId, col, d[col], false, false);
