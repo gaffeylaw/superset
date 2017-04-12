@@ -4,12 +4,13 @@ import d3 from 'd3';
 
 import React from 'react';
 import ReactDOM from 'react-dom';
-
 import Select from 'react-select';
 import '../stylesheets/react-select/select.less';
-
 import './filter_box.css';
-import { TIME_CHOICES } from './constants.js';
+// import { TIME_CHOICES } from './constants.js';
+var DatePicker = require('react-datepicker');
+var moment = require('moment');
+require('react-datepicker/dist/react-datepicker.css');
 
 const propTypes = {
   origSelectedValues: React.PropTypes.object,
@@ -32,13 +33,23 @@ class FilterBox extends React.Component {
       selectedValues: props.origSelectedValues,
     };
   }
-  changeFilter(filter, options) {
+  changeFilter(filter, isDateFilter, options) {
     let vals = null;
-    if (options) {
-      if (Array.isArray(options)) {
-        vals = options.map((opt) => opt.value);
+    if (!isDateFilter) {
+      // string filter
+      if (options) {
+        if (Array.isArray(options)) {
+          vals = options.map((opt) => opt.value);
+        } else {
+          vals = [options.value];
+        }
+      }
+    } else {
+      // date filter
+      if (options !== null) {
+        vals = options.format("YYYY/MM/DD");
       } else {
-        vals = [options.value];
+        vals = options;
       }
     }
     const selectedValues = Object.assign({}, this.state.selectedValues);
@@ -50,22 +61,42 @@ class FilterBox extends React.Component {
     let dateFilter;
     if (this.props.showDateFilter) {
       dateFilter = ['__from', '__to'].map((field) => {
-        const val = this.state.selectedValues[field];
-        const choices = TIME_CHOICES.slice();
-        if (!choices.includes(val)) {
-          choices.push(val);
-        }
-        const options = choices.map((s) => ({ value: s, label: s }));
+        // const val = this.state.selectedValues[field];
+        // const choices = TIME_CHOICES.slice();
+        // if (!choices.includes(val)) {
+        //   choices.push(val);
+        // }
+        // const options = choices.map((s) => ({ value: s, label: s }));
+        // let filterValue = this.state.selectedValues[field];
+        // return (
+        //   <div className="m-b-5" style={{ float: 'left', paddingLeft: '15px' }}>
+        //     {field.replace('__', '')}
+        //     <Select.Creatable
+        //       style={{ width: 200 }}
+        //       options={options}
+        //       value={filterValue}
+        //       onChange={this.changeFilter.bind(this, field, true)}
+        //     />
+        //   </div>
+        // );
+        const filterValue = this.state.selectedValues[field] == undefined ? null: this.state.selectedValues[field];
+        const momentValue = filterValue === null ? null : moment(filterValue);
+        // console.info(momentValue);
         return (
           <div className="m-b-5" style={{ float: 'left', paddingLeft: '15px' }}>
-            {field.replace('__', '')}
-            <Select.Creatable
-              options={options}
-              value={this.state.selectedValues[field]}
-              onChange={this.changeFilter.bind(this, field)}
+            {field.replace('__', '')} <br/>
+            <DatePicker
+              className="datePicker"
+              selected={momentValue}
+              onChange={ this.changeFilter.bind(this, field, true) }
+              dateFormat="YYYY/MM/DD"
+              maxDate={moment()}
+              showMonthDropdown 
+              showYearDropdown
+              isClearable={true}
             />
           </div>
-        );
+        )
       });
     }
     const filters = Object.keys(this.props.filtersChoices).map((filter) => {
@@ -117,7 +148,7 @@ class FilterBox extends React.Component {
               };
               return { value: opt.id, label: opt.id, style };
             })}
-            onChange={this.changeFilter.bind(this, filter)}
+            onChange={this.changeFilter.bind(this, filter, false)}
           />
         </div>
       );
@@ -154,11 +185,6 @@ function filterBox(slice) {
             width: fd[`promptColStyle_width_${i}`],
           });
         }
-        /* eslint no-param-reassign: 0 */
-        delete fd[`promptColStyle_id_${i}`];
-        delete fd[`promptColStyle_field_${i}`];
-        delete fd[`promptColStyle_multi_${i}`];
-        delete fd[`promptColStyle_width_${i}`];
       }
       // Making sure the ordering of the fields matches the setting in the
       // dropdown as it may have been shuffled while serialized to json

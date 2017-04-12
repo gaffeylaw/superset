@@ -3155,6 +3155,52 @@ class Superset(BaseSupersetView):
             data['status'] = 'false'
         return json.dumps(data)
 
+    @expose("/prompt/query", methods=['GET', 'POST'])
+    def propmtQuery(self):
+        try:
+            sql = request.form.get('sql')
+            # parse database name from sql
+            import re
+            regex = '\w+\.\w+\.\w+'
+            pattern = re.compile(regex)
+            list = pattern.findall(sql)
+            database_name = list[0].split('.')[0]
+            sql = sql.replace(list[0], list[0][(list[0].find('.') + 1):])
+            print(sql)
+
+            session = db.session()
+            mydb = session.query(models.Database)\
+                .filter_by(database_name=database_name).first()
+
+            if not mydb:
+                return 'Database with id {} is missing.'\
+                    .format(database_name)
+
+            if not self.database_access(mydb):
+                return get_database_access_error_msg(database_name)
+            session.commit()
+
+            client_id = str(time.time()).replace('.', '')[2:13]
+            query = models.Query(
+                database_id=int(mydb.id),
+                limit=int(app.config.get('SQL_MAX_ROW', None)),
+                sql=sql,
+                user_id=int(g.user.get_id()),
+                client_id=client_id,
+            )
+            session.add(query)
+            session.commit()
+            query_id = query.id
+
+            try:
+                result = sql_lab.get_sql_results(query_id, return_results=True)
+            except Exception as e:
+                logging.exception(e)
+                return json.dumps({'error': "{}".format(e)})
+            return json.dumps(json.loads(result)['data'])
+        except Exception as e:
+            return utils.error_msg_from_exception(e)
+
     @expose("/rest/api")
     def restIndex(self):
         return render_template('rest.html')

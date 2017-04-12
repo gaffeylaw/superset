@@ -113,6 +113,19 @@ function formatPromptColStyles(promptColStyles) {
   return params;
 }
 
+function formatPromptDefaultValues(promptDefaultValues) {
+  const params = {};
+  for (let i = 0; i < promptDefaultValues.length; i++) {
+    const promptDefaultValue = promptDefaultValues[i];
+    params[`promptDefaultValue_id_${i + 1}`] = promptDefaultValue.id;
+    params[`promptDefaultValue_field_${i + 1}`] = promptDefaultValue.field;
+    params[`promptDefaultValue_type_${i + 1}`] = promptDefaultValue.type;
+    params[`promptDefaultValue_value1_${i + 1}`] = promptDefaultValue.value1;
+    params[`promptDefaultValue_value2_${i + 1}`] = promptDefaultValue.value2;
+  }
+  return params;
+}
+
 export function getParamObject(form_data, datasource_type, saveNewSlice) {
   const data = {
     // V2 tag temporarily for updating url
@@ -127,7 +140,7 @@ export function getParamObject(form_data, datasource_type, saveNewSlice) {
       && field !== 'filters' && field !== 'styles' && field !== 'baseStyle'
       && field !== 'colStyles' && field !== 'compares' && field !== 'navigates'
       && field !== 'slices' && field !== 'headerSettings' && field !== 'pivotSetting'
-      && field !== 'pinned'
+      && field !== 'pinned' && field !== 'promptColStyles' && field !== 'promptDefaultValues'
       && !(saveNewSlice && field === 'slice_name')) {
       data[field] = form_data[field];
     }
@@ -152,6 +165,8 @@ export function getParamObject(form_data, datasource_type, saveNewSlice) {
   Object.assign(data, pinnedParams);
   const promptColStyleParams = formatPromptColStyles(form_data.promptColStyles);
   Object.assign(data, promptColStyleParams);
+  const promptDefaultValueParams = formatPromptDefaultValues(form_data.promptDefaultValues);
+  Object.assign(data, promptDefaultValueParams);
   return data;
 }
 

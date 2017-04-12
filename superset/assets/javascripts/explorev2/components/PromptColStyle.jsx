@@ -63,7 +63,7 @@ export default class PromptColStyle extends React.Component {
             className="col-lg-6"
             multi={false}
             name="select-column"
-            placeholder="单选/多选"
+            placeholder="是否多选"
             options={this.state.multiChoices.map((o) => ({ value: o.value, label: o.key }))}
             value={this.props.promptColStyle.multi}
             autosize={false}

@@ -1019,7 +1019,8 @@ class SqlaTable(Model, Queryable, AuditMixinNullable, ImportMixin):
             inner_to_dttm=None,
             orderby=None,
             extras=None,
-            columns=None):
+            columns=None,
+            viz_type=None):
         """Querying any sqla table from this common interface"""
         template_processor = get_template_processor(
             table=self, database=self.database)
@@ -1126,7 +1127,8 @@ class SqlaTable(Model, Queryable, AuditMixinNullable, ImportMixin):
                 cond = col_obj.sqla_col.in_(values)
                 if op == 'not in':
                     cond = ~cond
-                where_clause_and.append(cond)
+                if viz_type != 'filter_box':
+                    where_clause_and.append(cond)
         if extras:
             where = extras.get('where')
             if where:
@@ -1193,6 +1195,7 @@ class SqlaTable(Model, Queryable, AuditMixinNullable, ImportMixin):
             con=engine
         )
         sql = sqlparse.format(sql, reindent=True)
+        # print(sql)
         return QueryResult(
             df=df, duration=datetime.now() - qry_start_dttm, query=sql)
 

@@ -324,6 +324,45 @@ export const exploreReducer = function (state, action) {
         { viz: Object.assign({}, state.viz, { form_data: newFormData }) }
       );
     },
+    [actions.ADD_PROMPT_DEFAULT_VALUE]() {
+      const newFormData = addToArr(state.viz.form_data, 'promptDefaultValues',
+                                    action.promptDefaultValue);
+      const newState = Object.assign(
+        {},
+        state,
+        { viz: Object.assign({}, state.viz, { form_data: newFormData }) }
+      );
+      return newState;
+    },
+    [actions.REMOVE_PROMPT_DEFAULT_VALUE]() {
+      const newFormData = removeFromArr(state.viz.form_data, 'promptDefaultValues',
+                                        action.promptDefaultValue);
+      return Object.assign(
+        {},
+        state,
+        { viz: Object.assign({}, state.viz, { form_data: newFormData }) }
+      );
+    },
+    [actions.CHANGE_PROMPT_DEFAULT_VALUE]() {
+      const changes = {};
+      changes[action.field] = action.value;
+      const newFormData = alterInArr(
+        state.viz.form_data, 'promptDefaultValues', action.promptDefaultValue, changes);
+      return Object.assign(
+        {},
+        state,
+        { viz: Object.assign({}, state.viz, { form_data: newFormData }) }
+      );
+    },
+    [actions.CHANGE_PROMPT_DATE_FILTER]() {
+      const newFormData = state.viz.form_data;
+      newFormData[action.field] = action.value;
+      return Object.assign(
+        {},
+        state,
+        { viz: Object.assign({}, state.viz, { form_data: newFormData }) }
+      );
+    },
     [actions.SET_FIELD_VALUE]() {
       const newFormData = action.key === 'datasource' ?
         defaultFormData(state.viz.form_data.viz_type, action.datasource_type) :
