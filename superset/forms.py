@@ -1384,6 +1384,22 @@ class FormFactory(object):
                 setattr(
                     QueryForm, 'promptColStyle_width_' + str(i),
                     TextField(_("Super"), default=''))
+
+                # promptDefaultValue
+                setattr(QueryForm, 'promptDefaultValue_id_' + str(i),
+                    TextField(_("Super"), default=''))
+                setattr(QueryForm, 'promptDefaultValue_field_' + str(i),
+                    SelectField(
+                        default=promptColumnChoices[0][0],
+                        choices=promptColumnChoices))
+                setattr(QueryForm, 'promptDefaultValue_type_' + str(i),
+                    SelectField(
+                        default=promptColStyleMultiChoices[0][0],
+                        choices=promptColStyleMultiChoices))
+                setattr(QueryForm, 'promptDefaultValue_value1_' + str(i),
+                    TextField(_("Super"), default=''))
+                setattr(QueryForm, 'promptDefaultValue_value2_' + str(i),
+                    TextField(_("Super"), default=''))
             
             for i in range(20):
                 # headerSetting
@@ -1456,7 +1472,12 @@ class FormFactory(object):
                     SelectField(
                         default=viz.datasource.metrics_combo[0][0],
                         choices=viz.datasource.metrics_combo))
-
+            
+            # prompt default date
+            setattr(QueryForm, 'promptDateFrom',
+                    TextField(_("Super"), default=''))
+            setattr(QueryForm, 'promptDateTo',
+                    TextField(_("Super"), default=''))
 
         if time_fields:
             QueryForm.fieldsets = ({

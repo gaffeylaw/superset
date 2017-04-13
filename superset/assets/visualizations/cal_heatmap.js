@@ -12,12 +12,11 @@ function calHeatmap(slice) {
 
   const render = function () {
     d3.json(slice.jsonEndpoint(), function (error, json) {
-      const data = json.data;
       if (error !== null) {
         slice.error(error.responseText, error);
         return;
       }
-
+      const data = json.data;
       div.selectAll('*').remove();
       const cal = new CalHeatMap();
 

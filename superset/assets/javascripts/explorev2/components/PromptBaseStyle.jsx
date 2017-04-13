@@ -14,8 +14,8 @@ export default class PromptBaseStyle extends React.Component {
     this.props.actions.addPromptColStyle({
       id: shortid.generate(),
       field: null,
-      multi: 'false',
-      width: '120px',
+      multi: 'true',
+      width: '200px',
     });
   }
   render() {
@@ -34,9 +34,8 @@ export default class PromptBaseStyle extends React.Component {
     });
     return (
       <div>
-        <div className="col-lg-12" style={{ marginTop: '10px' }}>
-          <span style={{ fontSize: '14px' }}>字段样式:</span>
-          <div style={{ marginTop: '10px' }}>
+        <div className="col-lg-12">
+          <div>
             {colStylesDiv}
           </div>
           <div className="row space-2">

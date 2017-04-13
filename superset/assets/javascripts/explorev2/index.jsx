@@ -318,6 +318,38 @@ function getPromptColStyles(form_data, datasource_type) {
 bootstrappedState.viz.form_data.promptColStyles =
   getPromptColStyles(bootstrappedState.viz.form_data, bootstrapData.datasource_type);
 
+function parsePromptDefaultValues(form_data) {
+  const promptDefaultValues = [];
+  for (let i = 0; i < 10; i++) {
+    if (form_data[`promptDefaultValue_id_${i}`]) {
+      promptDefaultValues.push({
+        id: form_data[`promptDefaultValue_id_${i}`],
+        field: form_data[`promptDefaultValue_field_${i}`],
+        type: form_data[`promptDefaultValue_type_${i}`],
+        value1: form_data[`promptDefaultValue_value1_${i}`],
+        value2: form_data[`promptDefaultValue_value2_${i}`],
+      });
+    }
+    /* eslint no-param-reassign: 0 */
+    delete form_data[`promptDefaultValue_id_${i}`];
+    delete form_data[`promptDefaultValue_field_${i}`];
+    delete form_data[`promptDefaultValue_type_${i}`];
+    delete form_data[`promptDefaultValue_value1_${i}`];
+    delete form_data[`promptDefaultValue_value2_${i}`];
+  }
+  return promptDefaultValues;
+}
+
+function getPromptDefaultValues(form_data, datasource_type) {
+  if (datasource_type === 'table') {
+    return parsePromptDefaultValues(form_data);
+  }
+  return null;
+}
+
+bootstrappedState.viz.form_data.promptDefaultValues =
+  getPromptDefaultValues(bootstrappedState.viz.form_data, bootstrapData.datasource_type);
+
 const store = createStore(exploreReducer, bootstrappedState,
   compose(applyMiddleware(thunk))
 );

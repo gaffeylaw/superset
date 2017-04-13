@@ -112,6 +112,7 @@ export function dashboardContainer(dashboard) {
     filters: {},
     init() {
       this.sliceObjects = [];
+      this.filterBoxData = [];
       dashboard.slices.forEach((data) => {
         if (data.error) {
           const html = '<div class="alert alert-danger">' + data.error + '</div>';
@@ -123,8 +124,15 @@ export function dashboardContainer(dashboard) {
           });
           this.sliceObjects.push(slice);
         }
+        // get clerk default value
+        if (data.viz_name === 'filter_box') {
+          this.filterBoxData.push({
+            sliceId: data.slice_id,
+            formData: data.form_data,
+          });
+        }
       });
-      this.loadPreSelectFilters();
+      this.loadPreSelectFilters(this.filterBoxData);
       this.startPeriodicRender(0);
       this.bindResizeToWindowResize();
     },
@@ -136,20 +144,110 @@ export function dashboardContainer(dashboard) {
       onBeforeUnload(false);
       $('#alert-container').html('');
     },
-    loadPreSelectFilters() {
-      try {
-        const filters = JSON.parse(px.getParam('preselect_filters') || '{}');
-        for (const sliceId in filters) {
-          for (const col in filters[sliceId]) {
-            this.setFilter(sliceId, col, filters[sliceId][col], false, false);
+    loadPreSelectFilters(filterBoxData) {
+      // console.info(filterBoxData);
+      // set clerk default value
+      if (px.getParam('preselect_filters') === '' && filterBoxData.length > 0) {
+        const thisObj = this;
+        filterBoxData.forEach(f => {
+          const fd = f.formData;
+          // string filter
+          const defaultValues = [];
+          for (let i = 1; i < 10; i++) {
+            if (fd[`promptDefaultValue_id_${i}`]) {
+              defaultValues.push({
+                id: fd[`promptDefaultValue_id_${i}`],
+                field: fd[`promptDefaultValue_field_${i}`],
+                type: fd[`promptDefaultValue_type_${i}`],
+                value1: fd[`promptDefaultValue_value1_${i}`],
+                value2: fd[`promptDefaultValue_value2_${i}`],
+              });
+            }
           }
+          console.info(defaultValues);
+          // array to json(example: [ {name:'dz'}, {age: 21} ] => { name: 'dz', age: 21 })
+          const d = {};
+          for (const m in defaultValues) {
+            let field;
+            let type;
+            let value = '';
+            for (const n in defaultValues[m]) {
+              if (n === 'field') {
+                field = defaultValues[m][n];
+              }
+              if (n === 'type') {
+                type = defaultValues[m][n];
+              }
+              // get default value from set
+              if (n === 'value1' && type === 'true') {
+                value = defaultValues[m][n];
+                if (value !== '') {
+                  d[field] = value.split(',');
+                  thisObj.setDefaultValue(d, f.sliceId);
+                }
+              }
+              // get default value from sql query
+              if (n === 'value2' && type === 'false') {
+                const sql = defaultValues[m][n];
+                $.ajax({
+                  url: '/superset/prompt/query',
+                  type: 'POST',
+                  data: { sql: sql },
+                  dataType: 'json',
+                  success: function(data) {
+                    if (data.length > 0) {
+                      for (let i = 0; i < data.length; i++) {
+                        for (const k in data[i]) {
+                          value += data[i][k] + ',';
+                        }
+                      }
+                      value = value.substr(0, value.length - 1);
+                      d[field] = value.split(',');
+                      thisObj.setDefaultValue(d, f.sliceId);
+                    }
+                  },
+                  error: function() {
+                    alert('error');
+                  },
+                });
+              }
+            }
+          }
+          
+          if (fd.date_filter) {
+            // date filter
+            d['__from'] = fd.promptDateFrom === '' ? null : fd.promptDateFrom;
+            d['__to'] = fd.promptDateTo === '' ? null : fd.promptDateTo;
+            thisObj.setDefaultValue(d, f.sliceId);
+          }
+        });
+      } else {
+        try {
+          const filters = JSON.parse(px.getParam('preselect_filters') || '{}');
+          for (const sliceId in filters) {
+            for (const col in filters[sliceId]) {
+              this.setFilter(sliceId, col, filters[sliceId][col], false, false);
+            }
+          }
+        } catch (e) {
+          // console.error(e);
         }
-      } catch (e) {
-        // console.error(e);
+      }
+    },
+    setDefaultValue(d, sliceId) {
+      console.info(d);
+      if (d !== undefined && d !== '') {
+        for (const col in d) {
+          this.setFilter(sliceId, col, d[col], false, false);
+        }
       }
     },
     setFilter(sliceId, col, vals, refresh) {
+      // console.info('setFilter......')
       this.addFilter(sliceId, col, vals, false, refresh);
+    },
+    getFilters() {
+      return this.filters;
     },
     done(slice) {
       const refresh = slice.getWidgetHeader().find('.refresh');

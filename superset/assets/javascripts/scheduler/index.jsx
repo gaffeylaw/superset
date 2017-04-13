@@ -33,7 +33,8 @@ const initialState = function (type, schedulers, dashboards, scheduler,
 const state = Object.assign(
   initialState(bootstrapData.type, bootstrapData.schedulers, bootstrapData.dashboards,
               bootstrapData.scheduler, bootstrapData.condition, bootstrapData.slices,
-              bootstrapData.mailPage, bootstrapData.mail), {
+              bootstrapData.mailPage, bootstrapData.mail), 
+  {
     type: bootstrapData.type,
     schedulers: bootstrapData.schedulers,
     dashboards: bootstrapData.dashboards,

@@ -180,6 +180,7 @@ class ControlPanelsContainer extends React.Component {
                   actions={this.props.actions}
                   form_data={this.props.form_data}
                   promptColStyles={this.props.form_data.promptColStyles}
+                  promptDefaultValues={this.props.form_data.promptDefaultValues}
                 />
               }
 

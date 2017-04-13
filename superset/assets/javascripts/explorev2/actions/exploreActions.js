@@ -218,6 +218,26 @@ export function changePromptColStyle(promptColStyle, field, value) {
   return { type: CHANGE_PROMPT_COL_STYLE, promptColStyle, field, value };
 }
 
+export const ADD_PROMPT_DEFAULT_VALUE = 'ADD_PROMPT_DEFAULT_VALUE';
+export function addPromptDefaultValue(promptDefaultValue) {
+  return { type: ADD_PROMPT_DEFAULT_VALUE, promptDefaultValue };
+}
+
+export const REMOVE_PROMPT_DEFAULT_VALUE = 'REMOVE_PROMPT_DEFAULT_VALUE';
+export function removePromptDefaultValue(promptDefaultValue) {
+  return { type: REMOVE_PROMPT_DEFAULT_VALUE, promptDefaultValue };
+}
+
+export const CHANGE_PROMPT_DEFAULT_VALUE = 'CHANGE_PROMPT_DEFAULT_VALUE';
+export function changePromptDefaultValue(promptDefaultValue, field, value) {
+  return { type: CHANGE_PROMPT_DEFAULT_VALUE, promptDefaultValue, field, value };
+}
+
+export const CHANGE_PROMPT_DATE_FILTER = 'CHANGE_PROMPT_DATE_FILTER';
+export function changePromptDateFilter(field, value) {
+  return { type: CHANGE_PROMPT_DATE_FILTER, field, value };
+}
+
 export const SET_FIELD_VALUE = 'SET_FIELD_VALUE';
 export function setFieldValue(datasource_type, key, value, label) {
   return { type: SET_FIELD_VALUE, datasource_type, key, value, label };
