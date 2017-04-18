@@ -13,7 +13,7 @@ export default class Style extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      iconChoices:this.props.form_data.localeMessage.iconChoices,
+      iconChoices: this.props.form_data.localeMessage.iconChoices,
       localMessage: this.props.form_data.localeMessage,
     };
   }
@@ -44,60 +44,60 @@ export default class Style extends React.Component {
   }
   render() {
     return (
-        <div>
-          <div className="row space-1">
-            <Select
-              className="col-lg-7"
-              multi={false}
-              name="select-column"
-              placeholder={this.state.localMessage.metric}
-              options={this.props.form_data.metrics.map((o) => ({ value: o, label: o }))}
-              value={this.props.style.metric}
-              autosize={false}
-              onChange={this.changeMetric.bind(this, this.props.style)}
+      <div>
+        <div className="row space-1">
+          <Select
+            className="col-lg-7"
+            multi={false}
+            name="select-column"
+            placeholder={this.state.localMessage.metric}
+            options={this.props.form_data.metrics.map((o) => ({ value: o, label: o }))}
+            value={this.props.style.metric}
+            autosize={false}
+            onChange={this.changeMetric.bind(this, this.props.style)}
+          />
+          <div className="col-lg-5">
+            <input
+              type="text"
+              onChange={this.changeExpr.bind(this, this.props.style)}
+              value={this.props.style.expr}
+              className="form-control input-sm"
+              placeholder={this.state.localMessage.threshold}
             />
-            <div className="col-lg-5">
-              <input
-                type="text"
-                onChange={this.changeExpr.bind(this, this.props.style)}
-                value={this.props.style.expr}
-                className="form-control input-sm"
-                placeholder={this.state.localMessage.threshold}
-              />
-            </div>
-          </div>
-          <div className="row space-1">
-            <div className="col-lg-7">
-              <input
-                type="text"
-                onChange={this.changeValue.bind(this, this.props.style)}
-                value={this.props.style.value}
-                className="form-control input-sm"
-                placeholder={this.state.localMessage.style}
-              />
-            </div>
-            <Select
-              className="col-lg-4"
-              multi={false}
-              name="select-column"
-              placeholder={this.state.localMessage.icon}
-              options={this.state.iconChoices.map((o) => ({ label: o.key, value: o.value }))}
-              optionRenderer={this.renderOption.bind(this)}
-              value={this.props.style.icon}
-              autosize={false}
-              onChange={this.changeIcon.bind(this, this.props.style)}
-            />
-            <div className="col-lg-1">
-              <Button
-                id="remove-button"
-                bsSize="small"
-                onClick={this.removeStyle.bind(this, this.props.style)}
-              >
-                <i className="fa fa-minus" />
-              </Button>
-            </div>
           </div>
         </div>
+        <div className="row space-1">
+          <div className="col-lg-7">
+            <input
+              type="text"
+              onChange={this.changeValue.bind(this, this.props.style)}
+              value={this.props.style.value}
+              className="form-control input-sm"
+              placeholder={this.state.localMessage.style}
+            />
+          </div>
+          <Select
+            className="col-lg-4"
+            multi={false}
+            name="select-column"
+            placeholder={this.state.localMessage.icon}
+            options={this.state.iconChoices.map((o) => ({ label: o.key, value: o.value }))}
+            optionRenderer={this.renderOption.bind(this)}
+            value={this.props.style.icon}
+            autosize={false}
+            onChange={this.changeIcon.bind(this, this.props.style)}
+          />
+          <div className="col-lg-1">
+            <Button
+              id="remove-button"
+              bsSize="small"
+              onClick={this.removeStyle.bind(this, this.props.style)}
+            >
+              <i className="fa fa-minus" />
+            </Button>
+          </div>
+        </div>
+      </div>
     );
   }
 }

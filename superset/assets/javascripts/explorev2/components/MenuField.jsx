@@ -210,7 +210,7 @@ export default class MenuField extends React.Component {
               <MenuItem key="bar">
                 <span>
                   <i className="fa fa-bar-chart icon-span"></i>
-                  <font size="2">{localMessage.bar}</font>
+                  <font size="2">{localMessage.bar2}</font>
                 </span>
               </MenuItem>
             </SubMenu>
@@ -224,7 +224,7 @@ export default class MenuField extends React.Component {
               <MenuItem key="line">
                 <span>
                   <i className="fa fa-line-chart icon-span"></i>
-                  <font size="2">{localMessage.line}</font>
+                  <font size="2">{localMessage.line2}</font>
                 </span>
               </MenuItem>
               <MenuItem key="linePlusBar">
@@ -250,7 +250,7 @@ export default class MenuField extends React.Component {
               <MenuItem key="area">
                 <span>
                   <i className="fa fa-area-chart icon-span"></i>
-                  <font size="2">{localMessage.area}</font>
+                  <font size="2">{localMessage.area2}</font>
                 </span>
               </MenuItem>
               <MenuItem key="area1">

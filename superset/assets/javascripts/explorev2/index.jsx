@@ -8,7 +8,7 @@ import thunk from 'redux-thunk';
 import { now } from '../modules/dates';
 import zh_CN from './stores/zh_CN';
 import en_US from './stores/en_US';
-import { chooseMessage, chooseLocale} from './stores/language';
+import { chooseMessage } from './stores/language';
 
 // jquery and bootstrap required to make bootstrap dropdown menu's work
 const $ = window.$ = require('jquery'); // eslint-disable-line

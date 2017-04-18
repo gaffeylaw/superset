@@ -62,7 +62,7 @@ export default class Filter extends React.Component {
             className="col-lg-4"
             multi={false}
             name="select-op"
-            placeholder= {localMessage.select_operato}
+            placeholder={localMessage.select_operato}
             options={this.state.opChoices.map((o) => ({ value: o, label: o }))}
             value={this.props.filter.op}
             autosize={false}
@@ -74,7 +74,7 @@ export default class Filter extends React.Component {
               onChange={this.changeValue.bind(this, this.props.filter)}
               value={this.props.filter.value}
               className="form-control input-sm"
-              placeholder={ localMessage.filter_value }
+              placeholder={localMessage.filter_value}
             />
           </div>
           <div className="col-lg-2">

@@ -1,6 +1,6 @@
 import { formatSelectOptionsForRange, formatSelectOptions } from '../../modules/utils';
 import visTypes from './visTypes';
-import { chooseMessage, chooseLocale } from './language'; 
+import { chooseMessage } from './language';
 import zh_CN from './zh_CN';
 import en_US from './en_US';
 
@@ -574,7 +574,7 @@ export const fields = {
 
   line_interpolation: {
     type: 'SelectField',
-    label: localeMessage.line_interpolation ,
+    label: localeMessage.line_interpolation,
     choices: localeMessage.line_interpolation_choices,
     default: 'linear',
     description: localeMessage.line_interpolation_desc,

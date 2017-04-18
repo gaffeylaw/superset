@@ -36,7 +36,9 @@ export default class HeaderSetting extends React.Component {
       <div>
         <div className="row space-1">
           <div className="col-lg-12">
-            <span className="col-lg-2" style={{ marginTop: '5px' }}>{localMessage.parent_node}:</span>
+            <span className="col-lg-2" style={{ marginTop: '5px' }}>
+              {localMessage.parent_node}:
+            </span>
             <div className="col-lg-9">
               <input
                 type="text"
@@ -57,7 +59,9 @@ export default class HeaderSetting extends React.Component {
             </div>
           </div>
           <div className="col-lg-12">
-            <span className="col-lg-2" style={{ marginTop: '15px' }}>{localMessage.child_node}:</span>
+            <span className="col-lg-2" style={{ marginTop: '15px' }}>
+              {localMessage.child_node}:
+            </span>
             <Select
               className="col-lg-4"
               style={{ marginTop: '10px' }}
@@ -70,7 +74,9 @@ export default class HeaderSetting extends React.Component {
               autosize={false}
               onChange={this.changeChildren.bind(this, this.props.headerSetting)}
             />
-            <span className="col-lg-2" style={{ marginTop: '15px' }}>{localMessage.show_option}:</span>
+            <span className="col-lg-2" style={{ marginTop: '15px' }}>
+              {localMessage.show_option}:
+            </span>
             <Select
               className="col-lg-4"
               style={{ marginTop: '10px' }}

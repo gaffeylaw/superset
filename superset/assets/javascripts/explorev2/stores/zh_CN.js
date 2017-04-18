@@ -37,15 +37,15 @@ const zh_CN = {
     { key: '条形图', value: 'fa fa-bar-chart' },
     { key: '折线图', value: 'fa fa-line-chart' },
     { key: '饼状图', value: 'fa fa-pie-chart' },
-    { key: '区域图', value: 'fa fa-area-chart' }
+    { key: '区域图', value: 'fa fa-area-chart' },
   ],
   navigateChoices: [
     { key: '报表', value: 'dashboard' },
-    { key: '切片', value: 'slice' }
+    { key: '切片', value: 'slice' },
   ],
   openChoices: [
     { key: '弹框', value: 'modal' },
-    { key: '新窗口', value: 'newWindow' }
+    { key: '新窗口', value: 'newWindow' },
   ],
   navigate_slice: '导航切片',
   navigate_dashboard: '导航报表',
@@ -172,7 +172,7 @@ const zh_CN = {
     ['hour', '小时'],
     ['day', '天'],
     ['week', '周'],
-    ['month', '月']
+    ['month', '月'],
   ],
   subdomain_granularity_default: '天',
   subdomain_granularity_desc: '每个区域内方块表示的时间段。必须比区域时间段小，比时间粒度大。',
@@ -299,7 +299,7 @@ const zh_CN = {
   line_interpolation_choices: [
     ['linear', '折线'],
     ['basis', 'B样条曲线'],
-    ['cardinal', , '基本样条曲线'],
+    ['cardinal', '基本样条曲线'],
     ['monotone', '三次插值曲线'],
     ['step-before', '前阶梯线'],
     ['step-after', '后阶梯线'],
@@ -317,13 +317,13 @@ const zh_CN = {
   code_desc: '输入代码',
   pandas_aggfunc: '聚合函数',
   pandas_aggfunc_choices: [
-    ['sum','求和'],
-    ['mean','平均值'],
-    ['min','最小值'],
-    ['max','最大值'],
-    ['median','中间值'],
-    ['stdev','标准差'],
-    ['var','变量值'],
+    ['sum', '求和'],
+    ['mean', '平均值'],
+    ['min', '最小值'],
+    ['max', '最大值'],
+    ['median', '中间值'],
+    ['stdev', '标准差'],
+    ['var', '变量值'],
   ],
   pandas_aggfunc_default: '求和',
   pandas_aggfunc_desc: '透视时计算行和列的聚合函数',
@@ -365,12 +365,13 @@ const zh_CN = {
   num_period_compare_desc: '[整数]要比较的周期数，和粒度有关',
   period_ratio_type: '周期比类型',
   period_ratio_type_choices: [
-    ['factor','因子'], 
-    ['growth','增长'], 
-    ['value','值'],
-    ],
+    ['factor', '因子'],
+    ['growth', '增长'],
+    ['value', '值'],
+  ],
   period_ratio_type_default: '增长',
-  period_ratio_type_desc: '`因子` 表示（new / previous），`growth`是（（new / previous） - 1），`value`是（new-previous）',
+  period_ratio_type_desc: '`因子` 表示（new / previous），`growth`是（（new / previous） - 1），' +
+  '`value`是（new-previous）',
   time_compare: '时间飘移',
   time_compare_desc: '相关时间周期内的时间偏移。相对时间，如:  24 hours, 7 days, 56 weeks, 365 days',
   subheader: '子标题',
@@ -385,10 +386,10 @@ const zh_CN = {
   point_radius_desc: '不在簇中点的半径。选择`Auto`时根据最大的簇自动调整。',
   point_radius_unit: '点半径单位',
   point_radius_unit_choices: [
-    ['Pixels','像素'], 
-    ['Miles','英里'], 
-    ['Kilometers','公里'],
-    ],
+    ['Pixels', '像素'],
+    ['Miles', '英里'],
+    ['Kilometers', '公里'],
+  ],
   point_radius_unit_default: '像素',
   point_radius_unit_desc: '点半径的测量单位',
   global_opacity: '不透明度',
@@ -425,7 +426,6 @@ const zh_CN = {
   scatter_desc: '一个或多个散点显示',
   yAxis: 'Y轴',
   yAxis_desc: '选择Y轴',
-  y_axis_format: 'Y轴格式',
   y_axis_label1: 'Y1轴标签',
   y_axis_label2: 'Y1轴标签',
   y_domain1: 'Y1轴的域',
@@ -451,13 +451,13 @@ const zh_CN = {
   table: '表格',
   pivot_table: '数据透视表',
   dist_bar: '条形图',
-  bar: '条形图(T)',
+  bar2: '条形图(T)',
   multi: '线形图',
-  line: '线形图(T)',
+  line2: '线形图(T)',
   linePlusBar: '线形图(S)',
   compare: '线形图(VS)',
   linePlusBar1: '条线图',
-  area: '面积图',
+  area2: '面积图',
   area1: '面积图(T)',
   pie: '饼形图',
   bubble: '气泡图',
@@ -861,7 +861,6 @@ const zh_CN = {
   export_to_json: '导出到.json格式',
   export_to_csv: '导出为.csv格式',
   viz_type_description: '要显示的可视化类型',
+};
 
-}
-
-export default zh_CN
+export default zh_CN;

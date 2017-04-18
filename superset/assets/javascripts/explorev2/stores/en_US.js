@@ -37,15 +37,15 @@ const en_US = {
     { key: 'Bar-chart', value: 'fa fa-bar-chart' },
     { key: 'Line-chart', value: 'fa fa-line-chart' },
     { key: 'Pie-chart', value: 'fa fa-pie-chart' },
-    { key: 'Area-chart', value: 'fa fa-area-chart' }
+    { key: 'Area-chart', value: 'fa fa-area-chart' },
   ],
   navigateChoices: [
     { key: 'Dashboard', value: 'dashboard' },
-    { key: 'Slice', value: 'slice' }
+    { key: 'Slice', value: 'slice' },
   ],
   openChoices: [
     { key: 'Alert Modal', value: 'modal' },
-    { key: 'New Window', value: 'newWindow' }
+    { key: 'New Window', value: 'newWindow' },
   ],
   navigate_slice: 'Navigate to Slice',
   navigate_dashboard: 'Navigate to Dashboard',
@@ -182,7 +182,7 @@ const en_US = {
     ['hour', 'hour'],
     ['day', 'day'],
     ['week', 'week'],
-    ['month', 'month']
+    ['month', 'month'],
   ],
   subdomain_granularity_default: 'day',
   subdomain_granularity_desc: 'The time unit for each block. Should be a smaller unit than ' +
@@ -218,7 +218,7 @@ const en_US = {
   resample_fillmethod_choices: ['', 'ffill', 'bfill'],
   resample_fillmethod_desc: 'Pandas resample fill method',
   since: 'Since',
-    since_choices: [
+  since_choices: [
     ['1 hour ago', '1 hour ago'],
     ['12 hours ago', '12 hours ago'],
     ['1 day ago', '1 day ago'],
@@ -244,10 +244,10 @@ const en_US = {
   max_bubble_size: 'Max Bubble Size',
   whisker_options: 'Whisker/outlier options',
   whisker_options_choices: [
-    ['Tukey','Tukey'],
-    ['Min/max (no outliers)','Min/max (no outliers)'],
-    ['2/98 percentiles','2/98 percentiles'],
-    ['9/91 percentiles','9/91 percentiles'],
+    ['Tukey', 'Tukey'],
+    ['Min/max (no outliers)', 'Min/max (no outliers)'],
+    ['2/98 percentiles', '2/98 percentiles'],
+    ['9/91 percentiles', '9/91 percentiles'],
   ],
   whisker_options_default: 'Tukey',
   whisker_options_desc: 'Determines how whiskers and outliers are calculated.',
@@ -260,7 +260,7 @@ const en_US = {
   timeseries_limit_metric: 'Sort By',
   timeseries_limit_metric_desc: 'Metric used to define the top series',
   rolling_type: 'Rolling',
-    rolling_type_choices: [
+  rolling_type_choices: [
     ['None', 'None'],
     ['mean', 'mean'],
     ['sum', 'sum'],
@@ -319,9 +319,9 @@ const en_US = {
   markup_type_desc: 'Pick your favorite markup language',
   rotation: 'Rotation',
   rotation_choices: [
-    ['random','random'], 
-  ['flat','flat'],
-  ['square','square'],
+    ['random', 'random'],
+    ['flat', 'flat'],
+    ['square', 'square'],
   ],
   rotation_default: 'random',
   rotation_desc: 'Rotation to apply to words in the cloud',
@@ -329,7 +329,7 @@ const en_US = {
   line_interpolation_choices: [
     ['linear', 'linear'],
     ['basis', 'basis'],
-    ['cardinal', , 'cardinal'],
+    ['cardinal', 'cardinal'],
     ['monotone', 'monotone'],
     ['step-before', 'step-before'],
     ['step-after', 'step-after'],
@@ -348,13 +348,13 @@ const en_US = {
   code_desc: 'Put your code here',
   pandas_aggfunc: 'Aggregation function',
   pandas_aggfunc_choices: [
-    ['sum','sum'],
-    ['mean','mean'],
-    ['min','min'],
-    ['max','max'],
-    ['median','median'],
-    ['stdev','stdev'],
-    ['var','var'],
+    ['sum', 'sum'],
+    ['mean', 'mean'],
+    ['min', 'min'],
+    ['max', 'max'],
+    ['median', 'median'],
+    ['stdev', 'stdev'],
+    ['var', 'var'],
   ],
   pandas_aggfunc_default: 'sum',
   pandas_aggfunc_desc: 'Aggregate function to apply when pivoting and ' +
@@ -399,10 +399,10 @@ const en_US = {
   'this is relative to the granularity selected',
   period_ratio_type: 'Period Ratio Type',
   period_ratio_type_choices: [
-    ['factor','factor'], 
-    ['growth','growth'], 
-    ['value','value'],
-    ],
+    ['factor', 'factor'],
+    ['growth', 'growth'],
+    ['value', 'value'],
+  ],
   period_ratio_type_default: 'growth',
   period_ratio_type_desc: '`factor` means (new/previous), `growth` is ' +
   '((new/previous) - 1), `value` is (new-previous)',
@@ -429,11 +429,11 @@ const en_US = {
   'Either a numerical column or `Auto`, which scales the point based ' +
   'on the largest cluster',
   point_radius_unit: 'Point Radius Unit',
-    point_radius_unit_choices: [
-    ['Pixels','Pixels'], 
-    ['Miles','Miles'], 
-    ['Kilometers','Kilometers'],
-    ],
+  point_radius_unit_choices: [
+    ['Pixels', 'Pixels'],
+    ['Miles', 'Miles'],
+    ['Kilometers', 'Kilometers'],
+  ],
   point_radius_unit_default: 'Pixels',
   point_radius_unit_desc: 'The unit of measure for the specified point radius',
   global_opacity: 'Opacity',
@@ -471,7 +471,6 @@ const en_US = {
   scatter_desc: 'One or many scatters to display',
   yAxis: 'yAxis',
   yAxis_desc: 'choose the yAxias',
-  y_axis_format: 'Y axis format',
   y_axis_label1: 'Y1 Axis Label',
   y_axis_label2: 'Y2 Axis Label',
   y_domain1: 'Y1 domain',
@@ -497,13 +496,13 @@ const en_US = {
   table: 'Table',
   pivot_table: 'Piovt Table',
   dist_bar: 'Dist BAR',
-  bar: 'Bar',
+  bar2: 'Bar',
   multi: 'Multi',
-  line: 'Line',
+  line2: 'Line',
   linePlusBar: 'LinePlusBar',
   compare: 'Compare',
   linePlusBar1: 'Bar Chart',
-  area: 'Area',
+  area2: 'Area',
   area1: 'Area(T)',
   pie: 'Pie',
   bubble: 'Bubble',
@@ -589,10 +588,10 @@ const en_US = {
   sqlClause_desc: 'This section exposes ways to include snippets of SQL in your query',
   NVD3TimeSeries: 'Advanced Analytics',
   NVD3TimeSeries_fieldSetRows1: [
-        ['metrics'],
-        ['groupby'],
-        ['limit', 'timeseries_limit_metric'],
-      ],
+    ['metrics'],
+    ['groupby'],
+    ['limit', 'timeseries_limit_metric'],
+  ],
   NVD3TimeSeries_desc: 'This section contains options ' +
   'that allow for advanced analytical post processing ' +
   'of query results',
@@ -914,5 +913,5 @@ const en_US = {
   // explore
   export_to_json: 'Export to .json',
   export_to_csv: 'Export to .csv format',
-}
+};
 export default en_US;

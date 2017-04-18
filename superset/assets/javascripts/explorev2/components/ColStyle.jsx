@@ -28,39 +28,39 @@ export default class ColStyle extends React.Component {
   }
   render() {
     return (
-        <div>
-          <div className="row space-1">
-            <Select
-              className="col-lg-6"
-              multi={false}
-              name="select-column"
-              placeholder={this.state.localMessage.metric}
-              options={this.state.metricChoices.map((o) => ({ value: o, label: o }))}
-              value={this.props.colStyle.metric}
-              autosize={false}
-              onChange={this.changeMetric.bind(this, this.props.colStyle)}
+      <div>
+        <div className="row space-1">
+          <Select
+            className="col-lg-6"
+            multi={false}
+            name="select-column"
+            placeholder={this.state.localMessage.metric}
+            options={this.state.metricChoices.map((o) => ({ value: o, label: o }))}
+            value={this.props.colStyle.metric}
+            autosize={false}
+            onChange={this.changeMetric.bind(this, this.props.colStyle)}
+          />
+          <div className="col-lg-5">
+            <input
+              type="text"
+              onChange={this.changeValue.bind(this, this.props.colStyle)}
+              value={this.props.colStyle.value}
+              className="form-control input-sm"
+              placeholder={this.state.localMessage.style}
             />
-            <div className="col-lg-5">
-              <input
-                type="text"
-                onChange={this.changeValue.bind(this, this.props.colStyle)}
-                value={this.props.colStyle.value}
-                className="form-control input-sm"
-                placeholder={this.state.localMessage.style}
-              />
-            </div>
+          </div>
 
-            <div className="col-lg-1">
-              <Button
-                id="remove-button"
-                bsSize="small"
-                onClick={this.removeColStyle.bind(this, this.props.colStyle)}
-                >
-                <i className="fa fa-minus" />
-              </Button>
-            </div>
+          <div className="col-lg-1">
+            <Button
+              id="remove-button"
+              bsSize="small"
+              onClick={this.removeColStyle.bind(this, this.props.colStyle)}
+            >
+              <i className="fa fa-minus" />
+            </Button>
           </div>
         </div>
+      </div>
     );
   }
 }

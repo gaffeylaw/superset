@@ -1,4 +1,4 @@
-import { chooseMessage, chooseLocale } from './language';
+import { chooseMessage } from './language';
 import zh_CN from './zh_CN';
 import en_US from './en_US';
 
@@ -156,18 +156,18 @@ const visTypes = {
       {
         label: localeMessage.chart_options,
         description: localeMessage.tooltip_text,
-                fieldSetRows: [
-            ['groupby'],
-            ['line', 'yAxis1'],
-            ['bar', 'yAxis2'],
-            ['area', 'yAxis3'],
-            ['scatter', 'yAxis4'],
-            ['row_limit', 'bottom_margin'],
-            ['x_axis_label', 'x_axis_format'],
-            ['y_axis_label1', 'y_axis_format1'],
-            ['y_axis_label2', 'y_axis_format2'],
-            ['y_domain1', 'y_domain2'],
-            ['reduce_x_ticks', 'contribution'],
+        fieldSetRows: [
+          ['groupby'],
+          ['line', 'yAxis1'],
+          ['bar', 'yAxis2'],
+          ['area', 'yAxis3'],
+          ['scatter', 'yAxis4'],
+          ['row_limit', 'bottom_margin'],
+          ['x_axis_label', 'x_axis_format'],
+          ['y_axis_label1', 'y_axis_format1'],
+          ['y_axis_label2', 'y_axis_format2'],
+          ['y_domain1', 'y_domain2'],
+          ['reduce_x_ticks', 'contribution'],
         ],
       },
     ],
@@ -319,7 +319,7 @@ const visTypes = {
     controlPanelSections: [
       {
         label: null,
-        fieldSetRows:  [
+        fieldSetRows: [
           ['code'],
         ],
       },

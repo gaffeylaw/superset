@@ -4,9 +4,9 @@ import URLShortLinkButton from './URLShortLinkButton';
 import EmbedCodeButton from './EmbedCodeButton';
 import DisplayQueryButton from './DisplayQueryButton';
 import DownloadButton from './DownloadButton';
-import {chooseMessage} from '../../explorev2/stores/language';
-import {en_US} from '../../explorev2/stores/en_US';
-import {zh_CN} from '../../explorev2/stores/zh_CN';
+import { chooseMessage } from '../../explorev2/stores/language';
+import { en_US } from '../../explorev2/stores/en_US';
+import { zh_CN } from '../../explorev2/stores/zh_CN';
 
 const propTypes = {
   canDownload: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]).isRequired,

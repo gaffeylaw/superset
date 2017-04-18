@@ -24,7 +24,7 @@ export default class BaseStyle extends React.Component {
       value: null,
     });
   }
-  render() { 
+  render() {
     const colStylesDiv = [];
     let i = 0;
     this.props.colStyles.forEach((colStyle) => {
@@ -40,62 +40,62 @@ export default class BaseStyle extends React.Component {
     });
     const localMessage = this.props.form_data.localeMessage;
     return (
-        <div>
-          <div className="col-lg-12">
-            <div className="col-lg-2">
-              <span>
-               {localMessage.header_style}
-              </span>          
-            </div>
-            <div className="col-lg-10">
-              <input
-                type="text"
-                onChange={this.changeHeaderValue.bind(this, this.props.baseStyle)}
-                value={this.props.baseStyle.headerValue}
-                className="form-control input-sm"
-                placeholder={localMessage.header_style}
-              />
-            </div>
-          </div>
-
-          <div className="col-lg-12" style={{ marginTop: '20px' }}>
-            <div className="col-lg-2">
-              <span>
-                {localMessage.table_style}
-              </span>
-            </div>
-            <div className="col-lg-10">
-              <input
-                type="text"
-                onChange={this.changeBodyValue.bind(this, this.props.baseStyle)}
-                value={this.props.baseStyle.bodyValue}
-                className="form-control input-sm"
-                placeholder={localMessage.table_style}
-              />
-            </div>
-          </div>
-
-          <div className="col-lg-12" style={{ marginTop: '10px' }}>
-            <hr style={{ height: '1px', border: 'none', borderTop: '1px solid #555555' }} />
-            <span style={{ fontSize: '14px' }}>
-             {localMessage.col_style}
+      <div>
+        <div className="col-lg-12">
+          <div className="col-lg-2">
+            <span>
+              {localMessage.header_style}
             </span>
-            <div style={{ marginTop: '10px' }}>
-              {colStylesDiv}
-            </div>
-            <div className="row space-2">
-              <div className="col-lg-2">
-                <Button
-                  id="add-button"
-                  bsSize="sm"
-                  onClick={this.addColStyle.bind(this)}
-                >
-                  <i className="fa fa-plus" />  &nbsp; {localMessage.add_col_style}
-                </Button>
-              </div>
+          </div>
+          <div className="col-lg-10">
+            <input
+              type="text"
+              onChange={this.changeHeaderValue.bind(this, this.props.baseStyle)}
+              value={this.props.baseStyle.headerValue}
+              className="form-control input-sm"
+              placeholder={localMessage.header_style}
+            />
+          </div>
+        </div>
+
+        <div className="col-lg-12" style={{ marginTop: '20px' }}>
+          <div className="col-lg-2">
+            <span>
+              {localMessage.table_style}
+            </span>
+          </div>
+          <div className="col-lg-10">
+            <input
+              type="text"
+              onChange={this.changeBodyValue.bind(this, this.props.baseStyle)}
+              value={this.props.baseStyle.bodyValue}
+              className="form-control input-sm"
+              placeholder={localMessage.table_style}
+            />
+          </div>
+        </div>
+
+        <div className="col-lg-12" style={{ marginTop: '10px' }}>
+          <hr style={{ height: '1px', border: 'none', borderTop: '1px solid #555555' }} />
+          <span style={{ fontSize: '14px' }}>
+            {localMessage.col_style}
+          </span>
+          <div style={{ marginTop: '10px' }}>
+            {colStylesDiv}
+          </div>
+          <div className="row space-2">
+            <div className="col-lg-2">
+              <Button
+                id="add-button"
+                bsSize="sm"
+                onClick={this.addColStyle.bind(this)}
+              >
+                <i className="fa fa-plus" />  &nbsp; {localMessage.add_col_style}
+              </Button>
             </div>
           </div>
         </div>
+      </div>
     );
   }
 }

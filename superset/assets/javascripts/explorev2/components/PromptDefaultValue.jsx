@@ -65,7 +65,8 @@ export default class PromptDefaultValue extends React.Component {
             multi={false}
             name="select-column"
             placeholder={this.state.localMessage.choose_default_value}
-            options={this.state.localMessage.typeChoices.map((o) => ({ value: o.value, label: o.key }))}
+            options={this.state.localMessage.typeChoices.map((o) =>
+              ({ value: o.value, label: o.key }))}
             value={this.props.defaultValue.type}
             autosize={false}
             onChange={this.changeType.bind(this, this.props.defaultValue)}
