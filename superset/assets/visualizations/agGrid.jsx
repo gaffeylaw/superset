@@ -89,6 +89,7 @@ class AgGrid extends React.Component {
       const props = {
         headerName: columnName,
         field: columnName,
+        width: 100,
         enablePivot: true,
       };
 
@@ -442,6 +443,30 @@ class AgGrid extends React.Component {
     this.gridOptions.api.setDatasource(dataSource);
   }
 
+  exportCsv() {
+    var params = {
+      skipHeader: false,
+      columnGroups: true,
+      skipFooters: true,
+      skipGroups: false,
+      allColumns: true,
+      fileName: this.props.form_data.slice_name + '.csv'
+    };
+    this.gridOptions.api.exportDataAsCsv(params);
+  }
+
+  exportExcel() {
+    var params = {
+      skipHeader: false,
+      columnGroups: true,
+      skipFooters: true,
+      skipGroups: false,
+      allColumns: true,
+      fileName: this.props.form_data.slice_name
+    };
+    this.gridOptions.api.exportDataAsExcel(params);
+  }
+
   render() {
     const themeTemplate = (
       <div style={{ height: '30px', float: 'left' }}>
@@ -456,7 +481,7 @@ class AgGrid extends React.Component {
     );
 
     const pageSizeTemplate = (
-      <div style={{ height: '30px', marginLeft: '30px', float: 'left' }}>
+      <div style={{ height: '30px', marginLeft: '20px', float: 'left' }}>
         页大小:&nbsp;
         <select
           onChange={this.onPageSizeChanged.bind(this)}
@@ -472,13 +497,20 @@ class AgGrid extends React.Component {
     );
 
     const filterTemplate = (
-      <div style={{ height: '30px', marginLeft: '30px', float: 'left' }}>
+      <div style={{ height: '30px', marginLeft: '20px', float: 'left' }}>
         筛选:&nbsp;
         <input
           type="text"
           onChange={this.onQuickFilterText.bind(this)}
           placeholder="" style={{ height: '22px' }}
         />
+      </div>
+    );
+
+    const exportTemplate = (
+      <div style={{ height: '30px', float: 'left' }}>
+       <button style={{ marginLeft: '20px' }} onClick={this.exportCsv.bind(this)}>导出csv</button>
+       <button style={{ marginLeft: '20px' }} onClick={this.exportExcel.bind(this)}>导出excel</button>
       </div>
     );
 
@@ -515,6 +547,12 @@ class AgGrid extends React.Component {
           rowModelType="pagination"
           suppressAutoSize="true"
 
+          //remove filter
+          suppressMenuFilterPanel='true'
+          suppressMenuMainPanel='true'
+          suppressMenuColumnPanel='true'
+          suppressContextMenu='true'
+
           // all values as React props
           gridOptions={this.gridOptions}
 
@@ -530,6 +568,7 @@ class AgGrid extends React.Component {
           {themeTemplate}
           {pageSizeTemplate}
           {filterTemplate}
+          {exportTemplate}
         </div>
         {gridTemplate}
       </div>

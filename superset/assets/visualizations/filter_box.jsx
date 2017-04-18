@@ -134,6 +134,7 @@ class FilterBox extends React.Component {
           {filter}
           <Select
             placeholder={`[${filter}]`}
+            noResultsText='没有结果'
             key={filter}
             multi={multi}
             value={filterValue}

@@ -29,7 +29,7 @@ function calHeatmap(slice) {
           start: data.start,
           data: timestamps,
           itemSelector: slice.selector,
-          tooltip: true,
+          // tooltip: true,
           domain: data.domain,
           subDomain: data.subdomain,
           range: data.range,

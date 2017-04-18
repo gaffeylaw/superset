@@ -70,20 +70,33 @@ class GridLayout extends React.Component {
     this.props.dashboard.onChange();
   }
 
-  doPrint(sliceId) {
-    const bdhtml = window.document.body.innerHTML;
-    // remove scroll and change style
-    $('.slice_container').attr('class', 'mySlice');
-    if ($('.dataTables_scrollBody').length > 0) {
-      $('.dataTables_scrollHead').attr('style', 'border: 0px;');
-      $('.dataTables_scrollBody').attr('style', '');
+  doPrint(sliceId, slice) {
+    if (slice.form_data.viz_type == 'ag_grid') {
+      const bdhtml = window.document.body.innerHTML;
+      const height = (parseInt($('#lastRowOnPage').html()) - parseInt($('#firstRowOnPage').html()) + 1) * 22 + 30;
+      $('.slice_container').height(height + 100);
+      $('#centerRow').height(height);
+      const html = $('#centerRow').html();
+      console.info(html)
+      window.document.body.innerHTML = html;
+      window.print();
+      // window.document.body.innerHTML = bdhtml;
+      // window.location.reload();
+    } else {
+      const bdhtml = window.document.body.innerHTML;
+      // remove scroll and change style
+      $('.slice_container').attr('class', 'mySlice');
+      if ($('.dataTables_scrollBody').length > 0) {
+        $('.dataTables_scrollHead').attr('style', 'border: 0px;');
+        $('.dataTables_scrollBody').attr('style', '');
+      }
+      const html = $('#slice_' + sliceId + ' .mySlice').parent().parent()
+                  .html();
+      window.document.body.innerHTML = html;
+      window.print();
+      window.document.body.innerHTML = bdhtml;
+      window.location.reload();
     }
-    const html = $('#slice_' + sliceId + ' .mySlice').parent().parent()
-                .html();
-    window.document.body.innerHTML = html;
-    window.print();
-    window.document.body.innerHTML = bdhtml;
-    window.location.reload();
   }
 
   serialize() {
@@ -121,7 +134,7 @@ class GridLayout extends React.Component {
               slice={slice}
               removeSlice={this.removeSlice.bind(this, slice.slice_id)}
               expandedSlices={this.props.dashboard.metadata.expanded_slices}
-              doPrint={this.doPrint.bind(this, slice.slice_id)}
+              doPrint={this.doPrint.bind(this, slice.slice_id, slice)}
               isManager={this.props.isManager}
             />
           </div>
