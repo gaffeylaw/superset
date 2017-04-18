@@ -57,7 +57,7 @@ class Mail:
                 print('==============exception has occured=================')
                 # get html content
                 address = 'http://' + app.config.get('SERVER_ADDRESS') + ':' + app.config.get('SERVER_PORT')
-                cookie = 'session=' + cookies['session'] + ';domain=localhost'
+                cookie = 'session=' + cookies['session'] + ';domain=' + app.config.get('SERVER_ADDRESS')
                 pageContent = Mail.getPageContent(cookie, address, standalone_endpoint, viz_type)
                 htmlName = str(time.time()) + '.html'
                 # write pageContent to a html file

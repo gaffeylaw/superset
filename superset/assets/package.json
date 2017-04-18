@@ -101,7 +101,15 @@
     "supercluster": "https://github.com/georgeke/supercluster/tarball/ac3492737e7ce98e07af679623aad452373bbc40",
     "topojson": "^1.6.22",
     "victory": "^0.12.1",
+<<<<<<< HEAD
     "viewport-mercator-project": "^2.1.0"
+=======
+    "viewport-mercator-project": "^2.1.0",
+    "react-draggable-tab": "^0.8.1",
+    "ag-grid": "8.0.x",
+    "ag-grid-enterprise": "8.0.x",
+    "ag-grid-react": "8.0.x"
+>>>>>>> e878aa0b605a02195c02b5ca6f902e22bf3e9c2f
   },
   "devDependencies": {
     "babel": "^6.3.26",

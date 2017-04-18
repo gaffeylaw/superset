@@ -27,6 +27,7 @@ class PromptStyleModal extends React.Component {
     this.state = {
       flag: true,
       flag2: false,
+      localMessage: this.props.form_data.localeMessage,
     };
   }
 
@@ -69,7 +70,7 @@ class PromptStyleModal extends React.Component {
           actions={this.props.actions}
           form_data={this.props.form_data}
           defaultValue={defaultValue}
-        />
+          />
       );
     });
 
@@ -78,16 +79,22 @@ class PromptStyleModal extends React.Component {
         show
         onHide={this.props.onHide}
         bsStyle="large"
-      >
+        >
         <Modal.Header closeButton>
           <Modal.Title>
             <div>
               <ul className="nav navbar-nav" style={{ fontSize: '14px' }}>
                 <li id="li" className="active" style={{ backgroundColor: '#ccc' }}>
-                  <a onClick={this.changeModal.bind(this, 1)}>基本设置</a>
+                  <a onClick={this.changeModal.bind(this, 1)}>
+                    {this.state.localMessage.base_setting}
+                  </a>
                 </li>
-                <li id="li2"><a onClick={this.changeModal.bind(this, 2)}>字段缺省值</a></li>
-                <li id="li2"><a onClick={this.changeModal.bind(this, 3)}>日期缺省值</a></li>
+                <li id="li2"><a onClick={this.changeModal.bind(this, 2)}>
+                  {this.state.localMessage.field_default}
+                </a></li>
+                <li id="li2"><a onClick={this.changeModal.bind(this, 3)}>
+                  {this.state.localMessage.date_default}
+                </a></li>
               </ul>
             </div>
           </Modal.Title>
@@ -99,7 +106,7 @@ class PromptStyleModal extends React.Component {
                 actions={this.props.actions}
                 form_data={this.props.form_data}
                 promptColStyles={this.props.promptColStyles}
-              />
+                />
             </div>
           }
           {this.state.flag2 &&
@@ -113,8 +120,8 @@ class PromptStyleModal extends React.Component {
                     id="add-button"
                     bsSize="sm"
                     onClick={this.addPromptDefaultValue.bind(this)}
-                  >
-                    <i className="fa fa-plus" /> &nbsp; 添加缺省值
+                    >
+                    <i className="fa fa-plus" /> &nbsp; {this.state.localMessage.add_default}
                   </Button>
                 </div>
               </div>
@@ -125,7 +132,7 @@ class PromptStyleModal extends React.Component {
               <PromptDefaultValue2
                 actions={this.props.actions}
                 form_data={this.props.form_data}
-              />
+                />
             </div>
           }
         </Modal.Body>

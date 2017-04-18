@@ -2,16 +2,6 @@ import React from 'react';
 // import { Tab, Row, Col, Nav, NavItem } from 'react-bootstrap';
 import Select from 'react-select';
 import { Button } from 'react-bootstrap';
-import { render } from 'react-dom';
-import zh_CN from '../stores/zh_CN';
-import en_US from '../stores/en_US';
-import intl from 'intl';
-import en from 'react-intl/locale-data/en';
-import zh from 'react-intl/locale-data/zh';
-import { injectIntl, intlShape, defineMessages, IntlProvider,
-  FormattedMessage, addLocaleData } from 'react-intl';
-import { chooseMessage, chooseLocale} from '../stores/language';
-addLocaleData([...en, ...zh]);
 
 const propTypes = {
   actions: React.PropTypes.object.isRequired,
@@ -19,7 +9,6 @@ const propTypes = {
   compare: React.PropTypes.object.isRequired,
 };
 
-const LocaleMessage = chooseMessage();
 
 export default class Compare extends React.Component {
   changeMetricLeft(compare, col) {
@@ -40,6 +29,7 @@ export default class Compare extends React.Component {
     this.props.actions.removeCompare(compare);
   }
   render() {
+    const localMessage = this.props.form_data.localeMessage;
     return (
       <div>
         <div className="row space-1">
@@ -47,7 +37,7 @@ export default class Compare extends React.Component {
             className="col-lg-6"
             multi={false}
             name="select-column"
-            placeholder={LocaleMessage.metric1}
+            placeholder={localMessage.metric1}
             options={this.props.form_data.metrics.map((o) => ({ value: o, label: o }))}
             value={this.props.compare.metricLeft}
             autosize={false}
@@ -57,7 +47,7 @@ export default class Compare extends React.Component {
             className="col-lg-6"
             multi={false}
             name="select-column"
-            placeholder={LocaleMessage.metric2}
+            placeholder={localMessage.metric2}
             options={this.props.form_data.metrics.map((o) => ({ value: o, label: o }))}
             value={this.props.compare.metricRight}
             autosize={false}
@@ -71,7 +61,7 @@ export default class Compare extends React.Component {
               onChange={this.changeExpr.bind(this, this.props.compare)}
               value={this.props.compare.expr}
               className="form-control input-sm"
-              placeholder={LocaleMessage.compare_expressoin}
+              placeholder={localMessage.compare_expressoin}
             />
           </div>
           <div className="col-lg-5">
@@ -80,7 +70,7 @@ export default class Compare extends React.Component {
               onChange={this.changeValue.bind(this, this.props.compare)}
               value={this.props.compare.value}
               className="form-control input-sm"
-              placeholder={LocaleMessage.style}
+              placeholder={localMessage.style}
             />
           </div>
           <div className="col-lg-1">

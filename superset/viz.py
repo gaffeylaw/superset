@@ -186,7 +186,7 @@ class BaseViz(object):
                 if query_obj['viz_type'] == 'filter_box':
                     pass
             except Exception as e:
-                raise utils.NoDataException("没有数据")
+                raise utils.NoDataException(_("No data was returned."))
         else:
             if DTTM_ALIAS in df.columns:
                 if timestamp_format in ("epoch_s", "epoch_ms"):
@@ -1900,7 +1900,7 @@ class FilterBoxViz(BaseViz):
             l = []
             for row in s:
                 l.append(str(row))
-            l.sort()
+            l.sort(reverse=True)
             d[flt] = [
                 {
                     'id': row,

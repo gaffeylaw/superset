@@ -1,4 +1,4 @@
 .cal_heatmap .slice_container {
   padding: 10px;
-  overflow: visible !important;
+  /*overflow: visible !important;*/
 }

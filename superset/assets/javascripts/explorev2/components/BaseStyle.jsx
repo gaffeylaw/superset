@@ -2,16 +2,6 @@ import React from 'react';
 import { Button } from 'react-bootstrap';
 import shortid from 'shortid';
 import ColStyle from './ColStyle';
-import { render } from 'react-dom';
-import zh_CN from '../stores/zh_CN';
-import en_US from '../stores/en_US';
-import intl from 'intl';
-import en from 'react-intl/locale-data/en';
-import zh from 'react-intl/locale-data/zh';
-import { injectIntl, intlShape, defineMessages, IntlProvider,
-  FormattedMessage, addLocaleData } from 'react-intl';
-import { chooseMessage, chooseLocale} from '../stores/language';
-addLocaleData([...en, ...zh]);
 
 const propTypes = {
   actions: React.PropTypes.object.isRequired,
@@ -48,57 +38,47 @@ export default class BaseStyle extends React.Component {
         />
       );
     });
+    const localMessage = this.props.form_data.localeMessage;
     return (
-      <IntlProvider 
-        locale={ chooseLocale() } 
-        messages={ chooseMessage() }
-       >
         <div>
           <div className="col-lg-12">
             <div className="col-lg-2">
               <span>
-               <FormattedMessage id = 'header_style'/>
+               {localMessage.header_style}
               </span>          
             </div>
             <div className="col-lg-10">
-              <FormattedMessage
-                id="header_style"
-              >
-                {(message) => <input type="text" placeholder={ message } 
+              <input
+                type="text"
                 onChange={this.changeHeaderValue.bind(this, this.props.baseStyle)}
                 value={this.props.baseStyle.headerValue}
-                className="form-control input-sm"                 
-                />}
-              </FormattedMessage>
-             
+                className="form-control input-sm"
+                placeholder={localMessage.header_style}
+              />
             </div>
           </div>
 
           <div className="col-lg-12" style={{ marginTop: '20px' }}>
             <div className="col-lg-2">
               <span>
-                <FormattedMessage
-                  id = 'table_style'
-                />
+                {localMessage.table_style}
               </span>
             </div>
             <div className="col-lg-10">
-              <FormattedMessage
-                  id="table_style"
-              >
-                {(message) => <input type="text" placeholder={ message }
-                  onChange={this.changeBodyValue.bind(this, this.props.baseStyle)}
-                  value={this.props.baseStyle.bodyValue}
-                  className="form-control input-sm"                 
-                />}
-              </FormattedMessage>
+              <input
+                type="text"
+                onChange={this.changeBodyValue.bind(this, this.props.baseStyle)}
+                value={this.props.baseStyle.bodyValue}
+                className="form-control input-sm"
+                placeholder={localMessage.table_style}
+              />
             </div>
           </div>
 
           <div className="col-lg-12" style={{ marginTop: '10px' }}>
             <hr style={{ height: '1px', border: 'none', borderTop: '1px solid #555555' }} />
             <span style={{ fontSize: '14px' }}>
-              <FormattedMessage id = 'col_style'/>
+             {localMessage.col_style}
             </span>
             <div style={{ marginTop: '10px' }}>
               {colStylesDiv}
@@ -110,15 +90,12 @@ export default class BaseStyle extends React.Component {
                   bsSize="sm"
                   onClick={this.addColStyle.bind(this)}
                 >
-                  <i className="fa fa-plus" > 
-                  <FormattedMessage id = 'add_col_style'/>
-                  </i>
+                  <i className="fa fa-plus" />  &nbsp; {localMessage.add_col_style}
                 </Button>
               </div>
             </div>
           </div>
         </div>
-    </IntlProvider>
     );
   }
 }

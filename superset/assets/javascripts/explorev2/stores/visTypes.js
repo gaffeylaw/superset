@@ -1,33 +1,39 @@
+import { chooseMessage, chooseLocale } from './language';
+import zh_CN from './zh_CN';
+import en_US from './en_US';
+
+const localeMessage = chooseMessage();
+
 export const commonControlPanelSections = {
   druidTimeSeries: {
-    label: 'Time',
-    description: 'Time related form attributes',
+    label: localeMessage.druidTimeSeries,
+    description: localeMessage.druidTimeSeries_desc,
     fieldSetRows: [
       ['granularity', 'druid_time_origin'],
       ['since', 'until'],
     ],
   },
   datasourceAndVizType: {
-    label: 'Datasource & Chart Type',
+    label: localeMessage.datasourceAndVizType,
     fieldSetRows: [
       ['datasource'],
       ['viz_type'],
     ],
   },
   sqlaTimeSeries: {
-    label: 'Time',
-    description: 'Time related form attributes',
+    label: localeMessage.sqlaTimeSeries,
+    description: localeMessage.druidTimeSeries_desc,
     fieldSetRows: [
       ['granularity_sqla', 'time_grain_sqla'],
       ['since', 'until'],
     ],
   },
   sqlClause: {
-    label: 'SQL',
+    label: localeMessage.sqlClause,
     fieldSetRows: [
       ['where', 'having'],
     ],
-    description: 'This section exposes ways to include snippets of SQL in your query',
+    description: localeMessage.sqlClause_desc,
   },
   NVD3TimeSeries: [
     {
@@ -39,10 +45,8 @@ export const commonControlPanelSections = {
       ],
     },
     {
-      label: 'Advanced Analytics',
-      description: 'This section contains options ' +
-                   'that allow for advanced analytical post processing ' +
-                    'of query results',
+      label: localeMessage.NVD3TimeSeries,
+      description: localeMessage.NVD3TimeSeries,
       fieldSetRows: [
           ['rolling_type', 'rolling_periods'],
           ['time_compare'],
@@ -54,27 +58,23 @@ export const commonControlPanelSections = {
   ],
   filters: [
     {
-      label: 'Filters',
-      description: 'Filters are defined using comma delimited strings as in <US,FR,Other>' +
-        'Leave the value field empty to filter empty strings or nulls' +
-        'For filters with comma in values, wrap them in single quotes' +
-        "as in <NY, 'Tahoe, CA', DC>",
+      label: localeMessage.filters1,
+      description: localeMessage.filters1_desc,
     },
     {
-      label: 'Result Filters',
-      description: 'The filters to apply after post-aggregation.' +
-        'Leave the value field empty to filter empty strings or nulls',
+      label: localeMessage.filters2,
+      description: localeMessage.filters2_desc,
     },
   ],
 };
 
 const visTypes = {
   dist_bar: {
-    label: 'Distribution - Bar Chart',
+    label: localeMessage.dist_bar_viz,
     controlPanelSections: [
       {
-        label: 'Chart Options',
-        description: 'tooltip text here',
+        label: localeMessage.chart_options,
+        description: localeMessage.tooltip_text,
         fieldSetRows: [
           ['metrics'],
           ['groupby'],
@@ -91,28 +91,28 @@ const visTypes = {
     ],
     fieldOverrides: {
       groupby: {
-        label: 'Series',
+        label: localeMessage.series,
       },
       columns: {
-        label: 'Breakdowns',
-        description: 'Defines how each series is broken down',
+        label: localeMessage.breakDowns,
+        description: localeMessage.breakDowns_desc,
       },
     },
   },
 
   // add new style
   ag_grid: {
-    label: 'Ag-grid View',
+    label: localeMessage.ag_grid,
     controlPanelSections: [
       {
-        label: 'GROUP BY',
-        description: 'Use this section if you want a query that aggregates',
+        label: localeMessage.groupby,
+        description: localeMessage.ag_grid1_desc,
         fieldSetRows: [
           ['groupby', 'metrics'],
         ],
       },
       {
-        label: 'Options',
+        label: localeMessage.ag_grid2,
         fieldSetRows: [
           ['table_timestamp_format'],
           ['row_limit'],
@@ -123,11 +123,11 @@ const visTypes = {
   },
 
   linePlusBar: {
-    label: 'Distribution - LinePlusBar Chart',
+    label: localeMessage.linePlusBar_viz,
     controlPanelSections: [
       {
-        label: 'Chart Options',
-        description: 'tooltip text here',
+        label: localeMessage.chart_options,
+        description: localeMessage.tooltip_text,
         fieldSetRows: [
             ['groupby'],
             ['metrics'],
@@ -141,22 +141,22 @@ const visTypes = {
     ],
     fieldOverrides: {
       groupby: {
-        label: 'Series',
+        label: localeMessage.series,
       },
       columns: {
-        label: 'Breakdowns',
-        description: 'Defines how each series is broken down',
+        label: localeMessage.breakDowns,
+        description: localeMessage.breakDowns_desc,
       },
     },
   },
 
   multi: {
-    label: 'Distribution - Multi Chart',
+    label: localeMessage.multi_viz,
     controlPanelSections: [
       {
-        label: 'Chart Options',
-        description: 'tooltip text here',
-        fieldSetRows: [
+        label: localeMessage.chart_options,
+        description: localeMessage.tooltip_text,
+                fieldSetRows: [
             ['groupby'],
             ['line', 'yAxis1'],
             ['bar', 'yAxis2'],
@@ -173,17 +173,17 @@ const visTypes = {
     ],
     fieldOverrides: {
       groupby: {
-        label: 'Series',
+        label: localeMessage.series,
       },
       columns: {
-        label: 'Breakdowns',
-        description: 'Defines how each series is broken down',
+        label: localeMessage.breakDowns,
+        description: localeMessage.breakDowns_desc,
       },
     },
   },
 
   pie: {
-    label: 'Pie Chart',
+    label: localeMessage.pie_viz,
     controlPanelSections: [
       {
         label: null,
@@ -199,12 +199,12 @@ const visTypes = {
   },
 
   line: {
-    label: 'Time Series - Line Chart',
+    label: localeMessage.line_viz,
     requiresTime: true,
     controlPanelSections: [
       commonControlPanelSections.NVD3TimeSeries[0],
       {
-        label: 'Chart Options',
+        label: localeMessage.chart_options,
         fieldSetRows: [
           ['show_brush', 'show_legend'],
           ['rich_tooltip', 'y_axis_zero'],
@@ -220,12 +220,12 @@ const visTypes = {
   },
 
   bar: {
-    label: 'Time Series - Bar Chart',
+    label: localeMessage.bar_viz,
     requiresTime: true,
     controlPanelSections: [
       commonControlPanelSections.NVD3TimeSeries[0],
       {
-        label: 'Chart Options',
+        label: localeMessage.chart_options,
         fieldSetRows: [
           ['show_brush', 'show_legend', 'show_bar_value'],
           ['rich_tooltip', 'y_axis_zero'],
@@ -242,7 +242,7 @@ const visTypes = {
   },
 
   compare: {
-    label: 'Time Series - Percent Change',
+    label: localeMessage.compare_viz,
     requiresTime: true,
     controlPanelSections: [
       commonControlPanelSections.NVD3TimeSeries[0],
@@ -251,12 +251,12 @@ const visTypes = {
   },
 
   area: {
-    label: 'Time Series - Stacked',
+    label: localeMessage.area_viz,
     requiresTime: true,
     controlPanelSections: [
       commonControlPanelSections.NVD3TimeSeries[0],
       {
-        label: 'Chart Options',
+        label: localeMessage.chart_options,
         fieldSetRows: [
           ['show_brush', 'show_legend'],
           ['rich_tooltip', 'y_axis_zero'],
@@ -271,17 +271,15 @@ const visTypes = {
   },
 
   table: {
-    label: 'Table View',
+    label: localeMessage.table_viz,
     controlPanelSections: [
       {
-        label: 'GROUP BY',
-        description: 'Use this section if you want a query that aggregates',
-        fieldSetRows: [
-          ['groupby', 'metrics'],
-        ],
+        label: localeMessage.groupby,
+        description: localeMessage.ag_grid1_desc,
+        fieldSetRows: localeMessage.ag_grid1_fieldSetRows,
       },
       {
-        label: 'Options',
+        label: localeMessage.ag_grid2,
         fieldSetRows: [
           ['table_timestamp_format'],
           ['row_limit'],
@@ -294,19 +292,17 @@ const visTypes = {
   },
 
   markup: {
-    label: 'Markup',
+    label: localeMessage.markup,
     controlPanelSections: [
       {
         label: null,
-        fieldSetRows: [
-          ['markup_type', 'code'],
-        ],
+        fieldSetRows: localeMessage.markup_fieldSetRows,
       },
     ],
   },
 
   pivot_table: {
-    label: 'Pivot Table',
+    label: localeMessage.pivot_table,
     controlPanelSections: [
       {
         label: null,
@@ -319,11 +315,11 @@ const visTypes = {
   },
 
   separator: {
-    label: 'Separator',
+    label: localeMessage.Separator,
     controlPanelSections: [
       {
         label: null,
-        fieldSetRows: [
+        fieldSetRows:  [
           ['code'],
         ],
       },
@@ -331,16 +327,16 @@ const visTypes = {
     fieldOverrides: {
       code: {
         default: '####Section Title\n' +
-                 'A paragraph describing the section' +
-                 'of the dashboard, right before the separator line ' +
-                 '\n\n' +
-                 '---------------',
+        'A paragraph describing the section' +
+        'of the dashboard, right before the separator line ' +
+        '\n\n' +
+        '---------------',
       },
     },
   },
 
   word_cloud: {
-    label: 'Word Cloud',
+    label: localeMessage.word_cloud,
     controlPanelSections: [
       {
         label: null,
@@ -354,7 +350,7 @@ const visTypes = {
   },
 
   treemap: {
-    label: 'Treemap',
+    label: localeMessage.treemap,
     controlPanelSections: [
       {
         label: null,
@@ -364,7 +360,7 @@ const visTypes = {
         ],
       },
       {
-        label: 'Chart Options',
+        label: localeMessage.chart_options,
         fieldSetRows: [
           ['treemap_ratio'],
           ['number_format'],
@@ -374,7 +370,7 @@ const visTypes = {
   },
 
   cal_heatmap: {
-    label: 'Calendar Heatmap',
+    label: localeMessage.cal_heatmap_viz,
     requiresTime: true,
     controlPanelSections: [
       {
@@ -389,7 +385,7 @@ const visTypes = {
   },
 
   box_plot: {
-    label: 'Box Plot',
+    label: localeMessage.box_plot,
     controlPanelSections: [
       {
         label: null,
@@ -399,7 +395,7 @@ const visTypes = {
         ],
       },
       {
-        label: 'Chart Options',
+        label: localeMessage.chart_options,
         fieldSetRows: [
           ['whisker_options'],
         ],
@@ -408,7 +404,7 @@ const visTypes = {
   },
 
   bubble: {
-    label: 'Bubble Chart',
+    label: localeMessage.bubble_viz,
     controlPanelSections: [
       {
         label: null,
@@ -419,7 +415,7 @@ const visTypes = {
         ],
       },
       {
-        label: 'Chart Options',
+        label: localeMessage.chart_options,
         fieldSetRows: [
           ['x_log_scale', 'y_log_scale'],
           ['show_legend'],
@@ -431,7 +427,7 @@ const visTypes = {
   },
 
   bullet: {
-    label: 'Bullet Chart',
+    label: localeMessage.bullet_viz,
     requiresTime: false,
     controlPanelSections: [
       {
@@ -447,7 +443,7 @@ const visTypes = {
   },
 
   big_number: {
-    label: 'Big Number with Trendline',
+    label: localeMessage.big_number,
     controlPanelSections: [
       {
         label: null,
@@ -461,7 +457,7 @@ const visTypes = {
     ],
     fieldOverrides: {
       y_axis_format: {
-        label: 'Number format',
+        label: localeMessage.number_format,
       },
     },
   },
@@ -479,13 +475,13 @@ const visTypes = {
     ],
     fieldOverrides: {
       y_axis_format: {
-        label: 'Number format',
+        label: localeMessage.number_format,
       },
     },
   },
 
   histogram: {
-    label: 'Histogram',
+    label: localeMessage.histogram,
     controlPanelSections: [
       {
         label: null,
@@ -495,7 +491,7 @@ const visTypes = {
         ],
       },
       {
-        label: 'Histogram Options',
+        label: localeMessage.histogram2,
         fieldSetRows: [
           ['link_length'],
         ],
@@ -503,19 +499,19 @@ const visTypes = {
     ],
     fieldOverrides: {
       all_columns_x: {
-        label: 'Numeric Column',
-        description: 'Select the numeric column to draw the histogram',
+        label: localeMessage.all_columns_x,
+        description: localeMessage.all_columns_x_desc,
       },
       link_length: {
-        label: 'No of Bins',
-        description: 'Select number of bins for the histogram',
+        label: localeMessage.link_length1,
+        description: localeMessage.link_length1_desc,
         default: 5,
       },
     },
   },
 
   sunburst: {
-    label: 'Sunburst',
+    label: localeMessage.sunburst,
     controlPanelSections: [
       {
         label: null,
@@ -528,24 +524,22 @@ const visTypes = {
     ],
     fieldOverrides: {
       metric: {
-        label: 'Primary Metric',
-        description: 'The primary metric is used to define the arc segment sizes',
+        label: localeMessage.sunburst_metric,
+        description: localeMessage.sunburst_metric_desc,
       },
       secondary_metric: {
-        label: 'Secondary Metric',
-        description: 'This secondary metric is used to ' +
-                     'define the color as a ratio against the primary metric. ' +
-                     'If the two metrics match, color is mapped level groups',
+        label: localeMessage.sunburst_secondary_metric,
+        description: localeMessage.sunburst_secondary_metric_desc,
       },
       groupby: {
-        label: 'Hierarchy',
-        description: 'This defines the level of the hierarchy',
+        label: localeMessage.sunburst_groupby,
+        description: localeMessage.sunburst_groupby_desc,
       },
     },
   },
 
   sankey: {
-    label: 'Sankey',
+    label: localeMessage.sankey,
     controlPanelSections: [
       {
         label: null,
@@ -558,14 +552,14 @@ const visTypes = {
     ],
     fieldOverrides: {
       groupby: {
-        label: 'Source / Target',
-        description: 'Choose a source and a target',
+        label: localeMessage.sankey_groupby,
+        description: localeMessage.sankey_groupby_desc,
       },
     },
   },
 
   directed_force: {
-    label: 'Directed Force Layout',
+    label: localeMessage.directed_force_viz,
     controlPanelSections: [
       {
         label: null,
@@ -576,7 +570,7 @@ const visTypes = {
         ],
       },
       {
-        label: 'Force Layout',
+        label: localeMessage.directed_force_viz2,
         fieldSetRows: [
           ['link_length'],
           ['charge'],
@@ -585,14 +579,14 @@ const visTypes = {
     ],
     fieldOverrides: {
       groupby: {
-        label: 'Source / Target',
-        description: 'Choose a source and a target',
+        label: localeMessage.sankey_groupby,
+        description: localeMessage.sankey_groupby_desc,
       },
     },
   },
 
   world_map: {
-    label: 'World Map',
+    label: localeMessage.world_map,
     controlPanelSections: [
       {
         label: null,
@@ -603,7 +597,7 @@ const visTypes = {
         ],
       },
       {
-        label: 'Bubbles',
+        label: localeMessage.world_map_bubbles,
         fieldSetRows: [
           ['show_bubbles'],
           ['secondary_metric'],
@@ -613,22 +607,22 @@ const visTypes = {
     ],
     fieldOverrides: {
       entity: {
-        label: 'Country Field',
-        description: '3 letter code of the country',
+        label: localeMessage.world_map_entity,
+        description: localeMessage.world_map_entity_desc,
       },
       metric: {
-        label: 'Metric for color',
-        description: 'Metric that defines the color of the country',
+        label: localeMessage.world_map_metric,
+        description: localeMessage.world_map_metric_desc,
       },
       secondary_metric: {
-        label: 'Bubble size',
-        description: 'Metric that defines the size of the bubble',
+        label: localeMessage.world_map_secondary_metric,
+        description: localeMessage.world_map_secondary_metric_desc,
       },
     },
   },
 
   filter_box: {
-    label: 'Filter Box',
+    label: localeMessage.filter_box,
     controlPanelSections: [
       {
         label: null,
@@ -641,8 +635,8 @@ const visTypes = {
     ],
     fieldOverrides: {
       groupby: {
-        label: 'Filter fields',
-        description: 'The fields you want to filter on',
+        label: localeMessage.filter_box_groupby,
+        description: localeMessage.filter_box_groupby_desc,
         default: [],
       },
     },
@@ -661,7 +655,7 @@ const visTypes = {
   },
 
   para: {
-    label: 'Parallel Coordinates',
+    label: localeMessage.para_viz,
     controlPanelSections: [
       {
         label: null,
@@ -677,10 +671,10 @@ const visTypes = {
   },
 
   heatmap: {
-    label: 'Heatmap',
+    label: localeMessage.heatmap_viz,
     controlPanelSections: [
       {
-        label: 'Axis & Metrics',
+        label: localeMessage.heatmap_viz_label,
         fieldSetRows: [
           ['all_columns_x'],
           ['all_columns_y'],
@@ -688,7 +682,7 @@ const visTypes = {
         ],
       },
       {
-        label: 'Heatmap Options',
+        label: localeMessage.heatmap_viz2,
         fieldSetRows: [
           ['linear_color_scheme'],
           ['xscale_interval', 'yscale_interval'],
@@ -700,11 +694,11 @@ const visTypes = {
   },
 
   horizon: {
-    label: 'Horizon',
+    label: localeMessage.horizon,
     controlPanelSections: [
       commonControlPanelSections.NVD3TimeSeries[0],
       {
-        label: 'Chart Options',
+        label: localeMessage.chart_options,
         fieldSetRows: [
           ['series_height', 'horizon_color_scale'],
         ],
@@ -713,7 +707,7 @@ const visTypes = {
   },
 
   mapbox: {
-    label: 'Mapbox',
+    label: localeMessage.mapbox,
     controlPanelSections: [
       {
         label: null,
@@ -726,21 +720,21 @@ const visTypes = {
         ],
       },
       {
-        label: 'Points',
+        label: localeMessage.mapbox_2,
         fieldSetRows: [
           ['point_radius'],
           ['point_radius_unit'],
         ],
       },
       {
-        label: 'Labelling',
+        label: localeMessage.mapbox_3,
         fieldSetRows: [
           ['mapbox_label'],
           ['pandas_aggfunc'],
         ],
       },
       {
-        label: 'Visual Tweaks',
+        label: localeMessage.mapbox4,
         fieldSetRows: [
           ['mapbox_style'],
           ['global_opacity'],
@@ -748,7 +742,7 @@ const visTypes = {
         ],
       },
       {
-        label: 'Viewport',
+        label: localeMessage.mapbox5,
         fieldSetRows: [
           ['viewport_longitude'],
           ['viewport_latitude'],
@@ -758,26 +752,23 @@ const visTypes = {
     ],
     fieldOverrides: {
       all_columns_x: {
-        label: 'Longitude',
-        description: 'Column containing longitude data',
+        label: localeMessage.all_columns_x,
+        description: localeMessage.all_columns_x_desc,
       },
       all_columns_y: {
-        label: 'Latitude',
-        description: 'Column containing latitude data',
+        label: localeMessage.all_columns_y,
+        description: localeMessage.all_columns_y_desc,
       },
       pandas_aggfunc: {
-        label: 'Cluster label aggregator',
-        description: 'Aggregate function applied to the list of points ' +
-                     'in each cluster to produce the cluster label.',
+        label: localeMessage.pandas_aggfunc,
+        description: localeMessage.pandas_aggfunc_desc,
       },
       rich_tooltip: {
-        label: 'Tooltip',
-        description: 'Show a tooltip when hovering over points and clusters ' +
-                     'describing the label',
+        label: localeMessage.rich_tooltip,
+        description: localeMessage.rich_tooltip_desc,
       },
       groupby: {
-        description: 'One or many fields to group by. If grouping, latitude ' +
-                     'and longitude columns must be present.',
+        description: localeMessage.groupby_desc,
       },
     },
   },

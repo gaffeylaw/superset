@@ -265,8 +265,6 @@ bootstrappedState.viz.form_data.pivotSetting =
   getPivotSettings(bootstrappedState.viz.form_data, bootstrapData.datasource_type);
 
 bootstrappedState.viz.form_data.localeMessage = chooseMessage();
-  console.log(bootstrappedState.viz.form_data.localeMessage);
-  console.log(chooseMessage())
 
 function parsePinned(form_data) {
   const pinned = {

@@ -18,6 +18,7 @@ export default class PromptColStyle extends React.Component {
         { key: 'false', value: 'false' },
         { key: 'true', value: 'true' },
       ],
+      localMessage: this.props.form_data.localeMessage,
     };
   }
   changeField(promptColStyle, col) {
@@ -42,7 +43,7 @@ export default class PromptColStyle extends React.Component {
             className="col-lg-6"
             multi={false}
             name="select-column"
-            placeholder="字段"
+            placeholder={this.state.localMessage.field}
             options={this.state.fieldChoices.map((o) => ({ value: o, label: o }))}
             value={this.props.promptColStyle.field}
             autosize={false}
@@ -54,7 +55,7 @@ export default class PromptColStyle extends React.Component {
               onChange={this.changeWidth.bind(this, this.props.promptColStyle)}
               value={this.props.promptColStyle.width}
               className="form-control input-sm"
-              placeholder="长度"
+              placeholder={this.state.localMessage.length}
             />
           </div>
         </div>
@@ -63,7 +64,7 @@ export default class PromptColStyle extends React.Component {
             className="col-lg-6"
             multi={false}
             name="select-column"
-            placeholder="是否多选"
+            placeholder={this.state.localMessage.isMulti}
             options={this.state.multiChoices.map((o) => ({ value: o.value, label: o.key }))}
             value={this.props.promptColStyle.multi}
             autosize={false}

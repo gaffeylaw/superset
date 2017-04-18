@@ -1,12 +1,17 @@
 import React from 'react';
 import { Button } from 'react-bootstrap';
 import Select from 'react-select';
+import { chooseMessage } from '../stores/language';
+import { zh_CN } from '../stores/zh_CN';
+import { en_US } from '../stores/en_US';
 
 const propTypes = {
   actions: React.PropTypes.object.isRequired,
   form_data: React.PropTypes.object.isRequired,
   headerSetting: React.PropTypes.object.isRequired,
 };
+
+const localMessage = chooseMessage();
 
 export default class HeaderSetting extends React.Component {
   constructor(props) {
@@ -31,14 +36,14 @@ export default class HeaderSetting extends React.Component {
       <div>
         <div className="row space-1">
           <div className="col-lg-12">
-            <span className="col-lg-2" style={{ marginTop: '5px' }}>父节点:</span>
+            <span className="col-lg-2" style={{ marginTop: '5px' }}>{localMessage.parent_node}:</span>
             <div className="col-lg-9">
               <input
                 type="text"
                 onChange={this.changeParentName.bind(this, this.props.headerSetting)}
                 value={this.props.headerSetting.parentName}
                 className="form-control input-sm"
-                placeholder="输入父节点名称"
+                placeholder={localMessage.input_parent_node}
               />
             </div>
             <div className="col-lg-1">
@@ -52,26 +57,26 @@ export default class HeaderSetting extends React.Component {
             </div>
           </div>
           <div className="col-lg-12">
-            <span className="col-lg-2" style={{ marginTop: '15px' }}>子节点:</span>
+            <span className="col-lg-2" style={{ marginTop: '15px' }}>{localMessage.child_node}:</span>
             <Select
               className="col-lg-4"
               style={{ marginTop: '10px' }}
               multi
               simpleValue
-              placeholder="选择子节点"
+              placeholder={localMessage.choose_child_node}
               options={this.props.form_data.groupby.concat(this.props.form_data.metrics)
                           .map((o) => ({ value: o, label: o }))}
               value={this.props.headerSetting.children}
               autosize={false}
               onChange={this.changeChildren.bind(this, this.props.headerSetting)}
             />
-            <span className="col-lg-2" style={{ marginTop: '15px' }}>显示项:</span>
+            <span className="col-lg-2" style={{ marginTop: '15px' }}>{localMessage.show_option}:</span>
             <Select
               className="col-lg-4"
               style={{ marginTop: '10px' }}
               multi
               simpleValue
-              placeholder="选择显示项"
+              placeholder={localMessage.choose_option}
               options={this.props.form_data.groupby.concat(this.props.form_data.metrics)
                           .map((o) => ({ value: o, label: o }))}
               value={this.props.headerSetting.items}

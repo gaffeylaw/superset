@@ -10,6 +10,7 @@ export default class PivotSetting extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      localMessage: this.props.form_data.localeMessage,
     };
   }
   changeGroupBy(val) {
@@ -26,12 +27,14 @@ export default class PivotSetting extends React.Component {
       <div>
         <div className="row space-1">
           <div className="col-lg-12" style={{ marginTop: '10px' }}>
-            <span className="col-lg-2" style={{ marginTop: '5px' }}>分组:</span>
+            <span className="col-lg-2" style={{ marginTop: '5px' }}>
+              {this.state.localMessage.groupby}:
+            </span>
             <Select
               className="col-lg-10"
               multi
               simpleValue
-              placeholder="选择 groupby 项"
+              placeholder={this.state.localMessage.choose_groupby_option}
               options={this.props.form_data.groupby.map((o) => ({ value: o, label: o }))}
               value={this.props.form_data.pivotSetting.groupby}
               autosize={false}
@@ -39,12 +42,14 @@ export default class PivotSetting extends React.Component {
             />
           </div>
           <div className="col-lg-12" style={{ marginTop: '10px' }}>
-            <span className="col-lg-2" style={{ marginTop: '5px' }}>列:</span>
+            <span className="col-lg-2" style={{ marginTop: '5px' }}>
+              {this.state.localMessage.columns}:
+            </span>
             <Select
               className="col-lg-10"
               multi
               simpleValue
-              placeholder="选择 column 项"
+              placeholder={this.state.localMessage.choose_column_option}
               options={this.props.form_data.groupby.map((o) => ({ value: o, label: o }))}
               value={this.props.form_data.pivotSetting.columns}
               autosize={false}
@@ -52,12 +57,14 @@ export default class PivotSetting extends React.Component {
             />
           </div>
           <div className="col-lg-12" style={{ marginTop: '10px' }}>
-            <span className="col-lg-2" style={{ marginTop: '5px' }}>度量:</span>
+            <span className="col-lg-2" style={{ marginTop: '5px' }}>
+              {this.state.localMessage.measure}:
+            </span>
             <Select
               className="col-lg-10"
               multi
               simpleValue
-              placeholder="选择 value 项"
+              placeholder={this.state.localMessage.choose_value_option}
               options={this.props.form_data.metrics.map((o) => ({ value: o, label: o }))}
               value={this.props.form_data.pivotSetting.values}
               autosize={false}

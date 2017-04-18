@@ -27,6 +27,7 @@ class ControlPanelsContainer extends React.Component {
     this.state = {
       showModal: false,
       showPromptModal: false,
+      localMessage: this.props.form_data.localeMessage,
     };
   }
 
@@ -123,7 +124,7 @@ class ControlPanelsContainer extends React.Component {
               {flag &&
                 <div className="panel panel-default">
                   <div className="panel-heading">
-                    <div className="panel-title">Setting style</div>
+                    <div className="panel-title">{this.state.localMessage.setting_style}</div>
                   </div>
                   <div className="panel-body">
                     <button
@@ -133,7 +134,7 @@ class ControlPanelsContainer extends React.Component {
                       data-toggle="modal"
                       onClick={this.toggleModal.bind(this)}
                     >
-                      <i className="fa fa-plus" /> &nbsp; Setting Style
+                      <i className="fa fa-plus" /> &nbsp; {this.state.localMessage.setting_style}
                     </button>
                   </div>
                 </div>
@@ -142,7 +143,7 @@ class ControlPanelsContainer extends React.Component {
               {flag_prompt &&
                 <div className="panel panel-default">
                   <div className="panel-heading">
-                    <div className="panel-title">Setting style</div>
+                    <div className="panel-title">{this.state.localMessage.setting_style}</div>
                   </div>
                   <div className="panel-body">
                     <button
@@ -152,7 +153,7 @@ class ControlPanelsContainer extends React.Component {
                       data-toggle="modal"
                       onClick={this.togglePromptModal.bind(this)}
                     >
-                      <i className="fa fa-plus" /> &nbsp; Setting Style
+                      <i className="fa fa-plus" /> &nbsp; {this.state.localMessage.setting_style}
                     </button>
                   </div>
                 </div>

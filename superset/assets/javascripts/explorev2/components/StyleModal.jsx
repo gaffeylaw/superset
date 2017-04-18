@@ -10,16 +10,6 @@ import Compare from './Compare';
 import Navigate from './Navigate';
 import HeaderSetting from './HeaderSetting';
 import PivotSetting from './PivotSetting';
-import { render } from 'react-dom';
-import zh_CN from '../stores/zh_CN';
-import en_US from '../stores/en_US';
-import intl from 'intl';
-import en from 'react-intl/locale-data/en';
-import zh from 'react-intl/locale-data/zh';
-import { injectIntl, intlShape, defineMessages, IntlProvider,
-  FormattedMessage, addLocaleData } from 'react-intl';
-import { chooseMessage, chooseLocale} from '../stores/language';
-addLocaleData([...en, ...zh]);
 
 const propTypes = {
   onHide: React.PropTypes.func.isRequired,
@@ -43,8 +33,6 @@ const defaultProps = {
   navigates: [],
   headerSettings: [],
 };
-
-const Locale = chooseMessage();
 
 class StyleModal extends React.Component {
   constructor(props) {
@@ -214,236 +202,216 @@ class StyleModal extends React.Component {
     if (this.state.count >= 0) {
       // console.log('refresh the render')
     }
-
+    const localMessage = this.props.form_data.localeMessage;
     return (
-      <IntlProvider 
-        locale={ chooseLocale() } 
-        messages={ chooseMessage() }
-       >
-        <Modal
-          show
-          onHide={this.props.onHide}
-          bsStyle="large"
-        >
-          <Modal.Header closeButton>
-            <Modal.Title>
-              <div>
-                <ul className="nav navbar-nav" style={{ fontSize: '14px' }}>
-                  <li id="li" className="active" style={{ backgroundColor: '#ccc' }}>
-                    <a onClick={this.changeModal.bind(this, 1)}>
-                      <FormattedMessage 
-                        id = 'base_style'
-                      >
-                      </FormattedMessage>
-                    </a>
-                  </li>
-                  <li id="li2"><a onClick={this.changeModal.bind(this, 2)}>
-                      <FormattedMessage id = 'condition_style' />
+      <Modal
+        show
+        onHide={this.props.onHide}
+        bsStyle="large"
+      >
+        <Modal.Header closeButton>
+          <Modal.Title>
+            <div>
+              <ul className="nav navbar-nav" style={{ fontSize: '14px' }}>
+                <li id="li" className="active" style={{ backgroundColor: '#ccc' }}>
+                  <a onClick={this.changeModal.bind(this, 1)}>{localMessage.base_style}</a>
+                </li>
+                <li id="li2"><a onClick={this.changeModal.bind(this, 2)}>
+                  {localMessage.condition_style}
+                </a></li>
+                <li id="li3"><a onClick={this.changeModal.bind(this, 3)}>
+                  {localMessage.compare_style}
+                </a></li>
+                <li id="li4"><a onClick={this.changeModal.bind(this, 4)}>
+                  {localMessage.slice_navigator}
+                </a></li>
+                {this.props.form_data.viz_type === 'ag_grid' &&
+                  <li id="li5"><a onClick={this.changeModal.bind(this, 5)}>
+                    {localMessage.ag_setting}
                   </a></li>
-                  <li id="li3"><a onClick={this.changeModal.bind(this, 3)}>
-                      <FormattedMessage id = 'compare_style' />
-                  </a></li>
-                  <li id="li4"><a onClick={this.changeModal.bind(this, 4)}>
-                      {Locale.slice_navigator}
-                  </a></li>
-                  {this.props.form_data.viz_type === 'ag_grid' &&
-                    <li id="li5"><a onClick={this.changeModal.bind(this, 5)}>
-                      <FormattedMessage id = 'ag_setting' />
-                    </a></li>
-                  }
-                </ul>
-              </div>
-            </Modal.Title>
-          </Modal.Header>
-          <Modal.Body style={{ minHeight: '300px' }}>
-          {this.state.flag &&
-            <div>
-              <BaseStyle
-                key={i}
-                actions={this.props.actions}
-                form_data={this.props.form_data}
-                baseStyle={this.props.baseStyle}
-                colStyles={this.props.colStyles}
-              />
+                }
+              </ul>
             </div>
-          }
-          {this.state.flag2 &&
-            <div>
-              <div>
-                {stylesDiv}
-              </div>
-              <div className="row space-2">
-                <div className="col-lg-2">
-                  <Button
-                    id="add-button"
-                    bsSize="sm"
-                    onClick={this.addStyle.bind(this)}
-                  >
-                    <i className="fa fa-plus" >
-                      <FormattedMessage id = 'add_base_style'/>
-                    </i>
-                  </Button>
-                </div>
-              </div>
-            </div>
-          }
-          {this.state.flag3 &&
-            <div>
-              <div>
-                {compareDiv}
-              </div>
-              <div className="row space-2">
-                <div className="col-lg-2">
-                  <Button
-                    id="add-button"
-                    bsSize="sm"
-                    onClick={this.addCompare.bind(this)}
-                  >
-                    <i className="fa fa-plus" >
-                      <FormattedMessage id = 'add_condition_style' />
-                    </i>
-                  </Button>
-                </div>
-              </div>
-            </div>
-          }
-          {this.state.flag4 &&
-            <div>
-              <div>
-                {navigatesDiv}
-              </div>
-              <div className="row space-2">
-                <div className="col-lg-2">
-                  <Button
-                    id="add-button"
-                    bsSize="sm"
-                    onClick={this.addNavigate.bind(this)}
-                  >
-                    <i className="fa fa-plus" >
-                      <FormattedMessage id = 'add_slice_navigator' />
-                    </i>
-                  </Button>
-                </div>
-              </div>
-            </div>
-          }
-          {this.state.flag5 &&
-            <div>
-              <div className="col-lg-12">
-                <div className="col-lg-2">
-                  <span> <FormattedMessage id = 'grid_theme'/></span>
-                </div>
-                <div className="col-lg-4">
-                  <FormattedMessage id = 'theme'>
-                    {(message) =>
-                      <Select
-                        multi={false}
-                        name="select-column"
-                        placeholder={message}
-                        options={this.state.theme.map((o) => ({ label: o.key, value: o.value }))}
-                        value={this.props.form_data.theme}
-                        autosize={false}
-                        onChange={this.changeTheme.bind(this)}
-                      />  
-                    }
-                  </FormattedMessage>
-                </div>
-                <div className="col-lg-2">
-                  <span>{Locale.page_count}</span>
-                </div>
-                <div className="col-lg-4">
-                  <Select
-                    multi={false}
-                    name="select-column"
-                    placeholder={Locale.count}
-                    options={this.state.pageSize.map((o) => ({ label: o.key, value: o.value }))}
-                    value={this.props.form_data.pageSize}
-                    autosize={false}
-                    onChange={this.changePageSize.bind(this)}
-                  />
-                </div>
-              </div>
-              <div className="col-lg-12">
-                <div className="col-lg-2" style={{ marginTop: '15px' }}>
-                  <span>{Locale.frozen_left}</span>
-                </div>
-                <div className="col-lg-4">
-                  <Select
-                    style={{ marginTop: '10px' }}
-                    multi
-                    simpleValue
-                    placeholder={Locale.frozen_col}
-                    options={this.props.form_data.groupby.concat(this.props.form_data.metrics)
-                                  .map((o) => ({ value: o, label: o }))}
-                    value={this.props.form_data.pinned.left}
-                    autosize={false}
-                    onChange={this.changePinnedLeft.bind(this)}
-                  />
-                </div>
-                <div className="col-lg-2" style={{ marginTop: '15px' }}>
-                  <span>{Locale.frozen_right}</span>
-                </div>
-                <div className="col-lg-4">
-                  <Select
-                    style={{ marginTop: '10px' }}
-                    multi
-                    simpleValue
-                    placeholder={Locale.frozen_col}
-                    options={this.props.form_data.groupby.concat(this.props.form_data.metrics)
-                                  .map((o) => ({ value: o, label: o }))}
-                    value={this.props.form_data.pinned.right}
-                    autosize={false}
-                    onChange={this.changePinnedRight.bind(this)}
-                  />
-                </div>
-              </div>
-              <div className="col-lg-12" style={{ marginTop: '10px' }}>
-                <div className="col-lg-4">
-                  <span>{Locale.enable_piovttable}</span>
-                </div>
-                <div className="col-lg-8">
-                  <Select
-                    options={this.state.isPivot.map((o) => ({ label: o.key, value: o.value }))}
-                    value={this.props.form_data.isPivot}
-                    autosize={false}
-                    onChange={this.changePivot.bind(this)}
-                  />
-                </div>
-              </div>
-              {this.props.form_data.isPivot === 'false' &&
-                <div className="col-lg-12" style={{ marginTop: '10px' }}>
-                  <hr style={{ height: '1px', border: 'none', borderTop: '1px solid #555555' }} />
-                  {headerSettingDiv}
-                  <div className="row space-2">
-                    <div className="col-lg-2">
-                      <Button
-                        id="add-button"
-                        bsSize="sm"
-                        onClick={this.addHeaderSetting.bind(this)}
-                      >
-                        <i className="fa fa-plus" /> {Locale.add_table_header_setting}
-                      </Button>
-                    </div>
-                  </div>
-                </div>
-              }
-              {this.props.form_data.isPivot === 'true' &&
-                <div className="col-lg-12" style={{ marginTop: '10px' }}>
-                  <hr style={{ height: '1px', border: 'none', borderTop: '1px solid #555555' }} />
-                  <PivotSetting
-                    actions={this.props.actions}
-                    form_data={this.props.form_data}
-                  />
-                </div>
-              }
-            </div>
-          }
-          </Modal.Body>
+          </Modal.Title>
+        </Modal.Header>
+        <Modal.Body style={{ minHeight: '300px' }}>
+        {this.state.flag &&
+          <div>
+            <BaseStyle
+              key={i}
+              actions={this.props.actions}
+              form_data={this.props.form_data}
+              baseStyle={this.props.baseStyle}
+              colStyles={this.props.colStyles}
+            />
+          </div>
+         }
+         {this.state.flag2 &&
+           <div>
+             <div>
+               {stylesDiv}
+             </div>
+             <div className="row space-2">
+               <div className="col-lg-2">
+                 <Button
+                   id="add-button"
+                   bsSize="sm"
+                   onClick={this.addStyle.bind(this)}
+                 >
+                   <i className="fa fa-plus" /> &nbsp; {localMessage.add_condition_style}
+                 </Button>
+               </div>
+             </div>
+           </div>
+         }
+         {this.state.flag3 &&
+           <div>
+             <div>
+               {compareDiv}
+             </div>
+             <div className="row space-2">
+               <div className="col-lg-2">
+                 <Button
+                   id="add-button"
+                   bsSize="sm"
+                   onClick={this.addCompare.bind(this)}
+                 >
+                   <i className="fa fa-plus" /> &nbsp; {localMessage.add_compare_style}
+                 </Button>
+               </div>
+             </div>
+           </div>
+         }
+         {this.state.flag4 &&
+           <div>
+             <div>
+               {navigatesDiv}
+             </div>
+             <div className="row space-2">
+               <div className="col-lg-2">
+                 <Button
+                   id="add-button"
+                   bsSize="sm"
+                   onClick={this.addNavigate.bind(this)}
+                 >
+                   <i className="fa fa-plus" /> &nbsp; {localMessage.add_slice_navigator}
+                 </Button>
+               </div>
+             </div>
+           </div>
+         }
+         {this.state.flag5 &&
+           <div>
+             <div className="col-lg-12">
+               <div className="col-lg-2">
+                 <span>{localMessage.grid_theme}:</span>
+               </div>
+               <div className="col-lg-4">
+                 <Select
+                   multi={false}
+                   name="select-column"
+                   placeholder={localMessage.theme}
+                   options={this.state.theme.map((o) => ({ label: o.key, value: o.value }))}
+                   value={this.props.form_data.theme}
+                   autosize={false}
+                   onChange={this.changeTheme.bind(this)}
+                 />
+               </div>
+               <div className="col-lg-2">
+                 <span>{localMessage.page_count}:</span>
+               </div>
+               <div className="col-lg-4">
+                 <Select
+                   multi={false}
+                   name="select-column"
+                   placeholder={localMessage.count}
+                   options={this.state.pageSize.map((o) => ({ label: o.key, value: o.value }))}
+                   value={this.props.form_data.pageSize}
+                   autosize={false}
+                   onChange={this.changePageSize.bind(this)}
+                 />
+               </div>
+             </div>
+             <div className="col-lg-12">
+               <div className="col-lg-2" style={{ marginTop: '15px' }}>
+                 <span>{localMessage.frozen_left}:</span>
+               </div>
+               <div className="col-lg-4">
+                 <Select
+                   style={{ marginTop: '10px' }}
+                   multi
+                   simpleValue
+                   placeholder={localMessage.frozen_col}
+                   options={this.props.form_data.groupby.concat(this.props.form_data.metrics)
+                                .map((o) => ({ value: o, label: o }))}
+                   value={this.props.form_data.pinned.left}
+                   autosize={false}
+                   onChange={this.changePinnedLeft.bind(this)}
+                 />
+               </div>
+               <div className="col-lg-2" style={{ marginTop: '15px' }}>
+                 <span>{localMessage.frozen_right}:</span>
+               </div>
+               <div className="col-lg-4">
+                 <Select
+                   style={{ marginTop: '10px' }}
+                   multi
+                   simpleValue
+                   placeholder={localMessage.frozen_col}
+                   options={this.props.form_data.groupby.concat(this.props.form_data.metrics)
+                                .map((o) => ({ value: o, label: o }))}
+                   value={this.props.form_data.pinned.right}
+                   autosize={false}
+                   onChange={this.changePinnedRight.bind(this)}
+                 />
+               </div>
+             </div>
+             <div className="col-lg-12" style={{ marginTop: '10px' }}>
+               <div className="col-lg-4">
+                 <span>{localMessage.enable_piovttable}:</span>
+               </div>
+               <div className="col-lg-8">
+                 <Select
+                   options={this.state.isPivot.map((o) => ({ label: o.key, value: o.value }))}
+                   value={this.props.form_data.isPivot}
+                   autosize={false}
+                   onChange={this.changePivot.bind(this)}
+                 />
+               </div>
+             </div>
+             {this.props.form_data.isPivot === 'false' &&
+               <div className="col-lg-12" style={{ marginTop: '10px' }}>
+                 <hr style={{ height: '1px', border: 'none', borderTop: '1px solid #555555' }} />
+                 {headerSettingDiv}
+                 <div className="row space-2">
+                   <div className="col-lg-2">
+                     <Button
+                       id="add-button"
+                       bsSize="sm"
+                       onClick={this.addHeaderSetting.bind(this)}
+                     >
+                       <i className="fa fa-plus" /> &nbsp; {localMessage.add_table_header_setting}
+                     </Button>
+                   </div>
+                 </div>
+               </div>
+             }
+             {this.props.form_data.isPivot === 'true' &&
+               <div className="col-lg-12" style={{ marginTop: '10px' }}>
+                 <hr style={{ height: '1px', border: 'none', borderTop: '1px solid #555555' }} />
+                 <PivotSetting
+                   actions={this.props.actions}
+                   form_data={this.props.form_data}
+                 />
+               </div>
+             }
+           </div>
+         }
+        </Modal.Body>
 
-          <Modal.Footer>
-          </Modal.Footer>
-        </Modal>
-      </IntlProvider>
+        <Modal.Footer>
+        </Modal.Footer>
+      </Modal>
     );
   }
 }

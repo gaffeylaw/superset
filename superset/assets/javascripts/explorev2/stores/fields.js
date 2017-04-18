@@ -1,6 +1,10 @@
 import { formatSelectOptionsForRange, formatSelectOptions } from '../../modules/utils';
 import visTypes from './visTypes';
+import { chooseMessage, chooseLocale } from './language'; 
+import zh_CN from './zh_CN';
+import en_US from './en_US';
 
+const localeMessage = chooseMessage();
 export const fieldTypes = [
   'CheckboxField',
   'FreeFormSelectField',
@@ -12,7 +16,7 @@ export const fieldTypes = [
   'TextField',
   'MenuField',
 ];
-const D3_FORMAT_DOCS = 'D3 format syntax: https://github.com/d3/d3-format';
+const D3_FORMAT_DOCS = localeMessage.d3_format_docs;
 
 // input choices & options
 const D3_TIME_FORMAT_OPTIONS = [
@@ -39,7 +43,7 @@ const TIME_STAMP_OPTIONS = [
 export const fields = {
   datasource: {
     type: 'SelectField',
-    label: 'Datasource',
+    label: localeMessage.datasource,
     default: null,
     choices: [],
     description: '',
@@ -47,216 +51,179 @@ export const fields = {
 
   viz_type: {
     type: 'MenuField',
-    label: 'Viz',
+    label: localeMessage.viz,
     default: 'table',
     choices: formatSelectOptions(Object.keys(visTypes)),
-    description: 'The type of visualization to display',
+    description: localeMessage.viz_type_description,
   },
 
   metrics: {
     type: 'SelectMultipleSortableField',
-    label: 'Metrics',
+    label: localeMessage.metrics,
     choices: [],
     default: [],
-    description: 'One or many metrics to display',
+    description: localeMessage.metrics_to_display,
   },
 
   order_by_cols: {
     type: 'SelectMultipleSortableField',
-    label: 'Ordering',
+    label: localeMessage.ordring,
     choices: [],
     default: [],
-    description: 'One or many metrics to display',
+    description: localeMessage.metrics_to_display,
   },
 
   metric: {
     type: 'SelectField',
-    label: 'Metric',
+    label: localeMessage.metric,
     choices: [],
     default: null,
-    description: 'Choose the metric',
+    description: localeMessage.choose_metric,
   },
 
   stacked_style: {
     type: 'SelectField',
-    label: 'Stacked Style',
-    choices: [
-      ['stack', 'stack'],
-      ['stream', 'stream'],
-      ['expand', 'expand'],
-    ],
+    label: localeMessage.stacked_style,
+    choices: localeMessage.stacked_style_choices,
     default: 'stack',
     description: '',
   },
 
   linear_color_scheme: {
     type: 'SelectField',
-    label: 'Linear Color Scheme',
-    choices: [
-      ['fire', 'fire'],
-      ['blue_white_yellow', 'blue/white/yellow'],
-      ['white_black', 'white/black'],
-      ['black_white', 'black/white'],
-    ],
+    label: localeMessage.linear_color_scheme,
+    choices: localeMessage.linear_color_scheme_choices,
     default: 'blue_white_yellow',
     description: '',
   },
 
   normalize_across: {
     type: 'SelectField',
-    label: 'Normalize Across',
-    choices: [
-      ['heatmap', 'heatmap'],
-      ['x', 'x'],
-      ['y', 'y'],
-    ],
+    label: localeMessage.normalize_across,
+    choices: localeMessage.normalize_across_choices,
     default: 'heatmap',
-    description: 'Color will be rendered based on a ratio ' +
-                 'of the cell against the sum of across this ' +
-                 'criteria',
+    description: localeMessage.normalize_across_description,
   },
 
   horizon_color_scale: {
     type: 'SelectField',
-    label: 'Horizon Color Scale',
-    choices: [
-      ['series', 'series'],
-      ['overall', 'overall'],
-      ['change', 'change'],
-    ],
+    label: localeMessage.horizon_color_scale,
+    choices: localeMessage.horizon_color_scale_choices,
     default: 'series',
-    description: 'Defines how the color are attributed.',
+    description: localeMessage.horizon_color_scale_description,
   },
 
   canvas_image_rendering: {
     type: 'SelectField',
-    label: 'Rendering',
-    choices: [
-      ['pixelated', 'pixelated (Sharp)'],
-      ['auto', 'auto (Smooth)'],
-    ],
+    label: localeMessage.rendering,
+    choices: localeMessage.canvas_image_rendering_choices,
     default: 'pixelated',
-    description: 'image-rendering CSS attribute of the canvas object that ' +
-                 'defines how the browser scales up the image',
+    description: localeMessage.canvas_image_rendering_description,
   },
 
   xscale_interval: {
     type: 'SelectField',
-    label: 'XScale Interval',
+    label: localeMessage.xscale_interval,
     choices: formatSelectOptionsForRange(1, 50),
     default: '1',
-    description: 'Number of steps to take between ticks when ' +
-                 'displaying the X scale',
+    description: localeMessage.xscale_interval_description,
   },
 
   yscale_interval: {
     type: 'SelectField',
-    label: 'YScale Interval',
+    label: localeMessage.yscale_interval,
     choices: formatSelectOptionsForRange(1, 50),
     default: null,
-    description: 'Number of steps to take between ticks when ' +
-                 'displaying the Y scale',
+    description: localeMessage.yscale_interval_description,
   },
 
   bar_stacked: {
     type: 'CheckboxField',
-    label: 'Stacked Bars',
+    label: localeMessage.bar_stacked,
     default: false,
     description: null,
   },
 
   show_markers: {
     type: 'CheckboxField',
-    label: 'Show Markers',
+    label: localeMessage.show_markers,
     default: false,
-    description: 'Show data points as circle markers on the lines',
+    description: localeMessage.showm,
   },
 
   show_bar_value: {
     type: 'CheckboxField',
-    label: 'Bar Values',
+    label: localeMessage.show_bar_value,
     default: false,
-    description: 'Show the value on top of the bar',
+    description: localeMessage.show_bar_value_description,
   },
 
   order_bars: {
     type: 'CheckboxField',
-    label: 'Sort Bars',
+    label: localeMessage.order_bars,
     default: false,
-    description: 'Sort bars by x labels.',
+    description: localeMessage.order_bars_description,
   },
 
   show_controls: {
     type: 'CheckboxField',
-    label: 'Extra Controls',
+    label: localeMessage.show_controls,
     default: false,
-    description: 'Whether to show extra controls or not. Extra controls ' +
-                 'include things like making mulitBar charts stacked ' +
-                 'or side by side.',
+    description: localeMessage.show_controls_desc,
   },
 
   reduce_x_ticks: {
     type: 'CheckboxField',
-    label: 'Reduce X ticks',
+    label: localeMessage.reduce_x_ticks,
     default: false,
-    description: 'Reduces the number of X axis ticks to be rendered. ' +
-                 'If true, the x axis wont overflow and labels may be ' +
-                 'missing. If false, a minimum width will be applied ' +
-                 'to columns and the width may overflow into an ' +
-                 'horizontal scroll.',
+    description: localeMessage.reduce_x_ticks_desc,
   },
 
   include_series: {
     type: 'CheckboxField',
-    label: 'Include Series',
+    label: localeMessage.include_series,
     default: false,
-    description: 'Include series name as an axis',
+    description: localeMessage.include_series_desc,
   },
 
   secondary_metric: {
     type: 'SelectField',
-    label: 'Color Metric',
+    label: localeMessage.secondary_metric,
     choices: [],
     default: null,
-    description: 'A metric to use for color',
+    description: localeMessage.secondary_metric_desc,
   },
 
   country_fieldtype: {
     type: 'SelectField',
-    label: 'Country Field Type',
-    default: 'cca2',
-    choices: [
-        ['name', 'Full name'],
-        ['cioc', 'code International Olympic Committee (cioc)'],
-        ['cca2', 'code ISO 3166-1 alpha-2 (cca2)'],
-        ['cca3', 'code ISO 3166-1 alpha-3 (cca3)'],
-    ],
-    description: 'The country code standard that Superset should expect ' +
-                 'to find in the [country] column',
+    label: localeMessage.country_fieldtype,
+    default: localeMessage.country_fieldtype_default,
+    choices: localeMessage.country_fieldtype_choices,
+    description: localeMessage.country_fieldtype_desc,
   },
 
   groupby: {
     type: 'SelectMultipleSortableField',
-    label: 'Group by',
+    label: localeMessage.groupby,
     choices: [],
     default: [],
-    description: 'One or many fields to group by',
+    description: localeMessage.groupby_desc,
   },
 
   columns: {
     type: 'SelectMultipleSortableField',
-    label: 'Columns',
+    label: localeMessage.columns,
     choices: [],
     default: [],
-    description: 'One or many fields to pivot as columns',
+    description: localeMessage.columns_desc,
   },
 
   all_columns: {
     type: 'SelectMultipleSortableField',
-    label: 'Columns',
+    label: localeMessage.all_columns,
     choices: [],
     default: [],
-    description: 'Columns to display',
+    description: localeMessage.all_columns_desc,
   },
 
   all_columns_x: {
@@ -264,7 +231,7 @@ export const fields = {
     label: 'X',
     choices: [],
     default: null,
-    description: 'Columns to display',
+    description: localeMessage.columns_to_display,
   },
 
   all_columns_y: {
@@ -272,81 +239,60 @@ export const fields = {
     label: 'Y',
     choices: [],
     default: null,
-    description: 'Columns to display',
+    description: localeMessage.columns_to_display,
   },
 
   druid_time_origin: {
     type: 'FreeFormSelectField',
-    label: 'Origin',
-    choices: [
-      ['', 'default'],
-      ['now', 'now'],
-    ],
+    label: localeMessage.origin,
+    choices: localeMessage.druid_time_origin_choices,
     default: null,
-    description: 'Defines the origin where time buckets start, ' +
-                 'accepts natural dates as in `now`, `sunday` or `1970-01-01`',
+    description: localeMessage.druid_time_origin_desc,
   },
 
   bottom_margin: {
     type: 'FreeFormSelectField',
-    label: 'Bottom Margin',
+    label: localeMessage.bottom_margin,
     choices: formatSelectOptions(['auto', 50, 75, 100, 125, 150, 200]),
     default: 'auto',
-    description: 'Bottom marging, in pixels, allowing for more room for axis labels',
+    description: localeMessage.bottom_margin_desc,
   },
 
   granularity: {
-    type: 'FreeFormSelectField',
-    label: 'Time Granularity',
+    type: 'SelectField',
+    label: localeMessage.granularity,
     default: 'one day',
-    choices: formatSelectOptions([
-      'all',
-      '5 seconds',
-      '30 seconds',
-      '1 minute',
-      '5 minutes',
-      '1 hour',
-      '6 hour',
-      '1 day',
-      '7 days',
-      'week',
-      'week_starting_sunday',
-      'week_ending_saturday',
-      'month',
-    ]),
-    description: 'The time granularity for the visualization. Note that you ' +
-                 'can type and use simple natural language as in `10 seconds`, ' +
-                 '`1 day` or `56 weeks`',
+    choices: localeMessage.granularity_choices,
+    description: localeMessage.granularity_desc,
   },
 
   domain_granularity: {
     type: 'SelectField',
-    label: 'Domain',
+    label: localeMessage.domain_granularity,
     default: 'month',
-    choices: formatSelectOptions(['hour', 'day', 'week', 'month', 'year']),
-    description: 'The time unit used for the grouping of blocks',
+    choices: localeMessage.domain_granularity_choices,
+    description: localeMessage.domain_granularity_desc,
   },
 
   subdomain_granularity: {
     type: 'SelectField',
-    label: 'Subdomain',
+    label: localeMessage.subdomain_granularity,
     default: 'day',
-    choices: formatSelectOptions(['min', 'hour', 'day', 'week', 'month']),
-    description: 'The time unit for each block. Should be a smaller unit than ' +
-                 'domain_granularity. Should be larger or equal to Time Grain',
+    choices: localeMessage.subdomain_granularity_choices,
+    description: localeMessage.subdomain_granularity_desc,
   },
 
   link_length: {
     type: 'FreeFormSelectField',
-    label: 'Link Length',
+    label: localeMessage.link_length,
     default: '200',
     choices: formatSelectOptions(['10', '25', '50', '75', '100', '150', '200', '250']),
-    description: 'Link length in the force layout',
+    description: localeMessage.link_length_desc,
   },
 
   charge: {
     type: 'FreeFormSelectField',
-    label: 'Charge',
+    label: localeMessage.charge,
     default: '-500',
     choices: formatSelectOptions([
       '-50',
@@ -360,119 +306,89 @@ export const fields = {
       '-2500',
       '-5000',
     ]),
-    description: 'Charge in the force layout',
+    description: localeMessage.charge_desc,
   },
 
   granularity_sqla: {
     type: 'SelectField',
-    label: 'Time Column',
+    label: localeMessage.granularity_sqla,
     default: null,
     choices: [],
-    description: 'The time column for the visualization. Note that you ' +
-                 'can define arbitrary expression that return a DATETIME ' +
-                 'column in the table or. Also note that the ' +
-                 'filter below is applied against this column or ' +
-                 'expression',
+    description: localeMessage.granularity_sqla_desc,
   },
 
   time_grain_sqla: {
     type: 'SelectField',
-    label: 'Time Grain',
+    label: localeMessage.time_grain_sqla,
     choices: [],
-    default: 'Time Column',
-    description: 'The time granularity for the visualization. This ' +
-                 'applies a date transformation to alter ' +
-                 'your time column and defines a new time granularity. ' +
-                 'The options here are defined on a per database ' +
-                 'engine basis in the Superset source code.',
+    default: localeMessage.time_grain_sqla_default,
+    description: localeMessage.time_grain_sqla_desc,
   },
 
   resample_rule: {
     type: 'FreeFormSelectField',
-    label: 'Resample Rule',
+    label: localeMessage.resample_rule,
     default: null,
     choices: formatSelectOptions(['', '1T', '1H', '1D', '7D', '1M', '1AS']),
-    description: 'Pandas resample rule',
+    description: localeMessage.resample_rule_desc,
   },
 
   resample_how: {
-    type: 'FreeFormSelectField',
-    label: 'Resample How',
+    type: 'SelectField',
+    label: localeMessage.resample_how,
     default: null,
-    choices: formatSelectOptions(['', 'mean', 'sum', 'median']),
-    description: 'Pandas resample how',
+    choices: localeMessage.resample_how_choices,
+    description: localeMessage.resample_how_desc,
   },
 
   resample_fillmethod: {
     type: 'FreeFormSelectField',
-    label: 'Resample Fill Method',
+    label: localeMessage.resample_fillmethod,
     default: null,
-    choices: formatSelectOptions(['', 'ffill', 'bfill']),
-    description: 'Pandas resample fill method',
+    choices: formatSelectOptions(localeMessage.resample_fillmethod_choices),
+    description: localeMessage.resample_fillmethod_desc,
   },
 
   since: {
-    type: 'FreeFormSelectField',
-    label: 'Since',
+    type: 'SelectField',
+    label: localeMessage.since,
     default: '7 days ago',
-    choices: formatSelectOptions([
-      '1 hour ago',
-      '12 hours ago',
-      '1 day ago',
-      '7 days ago',
-      '28 days ago',
-      '90 days ago',
-      '1 year ago',
-      '100 year ago',
-    ]),
-    description: 'Timestamp from filter. This supports free form typing and ' +
-                 'natural language as in `1 day ago`, `28 days` or `3 years`',
+    choices: localeMessage.since_choices,
+    description: localeMessage.since_desc,
   },
 
   until: {
-    type: 'FreeFormSelectField',
-    label: 'Until',
+    type: 'SelectField',
+    label: localeMessage.until,
     default: 'now',
-    choices: formatSelectOptions([
-      'now',
-      '1 day ago',
-      '7 days ago',
-      '28 days ago',
-      '90 days ago',
-      '1 year ago',
-    ]),
+    choices: localeMessage.until_choices,
   },
 
   max_bubble_size: {
     type: 'FreeFormSelectField',
-    label: 'Max Bubble Size',
+    label: localeMessage.max_bubble_size,
     default: '25',
     choices: formatSelectOptions(['5', '10', '15', '25', '50', '75', '100']),
   },
 
   whisker_options: {
-    type: 'FreeFormSelectField',
-    label: 'Whisker/outlier options',
+    type: 'SelectField',
+    label: localeMessage.whisker_options,
     default: 'Tukey',
-    description: 'Determines how whiskers and outliers are calculated.',
-    choices: formatSelectOptions([
-      'Tukey',
-      'Min/max (no outliers)',
-      '2/98 percentiles',
-      '9/91 percentiles',
-    ]),
+    description: localeMessage.whisker_options_desc,
+    choices: localeMessage.whisker_options_choices,
   },
 
   treemap_ratio: {
     type: 'IntegerField',
-    label: 'Ratio',
+    label: localeMessage.treemap_ratio,
     default: 0.5 * (1 + Math.sqrt(5)),  // d3 default, golden ratio
-    description: 'Target aspect ratio for treemap tiles.',
+    description: localeMessage.treemap_ratio_desc,
   },
 
   number_format: {
     type: 'FreeFormSelectField',
-    label: 'Number format',
+    label: localeMessage.number_format,
     default: D3_TIME_FORMAT_OPTIONS[0],
     choices: D3_TIME_FORMAT_OPTIONS,
     description: D3_FORMAT_DOCS,
@@ -480,81 +396,77 @@ export const fields = {
 
   row_limit: {
     type: 'FreeFormSelectField',
-    label: 'Row limit',
+    label: localeMessage.row_limit,
     default: null,
     choices: formatSelectOptions(ROW_LIMIT_OPTIONS),
   },
 
   limit: {
     type: 'FreeFormSelectField',
-    label: 'Series limit',
+    label: localeMessage.limit,
     choices: formatSelectOptions(SERIES_LIMITS),
     default: 50,
-    description: 'Limits the number of time series that get displayed',
+    description: localeMessage.limit_desc,
   },
 
   timeseries_limit_metric: {
     type: 'SelectField',
-    label: 'Sort By',
+    label: localeMessage.timeseries_limit_metric,
     choices: [],
     default: null,
-    description: 'Metric used to define the top series',
+    description: localeMessage.timeseries_limit_metric_desc,
   },
 
   rolling_type: {
     type: 'SelectField',
-    label: 'Rolling',
-    default: 'None',
-    choices: formatSelectOptions(['None', 'mean', 'sum', 'std', 'cumsum']),
-    description: 'Defines a rolling window function to apply, works along ' +
-                 'with the [Periods] text box',
+    label: localeMessage.rolling_type,
+    default: localeMessage.rolling_type_default,
+    choices: localeMessage.rolling_type_choices,
+    description: localeMessage.rolling_type_desc,
   },
 
   rolling_periods: {
     type: 'IntegerField',
-    label: 'Periods',
+    label: localeMessage.rolling_periods,
     validators: [],
-    description: 'Defines the size of the rolling window function, ' +
-                 'relative to the time granularity selected',
+    description: localeMessage.rolling_periods_desc,
   },
 
   series: {
     type: 'SelectField',
-    label: 'Series',
+    label: localeMessage.series,
     choices: [],
     default: null,
-    description: 'Defines the grouping of entities. ' +
-                 'Each series is shown as a specific color on the chart and ' +
-                 'has a legend toggle',
+    description: localeMessage.series_desc,
   },
 
   entity: {
     type: 'SelectField',
-    label: 'Entity',
+    label: localeMessage.entity,
     choices: [],
     default: null,
-    description: 'This define the element to be plotted on the chart',
+    description: localeMessage.entity_desc,
   },
 
   x: {
     type: 'SelectField',
-    label: 'X Axis',
+    label: localeMessage.x,
     choices: [],
     default: null,
-    description: 'Metric assigned to the [X] axis',
+    description: localeMessage.x_desc,
   },
 
   y: {
     type: 'SelectField',
-    label: 'Y Axis',
+    label: localeMessage.y,
     choices: [],
     default: null,
-    description: 'Metric assigned to the [Y] axis',
+    description: localeMessage.y_desc,
   },
 
   size: {
     type: 'SelectField',
-    label: 'Bubble Size',
+    label: localeMessage.size,
     default: null,
     choices: [],
   },
@@ -562,82 +474,75 @@ export const fields = {
   url: {
     type: 'TextField',
     label: 'URL',
-    description: 'The URL, this field is templated, so you can integrate ' +
-                 '{{ width }} and/or {{ height }} in your URL string.',
+    description: localeMessage.url_desc,
     default: 'https: //www.youtube.com/embed/JkI5rg_VcQ4',
   },
 
   x_axis_label: {
     type: 'TextField',
-    label: 'X Axis Label',
+    label: localeMessage.x_axis_label,
     default: '',
   },
 
   y_axis_label: {
     type: 'TextField',
-    label: 'Y Axis Label',
+    label: localeMessage.y_axis_label,
     default: '',
   },
 
   where: {
     type: 'TextField',
-    label: 'Custom WHERE clause',
+    label: localeMessage.where,
     default: '',
-    description: 'The text in this box gets included in your query\'s WHERE ' +
-                 'clause, as an AND to other criteria. You can include ' +
-                 'complex expression, parenthesis and anything else ' +
-                 'supported by the backend it is directed towards.',
+    description: localeMessage.where_desc,
   },
 
   having: {
     type: 'TextField',
-    label: 'Custom HAVING clause',
+    label: localeMessage.having,
     default: '',
-    description: 'The text in this box gets included in your query\'s HAVING ' +
-                 'clause, as an AND to other criteria. You can include ' +
-                 'complex expression, parenthesis and anything else ' +
-                 'supported by the backend it is directed towards.',
+    description: localeMessage.having,
   },
 
   compare_lag: {
     type: 'TextField',
-    label: 'Comparison Period Lag',
-    description: 'Based on granularity, number of time periods to compare against',
+    label: localeMessage.compare_lag,
+    description: localeMessage.compare_lag_desc,
   },
 
   compare_suffix: {
     type: 'TextField',
-    label: 'Comparison suffix',
-    description: 'Suffix to apply after the percentage display',
+    label: localeMessage.compare_suffix,
+    description: localeMessage.compare_suffix_desc,
   },
 
   table_timestamp_format: {
     type: 'FreeFormSelectField',
-    label: 'Table Timestamp Format',
+    label: localeMessage.table_timestamp_format,
     default: 'smart_date',
     choices: TIME_STAMP_OPTIONS,
-    description: 'Timestamp Format',
+    description: localeMessage.table_timestamp_format_desc,
   },
 
   series_height: {
     type: 'FreeFormSelectField',
-    label: 'Series Height',
+    label: localeMessage.series_height,
     default: '25',
     choices: formatSelectOptions(['10', '25', '40', '50', '75', '100', '150', '200']),
-    description: 'Pixel height of each series',
+    description: localeMessage.series_height_desc,
   },
 
   page_length: {
     type: 'FreeFormSelectField',
-    label: 'Page Length',
+    label: localeMessage.page_length,
     default: 0,
     choices: formatSelectOptions([0, 10, 25, 40, 50, 75, 100, 150, 200]),
-    description: 'Rows per page, 0 means no pagination',
+    description: localeMessage.page_length_desc,
   },
 
   x_axis_format: {
     type: 'FreeFormSelectField',
-    label: 'X axis format',
+    label: localeMessage.x_axis_format,
     default: 'smart_date',
     choices: TIME_STAMP_OPTIONS,
     description: D3_FORMAT_DOCS,
@@ -645,7 +550,7 @@ export const fields = {
 
   y_axis_format: {
     type: 'FreeFormSelectField',
-    label: 'Y axis format',
+    label: localeMessage.y_axis_format,
     default: '.3s',
     choices: D3_TIME_FORMAT_OPTIONS,
     description: D3_FORMAT_DOCS,
@@ -653,233 +558,210 @@ export const fields = {
 
   markup_type: {
     type: 'SelectField',
-    label: 'Markup Type',
-    choices: formatSelectOptions(['markdown', 'html']),
+    label: localeMessage.markup_type,
+    choices: localeMessage.markup_type_choices,
     default: 'markdown',
-    description: 'Pick your favorite markup language',
+    description: localeMessage.markup_type_desc,
   },
 
   rotation: {
     type: 'SelectField',
-    label: 'Rotation',
-    choices: formatSelectOptions(['random', 'flat', 'square']),
+    label: localeMessage.rotation,
+    choices: localeMessage.rotation_choices,
     default: 'random',
-    description: 'Rotation to apply to words in the cloud',
+    description: localeMessage.rotation_desc,
   },
 
   line_interpolation: {
     type: 'SelectField',
-    label: 'Line Style',
-    choices: formatSelectOptions(['linear', 'basis', 'cardinal',
-      'monotone', 'step-before', 'step-after']),
+    label: localeMessage.line_interpolation ,
+    choices: localeMessage.line_interpolation_choices,
     default: 'linear',
-    description: 'Line interpolation as defined by d3.js',
+    description: localeMessage.line_interpolation_desc,
   },
 
   pie_label_type: {
     type: 'SelectField',
-    label: 'Label Type',
-    default: 'key',
-    choices: [
-      ['key', 'Category Name'],
-      ['value', 'Value'],
-      ['percent', 'Percentage'],
-    ],
-    description: 'What should be shown on the label?',
+    label: localeMessage.pie_label_type,
+    default: localeMessage.pie_label_type_default,
+    choices: localeMessage.pie_label_type_choices,
+    description: localeMessage.pie_label_type_desc,
   },
 
   code: {
     type: 'TextAreaField',
-    label: 'Code',
-    description: 'Put your code here',
+    label: localeMessage.code,
+    description: localeMessage.code_desc,
     default: '',
   },
 
   pandas_aggfunc: {
     type: 'SelectField',
-    label: 'Aggregation function',
-    choices: formatSelectOptions([
-      'sum',
-      'mean',
-      'min',
-      'max',
-      'median',
-      'stdev',
-      'var',
-    ]),
+    label: localeMessage.pandas_aggfunc,
+    choices: localeMessage.pandas_aggfunc_choices,
     default: 'sum',
-    description: 'Aggregate function to apply when pivoting and ' +
-                 'computing the total rows and columns',
+    description: localeMessage.pandas_aggfunc_desc,
   },
 
   size_from: {
     type: 'TextField',
-    label: 'Font Size From',
+    label: localeMessage.size_from,
     default: '20',
-    description: 'Font size for the smallest value in the list',
+    description: localeMessage.size_from_desc,
   },
 
   size_to: {
     type: 'TextField',
-    label: 'Font Size To',
+    label: localeMessage.size_to,
     default: '150',
-    description: 'Font size for the biggest value in the list',
+    description: localeMessage.size_to_desc,
   },
 
   show_brush: {
     type: 'CheckboxField',
-    label: 'Range Filter',
+    label: localeMessage.show_brush,
     default: false,
-    description: 'Whether to display the time range interactive selector',
+    description: localeMessage.show_brush_desc,
   },
 
   date_filter: {
     type: 'CheckboxField',
-    label: 'Date Filter',
+    label: localeMessage.date_filter,
     default: false,
-    description: 'Whether to include a time filter',
+    description: localeMessage.date_filter_desc,
   },
 
   show_datatable: {
     type: 'CheckboxField',
-    label: 'Data Table',
+    label: localeMessage.show_datatable,
     default: false,
-    description: 'Whether to display the interactive data table',
+    description: localeMessage.show_datatable_desc,
   },
 
   include_search: {
     type: 'CheckboxField',
-    label: 'Search Box',
+    label: localeMessage.include_search,
     default: false,
-    description: 'Whether to include a client side search box',
+    description: localeMessage.include_search_desc,
   },
 
   table_filter: {
     type: 'CheckboxField',
-    label: 'Table Filter',
+    label: localeMessage.table_filter,
     default: false,
-    description: 'Whether to apply filter when table cell is clicked',
+    description: localeMessage.table_filter_desc,
   },
 
   show_bubbles: {
     type: 'CheckboxField',
-    label: 'Show Bubbles',
+    label: localeMessage.show_bubbles,
     default: false,
-    description: 'Whether to display bubbles on top of countries',
+    description: localeMessage.show_bubbles_desc,
   },
 
   show_legend: {
     type: 'CheckboxField',
-    label: 'Legend',
+    label: localeMessage.show_legend,
     default: true,
-    description: 'Whether to display the legend (toggles)',
+    description: localeMessage.show_legend_desc,
   },
 
   x_axis_showminmax: {
     type: 'CheckboxField',
-    label: 'X bounds',
+    label: localeMessage.x_axis_showminmax,
     default: true,
-    description: 'Whether to display the min and max values of the X axis',
+    description: localeMessage.x_axis_showminmax_desc,
   },
 
   rich_tooltip: {
     type: 'CheckboxField',
-    label: 'Rich Tooltip',
+    label: localeMessage.rich_tooltip,
     default: true,
-    description: 'The rich tooltip shows a list of all series for that ' +
-                 'point in time',
+    description: localeMessage.rich_tooltip_desc,
   },
 
   y_axis_zero: {
     type: 'CheckboxField',
-    label: 'Y Axis Zero',
+    label: localeMessage.y_axis_zero,
     default: false,
-    description: 'Force the Y axis to start at 0 instead of the minimum value',
+    description: localeMessage.y_axis_zero_desc,
   },
 
   y_log_scale: {
     type: 'CheckboxField',
-    label: 'Y Log Scale',
+    label: localeMessage.y_log_scale,
     default: false,
-    description: 'Use a log scale for the Y axis',
+    description: localeMessage.y_log_scale,
   },
 
   x_log_scale: {
     type: 'CheckboxField',
-    label: 'X Log Scale',
+    label: localeMessage.x_log_scale,
     default: false,
-    description: 'Use a log scale for the X axis',
+    description: localeMessage.x_log_scale,
   },
 
   donut: {
     type: 'CheckboxField',
-    label: 'Donut',
+    label: localeMessage.dount_desc,
     default: false,
-    description: 'Do you want a donut or a pie?',
+    description: localeMessage.donut_desc,
   },
 
   labels_outside: {
     type: 'CheckboxField',
-    label: 'Put labels outside',
+    label: localeMessage.labels_outside,
     default: true,
-    description: 'Put the labels outside the pie?',
+    description: localeMessage.labels_outside_desc,
   },
 
   contribution: {
     type: 'CheckboxField',
-    label: 'Contribution',
+    label: localeMessage.contribution,
     default: false,
-    description: 'Compute the contribution to the total',
+    description: localeMessage.contribution_desc,
   },
 
   num_period_compare: {
     type: 'IntegerField',
-    label: 'Period Ratio',
+    label: localeMessage.num_period_compare,
     default: '',
     validators: [],
-    description: '[integer] Number of period to compare against, ' +
-                 'this is relative to the granularity selected',
+    description: localeMessage.num_period_compare_desc,
   },
 
   period_ratio_type: {
     type: 'SelectField',
-    label: 'Period Ratio Type',
+    label: localeMessage.period_ratio_type,
     default: 'growth',
-    choices: formatSelectOptions(['factor', 'growth', 'value']),
-    description: '`factor` means (new/previous), `growth` is ' +
-                 '((new/previous) - 1), `value` is (new-previous)',
+    choices: localeMessage.period_ratio_type_choices,
+    description: localeMessage.period_ratio_type_desc,
   },
 
   time_compare: {
     type: 'TextField',
-    label: 'Time Shift',
+    label: localeMessage.time_compare,
     default: null,
-    description: 'Overlay a timeseries from a ' +
-                 'relative time period. Expects relative time delta ' +
-                 'in natural language (example:  24 hours, 7 days, ' +
-                 '56 weeks, 365 days',
+    description: localeMessage.time_compare_desc,
   },
 
   subheader: {
     type: 'TextField',
-    label: 'Subheader',
-    description: 'Description text that shows up below your Big Number',
+    label: localeMessage.subheader,
+    description: localeMessage.subheader_desc,
   },
 
   mapbox_label: {
     type: 'SelectMultipleSortableField',
-    label: 'label',
+    label: localeMessage.mapbox_label,
     choices: [],
     default: [],
-    description: '`count` is COUNT(*) if a group by is used. ' +
-                 'Numerical columns will be aggregated with the aggregator. ' +
-                 'Non-numerical columns will be used to label points. ' +
-                 'Leave empty to get a count of points in each cluster.',
+    description: localeMessage.mapbox_label_desc,
   },
 
   mapbox_style: {
     type: 'SelectField',
-    label: 'Map Style',
+    label: localeMessage.mapbox_style,
     choices: [
         ['mapbox://styles/mapbox/streets-v9', 'Streets'],
         ['mapbox://styles/mapbox/dark-v9', 'Dark'],
@@ -889,12 +771,12 @@ export const fields = {
         ['mapbox://styles/mapbox/outdoors-v9', 'Outdoors'],
     ],
     default: 'mapbox://styles/mapbox/streets-v9',
-    description: 'Base layer map style',
+    description: localeMessage.mapbox_style_desc,
   },
 
   clustering_radius: {
     type: 'FreeFormSelectField',
-    label: 'Clustering Radius',
+    label: localeMessage.clustering_radius,
     default: '60',
     choices: formatSelectOptions([
       '0',
@@ -907,72 +789,67 @@ export const fields = {
       '500',
       '1000',
     ]),
-    description: 'The radius (in pixels) the algorithm uses to define a cluster. ' +
-                 'Choose 0 to turn off clustering, but beware that a large ' +
-                 'number of points (>1000) will cause lag.',
+    description: localeMessage.clustering_radius_desc,
   },
 
   point_radius: {
     type: 'SelectField',
-    label: 'Point Radius',
+    label: localeMessage.point_radius,
     default: null,
     choices: [],
-    description: 'The radius of individual points (ones that are not in a cluster). ' +
-                 'Either a numerical column or `Auto`, which scales the point based ' +
-                 'on the largest cluster',
+    description: localeMessage.point_radius_desc,
   },
 
   point_radius_unit: {
     type: 'SelectField',
-    label: 'Point Radius Unit',
+    label: localeMessage.point_radius_unit,
     default: 'Pixels',
-    choices: formatSelectOptions(['Pixels', 'Miles', 'Kilometers']),
-    description: 'The unit of measure for the specified point radius',
+    choices: localeMessage.point_radius_unit_choices,
+    description: localeMessage.point_radius_unit_desc,
   },
 
   global_opacity: {
     type: 'IntegerField',
-    label: 'Opacity',
+    label: localeMessage.global_opacity,
     default: 1,
-    description: 'Opacity of all clusters, points, and labels. ' +
-                 'Between 0 and 1.',
+    description: localeMessage.global_opacity_desc,
   },
 
   viewport_zoom: {
     type: 'IntegerField',
-    label: 'Zoom',
+    label: localeMessage.viewport_zoom,
     default: 11,
     validators: [],
-    description: 'Zoom level of the map',
+    description: localeMessage.viewport_zoom_desc,
     places: 8,
   },
 
   viewport_latitude: {
     type: 'IntegerField',
-    label: 'Default latitude',
+    label: localeMessage.viewport_latitude,
     default: 37.772123,
-    description: 'Latitude of default viewport',
+    description: localeMessage.viewport_latitude_desc,
     places: 8,
   },
 
   viewport_longitude: {
     type: 'IntegerField',
-    label: 'Default longitude',
+    label: localeMessage.viewport_longitude,
     default: -122.405293,
-    description: 'Longitude of default viewport',
+    description: localeMessage.viewport_longitude_desc,
     places: 8,
   },
 
   render_while_dragging: {
     type: 'CheckboxField',
-    label: 'Live render',
+    label: localeMessage.render_while_dragging,
     default: true,
-    description: 'Points and clusters will update as viewport is being changed',
+    description: localeMessage.render_while_dragging_desc,
   },
 
   mapbox_color: {
     type: 'FreeFormSelectField',
-    label: 'RGB Color',
+    label: localeMessage.mapbox_color,
     default: 'rgb(0, 122, 135)',
     choices: [
       ['rgb(0, 139, 139)', 'Dark Cyan'],
@@ -982,49 +859,49 @@ export const fields = {
       ['rgb(220, 20, 60)', 'Crimson'],
       ['rgb(34, 139, 34)', 'Forest Green'],
     ],
-    description: 'The color for points and clusters in RGB',
+    description: localeMessage.mapbox_color_desc,
   },
 
   ranges: {
     type: 'TextField',
-    label: 'Ranges',
+    label: localeMessage.ranges,
     default: '',
-    description: 'Ranges to highlight with shading',
+    description: localeMessage.ranges_desc,
   },
 
   range_labels: {
     type: 'TextField',
-    label: 'Range labels',
+    label: localeMessage.range_labels,
     default: '',
-    description: 'Labels for the ranges',
+    description: localeMessage.range_labels_desc,
   },
 
   markers: {
     type: 'TextField',
-    label: 'Markers',
+    label: localeMessage.markers,
     default: '',
-    description: 'List of values to mark with triangles',
+    description: localeMessage.markers_desc,
   },
 
   marker_labels: {
     type: 'TextField',
-    label: 'Marker labels',
+    label: localeMessage.marker_labels,
     default: '',
-    description: 'Labels for the markers',
+    description: localeMessage.marker_labels_desc,
   },
 
   marker_lines: {
     type: 'TextField',
-    label: 'Marker lines',
+    label: localeMessage.marker_lines,
     default: '',
-    description: 'List of values to mark with lines',
+    description: localeMessage.marker_lines_desc,
   },
 
   marker_line_labels: {
     type: 'TextField',
-    label: 'Marker line labels',
+    label: localeMessage.marker_line_labels,
     default: '',
-    description: 'Labels for the marker lines',
+    description: localeMessage.marker_line_labels_desc,
   },
 
   // extra style
@@ -1037,104 +914,104 @@ export const fields = {
   },
   bar: {
     type: 'SelectMultipleSortableField',
-    label: 'bar',
+    label: localeMessage.bar,
     choices: [],
     default: [],
-    description: 'One or many bars to display',
+    description: localeMessage.bar_desc,
   },
   area: {
     type: 'SelectMultipleSortableField',
-    label: 'area',
+    label: localeMessage.area,
     choices: [],
     default: [],
-    description: 'One or many areas to display',
+    description: localeMessage.area_desc,
   },
   scatter: {
     type: 'SelectMultipleSortableField',
-    label: 'scatter',
+    label: localeMessage.scatter,
     choices: [],
     default: [],
-    description: 'One or many scatters to display',
+    description: localeMessage.scatter_desc,
   },
   yAxis1: {
     type: 'SelectField',
-    label: 'yAxis',
+    label: localeMessage.yAxis,
     choices: formatSelectOptions([
       'y1',
       'y2',
     ]),
     default: 'y1',
-    description: 'choose the yAxias',
+    description: localeMessage.yAxis_desc,
   },
   yAxis2: {
     type: 'SelectField',
-    label: 'yAxis',
+    label: localeMessage.yAxis,
     choices: formatSelectOptions([
       'y1',
       'y2',
     ]),
     default: 'y1',
-    description: 'choose the yAxias',
+    description: localeMessage.yAxis_desc,
   },
   yAxis3: {
     type: 'SelectField',
-    label: 'yAxis',
+    label: localeMessage.yAxis,
     choices: formatSelectOptions([
       'y1',
       'y2',
     ]),
     default: 'y1',
-    description: 'choose the yAxias',
+    description: localeMessage.yAxis_desc,
   },
   yAxis4: {
     type: 'SelectField',
-    label: 'yAxis',
+    label: localeMessage.yAxis,
     choices: formatSelectOptions([
       'y1',
       'y2',
     ]),
     default: 'y1',
-    description: 'choose the yAxias',
+    description: localeMessage.yAxis_desc,
   },
   y_axis_format1: {
     type: 'FreeFormSelectField',
-    label: 'Y axis format',
+    label: localeMessage.y_axis_format,
     default: '.3s',
     choices: D3_TIME_FORMAT_OPTIONS,
     description: D3_FORMAT_DOCS,
   },
   y_axis_format2: {
     type: 'FreeFormSelectField',
-    label: 'Y axis format',
+    label: localeMessage.y_axis_format,
     default: '.3s',
     choices: D3_TIME_FORMAT_OPTIONS,
     description: D3_FORMAT_DOCS,
   },
   y_axis_label1: {
     type: 'TextField',
-    label: 'Y1 Axis Label',
+    label: localeMessage.y_axis_label1,
     default: '',
   },
   y_axis_label2: {
     type: 'TextField',
-    label: 'Y2 Axis Label',
+    label: localeMessage.y_axis_label2,
     default: '',
   },
   y_domain1: {
     type: 'TextField',
-    label: 'Y1 domain',
+    label: localeMessage.y_domain1,
     default: '',
-    description: 'the range of y1, for example: 0,100, it means from 0 to 100',
+    description: localeMessage.y_domain1_desc,
   },
   y_domain2: {
     type: 'TextField',
-    label: 'Y2 domain',
+    label: localeMessage.y_domain2,
     default: '',
-    description: 'the range of y2, for example: 0,100, it means from 0 to 100',
+    description: localeMessage.y_domain2_desc,
   },
   bar_horizontal: {
     type: 'CheckboxField',
-    label: 'Horizontal Bars',
+    label: localeMessage.bar_horizontal,
     default: false,
     description: '',
   },

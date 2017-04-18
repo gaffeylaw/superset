@@ -4,6 +4,9 @@ import Filter from './Filter';
 import { Button } from 'react-bootstrap';
 import { connect } from 'react-redux';
 import shortid from 'shortid';
+import { chooseMessage } from '../stores/language';
+import { zh_CN } from '../stores/zh_CN';
+import { en_US } from '../stores/en_US';
 
 const propTypes = {
   actions: React.PropTypes.object.isRequired,
@@ -17,6 +20,8 @@ const defaultProps = {
   filters: [],
   prefix: 'flt',
 };
+
+const localMessage = chooseMessage();
 
 class Filters extends React.Component {
   addFilter() {
@@ -56,7 +61,7 @@ class Filters extends React.Component {
               bsSize="sm"
               onClick={this.addFilter.bind(this)}
             >
-              <i className="fa fa-plus" /> &nbsp; Add Filter
+              <i className="fa fa-plus" /> &nbsp; {localMessage.add_filter}
             </Button>
           </div>
         </div>
