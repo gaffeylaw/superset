@@ -2,10 +2,15 @@ import React from 'react';
 import { bindActionCreators } from 'redux';
 import * as actions from '../actions/exploreActions';
 import { connect } from 'react-redux';
+import { chooseMessage } from '../stores/language';
+import { zh_CN } from '../stores/zh_CN';
+import { en_US } from '../stores/en_US';
 
 const propTypes = {
   actions: React.PropTypes.object,
 };
+
+const localMessage = chooseMessage();
 
 class SqlClause extends React.Component {
   onChange(key, event) {
@@ -22,7 +27,7 @@ class SqlClause extends React.Component {
               type="text"
               onChange={this.onChange.bind(this, 'where')}
               className="form-control input-sm"
-              placeholder="Where Clause"
+              placeholder={localMessage.where_clause}
             />
           </div>
           <div className="row">
@@ -31,7 +36,7 @@ class SqlClause extends React.Component {
               type="text"
               onChange={this.onChange.bind(this, 'having')}
               className="form-control input-sm"
-              placeholder="Having Clause"
+              placeholder={localMessage.having_clause}
             />
           </div>
         </div>

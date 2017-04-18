@@ -202,7 +202,7 @@ class StyleModal extends React.Component {
     if (this.state.count >= 0) {
       // console.log('refresh the render')
     }
-
+    const localMessage = this.props.form_data.localeMessage;
     return (
       <Modal
         show
@@ -214,13 +214,21 @@ class StyleModal extends React.Component {
             <div>
               <ul className="nav navbar-nav" style={{ fontSize: '14px' }}>
                 <li id="li" className="active" style={{ backgroundColor: '#ccc' }}>
-                  <a onClick={this.changeModal.bind(this, 1)}>基本样式</a>
+                  <a onClick={this.changeModal.bind(this, 1)}>{localMessage.base_style}</a>
                 </li>
-                <li id="li2"><a onClick={this.changeModal.bind(this, 2)}>条件样式</a></li>
-                <li id="li3"><a onClick={this.changeModal.bind(this, 3)}>列间比较</a></li>
-                <li id="li4"><a onClick={this.changeModal.bind(this, 4)}>切片导航</a></li>
+                <li id="li2"><a onClick={this.changeModal.bind(this, 2)}>
+                  {localMessage.condition_style}
+                </a></li>
+                <li id="li3"><a onClick={this.changeModal.bind(this, 3)}>
+                  {localMessage.compare_style}
+                </a></li>
+                <li id="li4"><a onClick={this.changeModal.bind(this, 4)}>
+                  {localMessage.slice_navigator}
+                </a></li>
                 {this.props.form_data.viz_type === 'ag_grid' &&
-                  <li id="li5"><a onClick={this.changeModal.bind(this, 5)}>ag-grid设置</a></li>
+                  <li id="li5"><a onClick={this.changeModal.bind(this, 5)}>
+                    {localMessage.ag_setting}
+                  </a></li>
                 }
               </ul>
             </div>
@@ -250,7 +258,7 @@ class StyleModal extends React.Component {
                    bsSize="sm"
                    onClick={this.addStyle.bind(this)}
                  >
-                   <i className="fa fa-plus" /> &nbsp; 添加条件样式
+                   <i className="fa fa-plus" /> &nbsp; {localMessage.add_condition_style}
                  </Button>
                </div>
              </div>
@@ -268,7 +276,7 @@ class StyleModal extends React.Component {
                    bsSize="sm"
                    onClick={this.addCompare.bind(this)}
                  >
-                   <i className="fa fa-plus" /> &nbsp; 添加比较样式
+                   <i className="fa fa-plus" /> &nbsp; {localMessage.add_compare_style}
                  </Button>
                </div>
              </div>
@@ -286,7 +294,7 @@ class StyleModal extends React.Component {
                    bsSize="sm"
                    onClick={this.addNavigate.bind(this)}
                  >
-                   <i className="fa fa-plus" /> &nbsp; 添加导航
+                   <i className="fa fa-plus" /> &nbsp; {localMessage.add_slice_navigator}
                  </Button>
                </div>
              </div>
@@ -296,13 +304,13 @@ class StyleModal extends React.Component {
            <div>
              <div className="col-lg-12">
                <div className="col-lg-2">
-                 <span>grid主题:</span>
+                 <span>{localMessage.grid_theme}:</span>
                </div>
                <div className="col-lg-4">
                  <Select
                    multi={false}
                    name="select-column"
-                   placeholder="主题"
+                   placeholder={localMessage.theme}
                    options={this.state.theme.map((o) => ({ label: o.key, value: o.value }))}
                    value={this.props.form_data.theme}
                    autosize={false}
@@ -310,13 +318,13 @@ class StyleModal extends React.Component {
                  />
                </div>
                <div className="col-lg-2">
-                 <span>页面条数:</span>
+                 <span>{localMessage.page_count}:</span>
                </div>
                <div className="col-lg-4">
                  <Select
                    multi={false}
                    name="select-column"
-                   placeholder="条数"
+                   placeholder={localMessage.count}
                    options={this.state.pageSize.map((o) => ({ label: o.key, value: o.value }))}
                    value={this.props.form_data.pageSize}
                    autosize={false}
@@ -326,14 +334,14 @@ class StyleModal extends React.Component {
              </div>
              <div className="col-lg-12">
                <div className="col-lg-2" style={{ marginTop: '15px' }}>
-                 <span>冻结左边:</span>
+                 <span>{localMessage.frozen_left}:</span>
                </div>
                <div className="col-lg-4">
                  <Select
                    style={{ marginTop: '10px' }}
                    multi
                    simpleValue
-                   placeholder="选择列"
+                   placeholder={localMessage.frozen_col}
                    options={this.props.form_data.groupby.concat(this.props.form_data.metrics)
                                 .map((o) => ({ value: o, label: o }))}
                    value={this.props.form_data.pinned.left}
@@ -342,14 +350,14 @@ class StyleModal extends React.Component {
                  />
                </div>
                <div className="col-lg-2" style={{ marginTop: '15px' }}>
-                 <span>冻结右边:</span>
+                 <span>{localMessage.frozen_right}:</span>
                </div>
                <div className="col-lg-4">
                  <Select
                    style={{ marginTop: '10px' }}
                    multi
                    simpleValue
-                   placeholder="选择列"
+                   placeholder={localMessage.frozen_col}
                    options={this.props.form_data.groupby.concat(this.props.form_data.metrics)
                                 .map((o) => ({ value: o, label: o }))}
                    value={this.props.form_data.pinned.right}
@@ -360,7 +368,7 @@ class StyleModal extends React.Component {
              </div>
              <div className="col-lg-12" style={{ marginTop: '10px' }}>
                <div className="col-lg-4">
-                 <span>启用数据透视表:</span>
+                 <span>{localMessage.enable_piovttable}:</span>
                </div>
                <div className="col-lg-8">
                  <Select
@@ -382,7 +390,7 @@ class StyleModal extends React.Component {
                        bsSize="sm"
                        onClick={this.addHeaderSetting.bind(this)}
                      >
-                       <i className="fa fa-plus" /> &nbsp; 添加表头设置
+                       <i className="fa fa-plus" /> &nbsp; {localMessage.add_table_header_setting}
                      </Button>
                    </div>
                  </div>

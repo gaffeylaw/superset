@@ -16,6 +16,7 @@ export default class PromptDefaultValue2 extends React.Component {
     this.state = {
       startDate: (from === null || from === '') ? null : moment(from),
       endDate: (to === null || to === '') ? null : moment(to),
+      localMessage: this.props.form_data.localeMessage,
     };
   }
   changePromptDateFilter(field, date) {
@@ -36,7 +37,7 @@ export default class PromptDefaultValue2 extends React.Component {
       <div>
         <div className="row space-1">
           <div className="col-lg-2">
-            <span>from:</span>
+            <span>{this.state.localMessage.from}:</span>
           </div>
           <DatePicker
             className="datePicker"
@@ -51,7 +52,7 @@ export default class PromptDefaultValue2 extends React.Component {
         </div>
         <div className="row space-1">
           <div className="col-lg-2">
-            <span>to:</span>
+            <span>{this.state.localMessage.to}:</span>
           </div>
           <DatePicker
             className="datePicker"

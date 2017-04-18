@@ -2,6 +2,9 @@ import React from 'react';
 // import { Tab, Row, Col, Nav, NavItem } from 'react-bootstrap';
 import Select from 'react-select';
 import { Button } from 'react-bootstrap';
+import { chooseMessage } from '../stores/language';
+import { zh_CN } from '../stores/zh_CN';
+import { en_US } from '../stores/en_US';
 
 const propTypes = {
   actions: React.PropTypes.object.isRequired,
@@ -14,6 +17,7 @@ const defaultProps = {
   filterColumnOpts: [],
   prefix: 'flt',
 };
+const localMessage = chooseMessage();
 
 export default class Filter extends React.Component {
   constructor(props) {
@@ -46,7 +50,7 @@ export default class Filter extends React.Component {
             className="col-lg-12"
             multi={false}
             name="select-column"
-            placeholder="Select column"
+            placeholder={localMessage.select_column}
             options={this.props.filterColumnOpts.map((o) => ({ value: o, label: o }))}
             value={this.props.filter.col}
             autosize={false}
@@ -58,7 +62,7 @@ export default class Filter extends React.Component {
             className="col-lg-4"
             multi={false}
             name="select-op"
-            placeholder="Select operator"
+            placeholder={localMessage.select_operato}
             options={this.state.opChoices.map((o) => ({ value: o, label: o }))}
             value={this.props.filter.op}
             autosize={false}
@@ -70,7 +74,7 @@ export default class Filter extends React.Component {
               onChange={this.changeValue.bind(this, this.props.filter)}
               value={this.props.filter.value}
               className="form-control input-sm"
-              placeholder="Filter value"
+              placeholder={localMessage.filter_value}
             />
           </div>
           <div className="col-lg-2">

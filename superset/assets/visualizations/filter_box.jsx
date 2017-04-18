@@ -7,6 +7,9 @@ import ReactDOM from 'react-dom';
 import Select from 'react-select';
 import '../stylesheets/react-select/select.less';
 import './filter_box.css';
+import { chooseMessage } from '../javascripts/explorev2/stores/language';
+import zh_CN from '../javascripts/explorev2/stores/zh_CN';
+import en_US from '../javascripts/explorev2/stores/en_US';
 // import { TIME_CHOICES } from './constants.js';
 var DatePicker = require('react-datepicker');
 var moment = require('moment');
@@ -19,6 +22,8 @@ const propTypes = {
   showDateFilter: React.PropTypes.bool,
   filtersStyles: React.PropTypes.array,
 };
+
+const localMessage = chooseMessage();
 
 const defaultProps = {
   origSelectedValues: {},
@@ -134,7 +139,7 @@ class FilterBox extends React.Component {
           {filter}
           <Select
             placeholder={`[${filter}]`}
-            noResultsText='没有结果'
+            noResultsText={localMessage.no_result}
             key={filter}
             multi={multi}
             value={filterValue}

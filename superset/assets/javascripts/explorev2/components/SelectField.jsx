@@ -58,7 +58,6 @@ export default class SelectField extends React.Component {
         options.push({ value: this.props.value, label: this.props.value });
       }
     }
-
     const selectProps = {
       multi: this.props.multi,
       name: `select-${this.props.name}`,

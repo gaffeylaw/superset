@@ -38,11 +38,14 @@ export default class BaseStyle extends React.Component {
         />
       );
     });
+    const localMessage = this.props.form_data.localeMessage;
     return (
       <div>
         <div className="col-lg-12">
           <div className="col-lg-2">
-            <span>表头样式:</span>
+            <span>
+              {localMessage.header_style}
+            </span>
           </div>
           <div className="col-lg-10">
             <input
@@ -50,14 +53,16 @@ export default class BaseStyle extends React.Component {
               onChange={this.changeHeaderValue.bind(this, this.props.baseStyle)}
               value={this.props.baseStyle.headerValue}
               className="form-control input-sm"
-              placeholder="表头样式"
+              placeholder={localMessage.header_style}
             />
           </div>
         </div>
 
         <div className="col-lg-12" style={{ marginTop: '20px' }}>
           <div className="col-lg-2">
-            <span>表样式:</span>
+            <span>
+              {localMessage.table_style}
+            </span>
           </div>
           <div className="col-lg-10">
             <input
@@ -65,14 +70,16 @@ export default class BaseStyle extends React.Component {
               onChange={this.changeBodyValue.bind(this, this.props.baseStyle)}
               value={this.props.baseStyle.bodyValue}
               className="form-control input-sm"
-              placeholder="表样式"
+              placeholder={localMessage.table_style}
             />
           </div>
         </div>
 
         <div className="col-lg-12" style={{ marginTop: '10px' }}>
           <hr style={{ height: '1px', border: 'none', borderTop: '1px solid #555555' }} />
-          <span style={{ fontSize: '14px' }}>列样式:</span>
+          <span style={{ fontSize: '14px' }}>
+            {localMessage.col_style}
+          </span>
           <div style={{ marginTop: '10px' }}>
             {colStylesDiv}
           </div>
@@ -83,7 +90,7 @@ export default class BaseStyle extends React.Component {
                 bsSize="sm"
                 onClick={this.addColStyle.bind(this)}
               >
-                <i className="fa fa-plus" /> &nbsp; 添加列样式
+                <i className="fa fa-plus" />  &nbsp; {localMessage.add_col_style}
               </Button>
             </div>
           </div>

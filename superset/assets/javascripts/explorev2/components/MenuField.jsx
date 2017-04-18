@@ -3,6 +3,9 @@ import ControlLabelWithTooltip from './ControlLabelWithTooltip';
 import { slugify } from '../../modules/utils';
 import Menu, { SubMenu, Item as MenuItem, Divider } from 'rc-menu';
 import 'rc-menu/assets/index.css';
+import { chooseMessage } from '../stores/language';
+import { zh_CN } from '../stores/zh_CN';
+import { en_US } from '../stores/en_US';
 
 require('./Components.css');
 
@@ -66,6 +69,8 @@ const selectedMenu = {
   icon: '',
 };
 
+const localMessage = chooseMessage();
+
 export default class MenuField extends React.Component {
   constructor(props) {
     super(props);
@@ -98,70 +103,70 @@ export default class MenuField extends React.Component {
     const menuTitle = (
       <span>
         <i className="fa fa-bar-chart icon-span"></i>
-        <font size="2">选择图形</font>
+        <font size="2">{localMessage.choose_chart}</font>
         <i className="fa fa-caret-down pull-right"></i>
       </span>
     );
     const baseTitle = (
       <span>
         <i className="fa fa-bar-chart icon-span"></i>
-        <font size="2">基础图形</font>
+        <font size="2">{localMessage.base_chart}</font>
         <i className="fa fa-caret-right pull-right"></i>
       </span>
     );
     const barTitle = (
       <span>
         <i className="fa fa-bar-chart icon-span"></i>
-        <font size="2">条形图</font>
+        <font size="2">{localMessage.bar_chart}</font>
         <i className="fa fa-caret-right pull-right"></i>
       </span>
     );
     const lineTitle = (
       <span>
         <i className="fa fa-line-chart icon-span"></i>
-        <font size="2">线形图</font>
+        <font size="2">{localMessage.line_chart}</font>
         <i className="fa fa-caret-right pull-right"></i>
       </span>
     );
     const areaTitle = (
       <span>
         <i className="fa fa-area-chart icon-span"></i>
-        <font size="2">面积图</font>
+        <font size="2">{localMessage.area}</font>
         <i className="fa fa-caret-right pull-right"></i>
       </span>
     );
     const advancedTitle = (
       <span>
         <i className="fa fa-external-link-square icon-span"></i>
-        <font size="2">高级图</font>
+        <font size="2">{localMessage.advanced_chart}</font>
         <i className="fa fa-caret-right pull-right"></i>
       </span>
     );
     const meterTitle = (
       <span>
         <i className="fa fa-tachometer icon-span"></i>
-        <font size="2">计量图</font>
+        <font size="2">{localMessage.measurement_chart}</font>
         <i className="fa fa-caret-right pull-right"></i>
       </span>
     );
     const hTitle = (
       <span>
         <i className="fa fa-header icon-span"></i>
-        <font size="2">大字图</font>
+        <font size="2">{localMessage.big_chart}</font>
         <i className="fa fa-caret-right pull-right"></i>
       </span>
     );
     const mapTitle = (
       <span>
         <i className="fa fa-map-marker icon-span"></i>
-        <font size="2">地图</font>
+        <font size="2">{localMessage.map_chart}</font>
         <i className="fa fa-caret-right pull-right"></i>
       </span>
     );
     const otherTitle = (
       <span>
         <i className="fa fa-ellipsis-h icon-span"></i>
-        <font size="2">其他</font>
+        <font size="2">{localMessage.other_chart}</font>
         <i className="fa fa-caret-right pull-right"></i>
       </span>
     );
@@ -172,14 +177,14 @@ export default class MenuField extends React.Component {
           <MenuItem key="filter_box">
             <span>
               <i className="fa fa-check-square icon-span"></i>
-              <font size="2">提示器</font>
+              <font size="2">{localMessage.filter_box}</font>
             </span>
           </MenuItem>
           <Divider />
           <MenuItem key="table">
             <span>
               <i className="fa fa-table icon-span"></i>
-              <font size="2">表格</font>
+              <font size="2">{localMessage.table}</font>
             </span>
           </MenuItem>
           <MenuItem key="ag_grid">
@@ -191,7 +196,7 @@ export default class MenuField extends React.Component {
           <MenuItem key="pivot_table">
             <span>
               <i className="fa fa-table icon-span"></i>
-              <font size="2">数据透视表</font>
+              <font size="2">{localMessage.pivot_table}</font>
             </span>
           </MenuItem>
           <SubMenu title={baseTitle} key="4">
@@ -199,13 +204,13 @@ export default class MenuField extends React.Component {
               <MenuItem key="dist_bar">
                 <span>
                   <i className="fa fa-bar-chart icon-span"></i>
-                  <font size="2">条形图</font>
+                  <font size="2">{localMessage.dist_bar}</font>
                 </span>
               </MenuItem>
               <MenuItem key="bar">
                 <span>
                   <i className="fa fa-bar-chart icon-span"></i>
-                  <font size="2">条形图(T)</font>
+                  <font size="2">{localMessage.bar2}</font>
                 </span>
               </MenuItem>
             </SubMenu>
@@ -213,52 +218,52 @@ export default class MenuField extends React.Component {
               <MenuItem key="multi">
                 <span>
                   <i className="fa fa-line-chart icon-span"></i>
-                  <font size="2">线形图</font>
+                  <font size="2">{localMessage.multi}</font>
                 </span>
               </MenuItem>
               <MenuItem key="line">
                 <span>
                   <i className="fa fa-line-chart icon-span"></i>
-                  <font size="2">线形图(T)</font>
+                  <font size="2">{localMessage.line2}</font>
                 </span>
               </MenuItem>
               <MenuItem key="linePlusBar">
                 <span>
                   <i className="fa fa-line-chart icon-span"></i>
-                  <font size="2">线形图(S)</font>
+                  <font size="2">{localMessage.linePlusBar}</font>
                 </span>
               </MenuItem>
               <MenuItem key="compare">
                 <span>
                   <i className="fa fa-line-chart icon-span"></i>
-                  <font size="2">线形图(VS)</font>
+                  <font size="2">{localMessage.compare}</font>
                 </span>
               </MenuItem>
             </SubMenu>
             <MenuItem key="linePlusBar">
               <span>
                 <i className="fa fa-line-chart icon-span"></i>
-                <font size="2">条线图</font>
+                <font size="2">{localMessage.linePlusBar1}</font>
               </span>
             </MenuItem>
             <SubMenu title={areaTitle} key="4-4">
               <MenuItem key="area">
                 <span>
                   <i className="fa fa-area-chart icon-span"></i>
-                  <font size="2">面积图</font>
+                  <font size="2">{localMessage.area2}</font>
                 </span>
               </MenuItem>
               <MenuItem key="area1">
                 <span>
                   <i className="fa fa-area-chart icon-span"></i>
-                  <font size="2">面积图(T)</font>
+                  <font size="2">{localMessage.area1}</font>
                 </span>
               </MenuItem>
             </SubMenu>
             <MenuItem key="pie">
               <span>
                 <i className="fa fa-pie-chart icon-span"></i>
-                <font size="2">饼形图</font>
+                <font size="2">{localMessage.pie}</font>
               </span>
             </MenuItem>
           </SubMenu>
@@ -266,73 +271,73 @@ export default class MenuField extends React.Component {
             <MenuItem key="bubble">
               <span>
                 <i className="fa fa-line-chart icon-span"></i>
-                <font size="2">气泡图</font>
+                <font size="2">{localMessage.bubble}</font>
               </span>
             </MenuItem>
             <MenuItem key="5-2" disable="true">
               <span>
                 <i className="fa fa-line-chart icon-span"></i>
-                <font size="2">雷达图</font>
+                <font size="2">{localMessage.radar}</font>
               </span>
             </MenuItem>
             <MenuItem key="5-3" disable="true">
               <span>
                 <i className="fa fa-line-chart icon-span"></i>
-                <font size="2">散点图</font>
+                <font size="2">{localMessage.scatter_chart}</font>
               </span>
             </MenuItem>
             <MenuItem key="sankey">
               <span>
                 <i className="fa fa-line-chart icon-span"></i>
-                <font size="2">蛇形图</font>
+                <font size="2">{localMessage.sankey}</font>
               </span>
             </MenuItem>
             <MenuItem key="directed_force">
               <span>
                 <i className="fa fa-line-chart icon-span"></i>
-                <font size="2">拓扑图</font>
+                <font size="2">{localMessage.directed_force}</font>
               </span>
             </MenuItem>
             <MenuItem key="horizon">
               <span>
                 <i className="fa fa-line-chart icon-span"></i>
-                <font size="2">热力图</font>
+                <font size="2">{localMessage.horizon}</font>
               </span>
             </MenuItem>
             <MenuItem key="mapbox">
               <span>
                 <i className="fa fa-line-chart icon-span"></i>
-                <font size="2">热力图</font>
+                <font size="2">{localMessage.mapbox}</font>
               </span>
             </MenuItem>
             <MenuItem key="treemap">
               <span>
                 <i className="fa fa-line-chart icon-span"></i>
-                <font size="2">树状图</font>
+                <font size="2">{localMessage.treemap}</font>
               </span>
             </MenuItem>
             <MenuItem key="box_plot">
               <span>
                 <i className="fa fa-line-chart icon-span"></i>
-                <font size="2">箱体图</font>
+                <font size="2">{localMessage.box_plot}</font>
               </span>
             </MenuItem>
             <MenuItem key="para">
               <span>
                 <i className="fa fa-line-chart icon-span"></i>
-                <font size="2">帕拉图</font>
+                <font size="2">{localMessage.para}</font>
               </span>
             </MenuItem>
             <MenuItem key="cal_heatmap">
               <span>
                 <i className="fa fa-line-chart icon-span"></i>
-                <font size="2">日历图</font>
+                <font size="2">{localMessage.cal_heatmap}</font>
               </span>
             </MenuItem>
             <MenuItem key="sunburst">
               <span>
                 <i className="fa fa-line-chart icon-span"></i>
-                <font size="2">环形图</font>
+                <font size="2">{localMessage.sunburst}</font>
               </span>
             </MenuItem>
           </SubMenu>
@@ -341,32 +346,32 @@ export default class MenuField extends React.Component {
               <MenuItem key="big_number">
                 <span>
                   <i className="fa fa-header icon-span"></i>
-                  <font size="2">大字图</font>
+                  <font size="2">{localMessage.big_number}</font>
                 </span>
               </MenuItem>
               <MenuItem key="big_number_total">
                 <span>
                   <i className="fa fa-header icon-span"></i>
-                  <font size="2">大字图(T)</font>
+                  <font size="2">{localMessage.big_number_total}</font>
                 </span>
               </MenuItem>
             </SubMenu>
             <MenuItem key="bullet">
               <span>
                 <i className="fa fa-space-shuttle icon-span"></i>
-                <font size="2">子弹图</font>
+                <font size="2">{localMessage.bullet}</font>
               </span>
             </MenuItem>
             <MenuItem key="6-3" disable="true">
               <span>
                 <i className="fa fa-tachometer icon-span"></i>
-                <font size="2">仪表图</font>
+                <font size="2">{localMessage.dash}</font>
               </span>
             </MenuItem>
             <MenuItem key="word_cloud" disable="true">
               <span>
                 <i className="fa fa-file-word-o icon-span"></i>
-                <font size="2">云字图</font>
+                <font size="2">{localMessage.world_cloud}</font>
               </span>
             </MenuItem>
           </SubMenu>
@@ -374,13 +379,13 @@ export default class MenuField extends React.Component {
             <MenuItem key="world_map">
               <span>
                 <i className="fa fa-map-marker icon-span"></i>
-                <font size="2">世界地图</font>
+                <font size="2">{localMessage.world_map}</font>
               </span>
             </MenuItem>
             <MenuItem key="world_map1">
               <span>
                 <i className="fa fa-map-marker icon-span"></i>
-                <font size="2">中国地图</font>
+                <font size="2">{localMessage.world_map1}</font>
               </span>
             </MenuItem>
           </SubMenu>
@@ -388,25 +393,25 @@ export default class MenuField extends React.Component {
             <MenuItem key="markup1">
               <span>
                 <i className="fa fa-file-code-o icon-span"></i>
-                <font size="2">叙述</font>
+                <font size="2">{localMessage.markup1}</font>
               </span>
             </MenuItem>
             <MenuItem key="markup">
               <span>
                 <i className="fa fa-bar-chart icon-span"></i>
-                <font size="2">标记</font>
+                <font size="2">{localMessage.markup}</font>
               </span>
             </MenuItem>
             <MenuItem key="iframe">
               <span>
                 <i className="fa fa-columns icon-span"></i>
-                <font size="2">iframe</font>
+                <font size="2">{localMessage.iframe}</font>
               </span>
             </MenuItem>
             <MenuItem key="separator">
               <span>
                 <i className="fa fa-minus icon-span"></i>
-                <font size="2">separator</font>
+                <font size="2">{localMessage.separator}</font>
               </span>
             </MenuItem>
           </SubMenu>
@@ -424,7 +429,7 @@ export default class MenuField extends React.Component {
         <div>
           <span style={{ float: 'left' }}>{MenuWrap}</span>
           <span style={{ paddingLeft: '5px' }}>
-            <font size="2">当前图形：</font>
+            <font size="2">{localMessage.current_chart}</font>
             <i className={`${selectedMenu.icon} icon-current-span`}></i>
             <font size="2">{selectedMenu.chart}</font>
           </span>

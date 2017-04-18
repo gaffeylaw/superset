@@ -9,6 +9,7 @@ const propTypes = {
   compare: React.PropTypes.object.isRequired,
 };
 
+
 export default class Compare extends React.Component {
   changeMetricLeft(compare, col) {
     const val = (col) ? col.value : null;
@@ -28,6 +29,7 @@ export default class Compare extends React.Component {
     this.props.actions.removeCompare(compare);
   }
   render() {
+    const localMessage = this.props.form_data.localeMessage;
     return (
       <div>
         <div className="row space-1">
@@ -35,7 +37,7 @@ export default class Compare extends React.Component {
             className="col-lg-6"
             multi={false}
             name="select-column"
-            placeholder="指标1"
+            placeholder={localMessage.metric1}
             options={this.props.form_data.metrics.map((o) => ({ value: o, label: o }))}
             value={this.props.compare.metricLeft}
             autosize={false}
@@ -45,7 +47,7 @@ export default class Compare extends React.Component {
             className="col-lg-6"
             multi={false}
             name="select-column"
-            placeholder="指标2"
+            placeholder={localMessage.metric2}
             options={this.props.form_data.metrics.map((o) => ({ value: o, label: o }))}
             value={this.props.compare.metricRight}
             autosize={false}
@@ -59,7 +61,7 @@ export default class Compare extends React.Component {
               onChange={this.changeExpr.bind(this, this.props.compare)}
               value={this.props.compare.expr}
               className="form-control input-sm"
-              placeholder="表达式(用x,y表示两列)"
+              placeholder={localMessage.compare_expressoin}
             />
           </div>
           <div className="col-lg-5">
@@ -68,7 +70,7 @@ export default class Compare extends React.Component {
               onChange={this.changeValue.bind(this, this.props.compare)}
               value={this.props.compare.value}
               className="form-control input-sm"
-              placeholder="样式"
+              placeholder={localMessage.style}
             />
           </div>
           <div className="col-lg-1">

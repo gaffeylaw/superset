@@ -12,17 +12,9 @@ const propTypes = {
 export default class Style extends React.Component {
   constructor(props) {
     super(props);
-    const iconChoices = [{ key: '无', value: '' },
-                         { key: '上升(单箭头)', value: 'fa fa-arrow-up' },
-                         { key: '下降(单箭头)', value: 'fa fa-arrow-down' },
-                         { key: '上升(双箭头)', value: 'fa fa-angle-double-up' },
-                         { key: '下降(双箭头)', value: 'fa fa-angle-double-down' },
-                         { key: '条形图', value: 'fa fa-bar-chart' },
-                         { key: '折线图', value: 'fa fa-line-chart' },
-                         { key: '饼状图', value: 'fa fa-pie-chart' },
-                         { key: '区域图', value: 'fa fa-area-chart' }];
     this.state = {
-      iconChoices,
+      iconChoices: this.props.form_data.localeMessage.iconChoices,
+      localMessage: this.props.form_data.localeMessage,
     };
   }
   changeMetric(style, col) {
@@ -58,7 +50,7 @@ export default class Style extends React.Component {
             className="col-lg-7"
             multi={false}
             name="select-column"
-            placeholder="指标"
+            placeholder={this.state.localMessage.metric}
             options={this.props.form_data.metrics.map((o) => ({ value: o, label: o }))}
             value={this.props.style.metric}
             autosize={false}
@@ -70,7 +62,7 @@ export default class Style extends React.Component {
               onChange={this.changeExpr.bind(this, this.props.style)}
               value={this.props.style.expr}
               className="form-control input-sm"
-              placeholder="阀值"
+              placeholder={this.state.localMessage.threshold}
             />
           </div>
         </div>
@@ -81,14 +73,14 @@ export default class Style extends React.Component {
               onChange={this.changeValue.bind(this, this.props.style)}
               value={this.props.style.value}
               className="form-control input-sm"
-              placeholder="样式"
+              placeholder={this.state.localMessage.style}
             />
           </div>
           <Select
             className="col-lg-4"
             multi={false}
             name="select-column"
-            placeholder="图标"
+            placeholder={this.state.localMessage.icon}
             options={this.state.iconChoices.map((o) => ({ label: o.key, value: o.value }))}
             optionRenderer={this.renderOption.bind(this)}
             value={this.props.style.icon}
