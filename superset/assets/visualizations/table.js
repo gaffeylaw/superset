@@ -1,6 +1,9 @@
 import d3 from 'd3';
 import { fixDataTableBodyHeight } from '../javascripts/modules/utils';
 import { timeFormatFactory, formatDate } from '../javascripts/modules/dates';
+import { chooseMessage } from '../javascripts/explorev2/stores/language';
+import zh_CN from '../javascripts/explorev2/stores/zh_CN';
+import en_US from '../javascripts/explorev2/stores/en_US';
 
 require('./table.css');
 const $ = require('jquery');
@@ -10,6 +13,8 @@ require('datatables-bootstrap3-plugin/media/css/datatables-bootstrap3.css');
 import 'datatables.net';
 import dt from 'datatables.net-bs';
 dt(window, $);
+
+const localMessage = chooseMessage();
 
 function tableVis(slice, flag) {
   let count = 0;
@@ -153,7 +158,7 @@ function tableVis(slice, flag) {
           const modalTitle = document.createElement('h4');
           modalTitle.setAttribute('class', 'modal-title');
           modalTitle.style.textAlign = 'center';
-          modalTitle.innerHTML = '请选择要导航的目标';
+          modalTitle.innerHTML = localMessage.choose_nav_target;
           const modalContent = document.createElement('div');
           modalContent.setAttribute('class', 'modal-content');
           const modalBody = document.createElement('div');
@@ -795,20 +800,7 @@ function tableVis(slice, flag) {
         scrollY: height + 'px',
         scrollCollapse: true,
         scrollX: true,
-        language: {
-          lengthMenu: "显示 _MENU_ 条数",
-          search: '查找',
-          zeroRecords: '没有数据',
-          paginate: {  
-              first: '第一页',  
-              last: '最后一页',  
-              next: '下一页',  
-              previous: '上一页',  
-          },
-          info: '第 _PAGE_ 页 / 总 _PAGES_ 页, 共 _TOTAL_ 条数据',
-          infoEmpty: '没有数据',
-          infoFiltered: '(过滤总条数 _MAX_ 条)' 
-      }  
+        language: localMessage.table_language, 
       });
       fixDataTableBodyHeight(
           container.find('.dataTables_wrapper'), height);
