@@ -913,5 +913,6 @@ const en_US = {
   // explore
   export_to_json: 'Export to .json',
   export_to_csv: 'Export to .csv format',
+  no_result: 'No Result',
 };
 export default en_US;

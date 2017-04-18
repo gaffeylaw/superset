@@ -860,6 +860,7 @@ const zh_CN = {
     // explore
   export_to_json: '导出到.json格式',
   export_to_csv: '导出为.csv格式',
+  no_result: '没有结果',
   viz_type_description: '要显示的可视化类型',
 };
 
