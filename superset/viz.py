@@ -1900,7 +1900,7 @@ class FilterBoxViz(BaseViz):
             l = []
             for row in s:
                 l.append(str(row))
-            l.sort()
+            l.sort(reverse=True)
             d[flt] = [
                 {
                     'id': row,

@@ -51,12 +51,14 @@ function SliceCell({ expandedSlices, removeSlice, slice, doPrint, isManager }) {
                   </a>
                 </span>
               }
-              <a title="打印报表" data-toggle="tooltip">
-                <i
-                  className="fa fa-print"
-                  onClick={() => { doPrint(slice.slice_id); }}
-                />
-              </a>
+              {false &&
+                <a title="打印报表" data-toggle="tooltip">
+                  <i
+                    className="fa fa-print"
+                    onClick={() => { doPrint(slice.slice_id, slice); }}
+                  />
+                </a>
+              }
               {isManager &&
                 <a
                   className="remove-chart"

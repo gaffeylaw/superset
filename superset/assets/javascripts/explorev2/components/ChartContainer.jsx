@@ -134,7 +134,16 @@ class ChartContainer extends React.Component {
       },
 
       error(msg) {
-        props.actions.chartUpdateFailed(msg);
+        let errorMsg = msg;
+        try {
+          const o = JSON.parse(msg);
+          if (o.error) {
+            errorMsg = o.error;
+          }
+        } catch (e) {
+          // pass
+        }
+        props.actions.chartUpdateFailed(errorMsg);
       },
 
       d3format: (col, number) => {
