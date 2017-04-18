@@ -12,6 +12,9 @@ import 'ag-grid/dist/styles/theme-dark.css';
 import 'ag-grid/dist/styles/theme-bootstrap.css';
 import 'ag-grid/dist/styles/theme-material.css';
 import 'ag-grid/dist/styles/theme-blue.css';
+import { chooseMessage } from '../javascripts/explorev2/stores/language';
+import zh_CN from '../javascripts/explorev2/stores/zh_CN';
+import en_US from '../javascripts/explorev2/stores/en_US';
 
 const Table = require('./table.js');
 
@@ -21,6 +24,8 @@ const propTypes = {
   height: React.PropTypes.number.isRequired,
   slice: React.PropTypes.object.isRequired,
 };
+
+const localMessage = chooseMessage();
 
 let allOfTheData = [];
 class AgGrid extends React.Component {
@@ -470,7 +475,7 @@ class AgGrid extends React.Component {
   render() {
     const themeTemplate = (
       <div style={{ height: '30px', float: 'left' }}>
-        主题:&nbsp;
+        {localMessage.theme}:&nbsp;
         <select onChange={this.onThemeChanged.bind(this)} value={this.state.gridTheme}>
           <option value="ag-blue">blue</option>
           <option value="ag-bootstrap">bootstrap</option>
@@ -482,7 +487,7 @@ class AgGrid extends React.Component {
 
     const pageSizeTemplate = (
       <div style={{ height: '30px', marginLeft: '20px', float: 'left' }}>
-        页大小:&nbsp;
+        {localMessage.page_size}:&nbsp;
         <select
           onChange={this.onPageSizeChanged.bind(this)}
           value={this.gridOptions.paginationPageSize}
@@ -498,7 +503,7 @@ class AgGrid extends React.Component {
 
     const filterTemplate = (
       <div style={{ height: '30px', marginLeft: '20px', float: 'left' }}>
-        筛选:&nbsp;
+        {localMessage.filters1}:&nbsp;
         <input
           type="text"
           onChange={this.onQuickFilterText.bind(this)}
@@ -509,8 +514,12 @@ class AgGrid extends React.Component {
 
     const exportTemplate = (
       <div style={{ height: '30px', float: 'left' }}>
-       <button style={{ marginLeft: '20px' }} onClick={this.exportCsv.bind(this)}>导出csv</button>
-       <button style={{ marginLeft: '20px' }} onClick={this.exportExcel.bind(this)}>导出excel</button>
+        <button style={{ marginLeft: '20px' }} onClick={this.exportCsv.bind(this)}>
+          {localMessage.export_csv}
+        </button>
+        <button style={{ marginLeft: '20px' }} onClick={this.exportExcel.bind(this)}>
+          {localMessage.export_excel}
+        </button>
       </div>
     );
 

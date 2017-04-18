@@ -158,7 +158,7 @@ function tableVis(slice, flag) {
           const modalTitle = document.createElement('h4');
           modalTitle.setAttribute('class', 'modal-title');
           modalTitle.style.textAlign = 'center';
-          modalTitle.innerHTML = '请选择要导航的目标';
+          modalTitle.innerHTML = localMessage.choose_nav_target;
           const modalContent = document.createElement('div');
           modalContent.setAttribute('class', 'modal-content');
           const modalBody = document.createElement('div');

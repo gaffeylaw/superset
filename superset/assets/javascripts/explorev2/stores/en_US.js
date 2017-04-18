@@ -928,5 +928,9 @@ const en_US = {
     infoEmpty: 'No Data',
     infoFiltered: '(Total number of filters _MAX_)',
   },
+  choose_nav_target: 'Please select the target you want to navigate',
+  page_size: 'Page Size',
+  export_csv: 'Export to csv',
+  export_excel: 'Export to excel',
 };
 export default en_US;

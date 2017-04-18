@@ -876,6 +876,10 @@ const zh_CN = {
     infoEmpty: '没有数据',
     infoFiltered: '(过滤总条数 _MAX_ 条)',
   },
+  choose_nav_target: '请选择要导航的目标',
+  page_size: '页大小',
+  export_csv: '导出csv',
+  export_excel: '导出excel',
 };
 
 export default zh_CN;
