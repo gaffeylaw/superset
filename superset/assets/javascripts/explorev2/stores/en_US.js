@@ -914,5 +914,19 @@ const en_US = {
   export_to_json: 'Export to .json',
   export_to_csv: 'Export to .csv format',
   no_result: 'No Result',
+  table_language: {
+    lengthMenu: "Show _MENU_ Count",
+    search: 'Search',
+    zeroRecords: 'No Data',
+    paginate: {  
+        first: 'First Page',  
+        last: 'Last Page',  
+        next: 'Next',  
+        previous: 'Previous',  
+    },
+    info: 'Page _PAGE_  /  _PAGES_ Pages, Total of _TOTAL_ Records',
+    infoEmpty: 'No Data',
+    infoFiltered: '(Total number of filters _MAX_)',
+  },
 };
 export default en_US;
