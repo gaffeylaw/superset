@@ -35,12 +35,13 @@ class AgGrid extends React.Component {
     allOfTheData = this.props.data.records;
     this.state = {
       gridTheme: 'ag-' + this.props.form_data.theme,
+      pageSize: this.props.form_data.pageSize,
       showToolPanel: false,
       quickFilterText: null,
     };
     this.gridOptions = {
       pagination: true,
-      paginationPageSize: this.props.form_data.pageSize,
+      paginationPageSize: parseInt(this.props.form_data.pageSize),
       rowBuffer: 10, // no need to set this, the default is fine for almost all scenarios
       floatingTopRowData: [],
       floatingBottomRowData: [],
@@ -422,7 +423,9 @@ class AgGrid extends React.Component {
   }
 
   onPageSizeChanged(selected) {
-    this.gridOptions.paginationPageSize = new Number(selected.currentTarget.value);
+    const pageSize = new Number(selected.currentTarget.value);
+    this.gridOptions.paginationPageSize = pageSize;
+    this.setState({ pageSize: pageSize });
     this.createNewDatasource();
   }
 
@@ -431,21 +434,7 @@ class AgGrid extends React.Component {
   }
 
   createNewDatasource() {
-    if (!allOfTheData) {
-      return;
-    }
-    let rowsThisPage = [];
-    const dataSource = {
-      getRows: function (params) {
-        setTimeout (function () {
-          rowsThisPage = allOfTheData.slice(params.startRow, params.endRow);
-          params.successCallback(rowsThisPage, allOfTheData.length);
-        }, 500);
-      },
-    };
-    
-    this.setState({ rowData: this.dataSource });
-    this.gridOptions.api.setDatasource(dataSource);
+    this.gridOptions.api.setRowData(allOfTheData);
   }
 
   exportCsv() {
@@ -460,6 +449,10 @@ class AgGrid extends React.Component {
     this.gridOptions.api.exportDataAsCsv(params);
   }
 
+  // base64(s) {
+  //   return window.btoa(unescape(encodeURIComponent(s)));
+  // }
+
   exportExcel() {
     var params = {
       skipHeader: false,
@@ -470,8 +463,13 @@ class AgGrid extends React.Component {
       fileName: this.props.form_data.slice_name
     };
     this.gridOptions.api.exportDataAsExcel(params);
+    // let xml = this.gridOptions.api.getDataAsExcel(params);
+    // xml = xml.replace(/ss:Type="Number"/g, 'ss:Type="String"');
+    // $('#exportExcel').attr('href', 'data:application/vnd.ms-excel;base64,' + this.base64(xml));
+    // $('#exportExcel').attr('download', this.props.form_data.slice_name + '.xls');
+    // document.getElementById('exportExcel').click();
   }
-
+  
   render() {
     const themeTemplate = (
       <div style={{ height: '30px', float: 'left' }}>
@@ -490,7 +488,7 @@ class AgGrid extends React.Component {
         {localMessage.page_size}:&nbsp;
         <select
           onChange={this.onPageSizeChanged.bind(this)}
-          value={this.gridOptions.paginationPageSize}
+          value={this.state.pageSize}
         >
           <option value="15">15</option>
           <option value="30">30</option>
@@ -530,10 +528,6 @@ class AgGrid extends React.Component {
       >
         <AgGridReact
           // binding to simple properties
-          columnDefs={this.gridOptions.columnDefs}
-          rowData={this.state.rowData}
-
-          // binding to simple properties
           showToolPanel={this.state.showToolPanel}
           quickFilterText={this.state.quickFilterText}
 
@@ -553,7 +547,7 @@ class AgGrid extends React.Component {
           enableStatusBar="true"      // 状态
           enableRangeSelection="true" // 多选
           groupIncludeFooter="true"   // footer
-          rowModelType="pagination"
+          // rowModelType="pagination"
           suppressAutoSize="true"
 
           //remove filter

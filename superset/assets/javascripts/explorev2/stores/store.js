@@ -8,17 +8,29 @@ export function defaultFormData(vizType = 'table', datasourceType = 'table') {
     slice_id: null,
     datasource_name: null,
     filters: [],
+
+    // table
     styles: [],
     baseStyle: { 'headerValue': null, 'bodyValue': null },
     colStyles: [],
     compares: [],
     navigates: [],
-    headerSettings: [],
-    theme: 'fresh',
-    pageSize: 15,
-    promptColStyles: [],
     slices: [],
     dashboards: [],
+    // ag_grid
+    headerSettings: [],
+    pivotSetting: {
+      groupby: null,
+      columns: null,
+      values: null,
+    },
+    pinned: {
+      left: null,
+      right: null,
+    },
+    // filter_box
+    promptColStyles: [],
+    promptDefaultValues: [],
   };
   const sections = sectionsToRender(vizType, datasourceType);
   sections.forEach((section) => {
