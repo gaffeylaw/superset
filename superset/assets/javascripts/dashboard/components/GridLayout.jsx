@@ -70,7 +70,12 @@ class GridLayout extends React.Component {
     this.props.dashboard.onChange();
   }
 
-  doPrint(sliceId, slice) {
+  // base64(s) {
+  //   return window.btoa(unescape(encodeURIComponent(s)));
+  // }
+
+  doPrint(slice) {
+    console.info(slice);
     if (slice.form_data.viz_type == 'ag_grid') {
       const bdhtml = window.document.body.innerHTML;
       const height = (parseInt($('#lastRowOnPage').html()) - parseInt($('#firstRowOnPage').html()) + 1) * 22 + 30;
@@ -85,19 +90,23 @@ class GridLayout extends React.Component {
     } else {
       const bdhtml = window.document.body.innerHTML;
       // remove scroll and change style
-      $('.slice_container').attr('class', 'mySlice');
       if ($('.dataTables_scrollBody').length > 0) {
         $('.dataTables_scrollHead').attr('style', 'border: 0px;');
         $('.dataTables_scrollBody').attr('style', '');
       }
-      const html = $('#slice_' + sliceId + ' .mySlice').parent().parent()
-                  .html();
+      const html = $('#' + slice.token).html();
       window.document.body.innerHTML = html;
       window.print();
       window.document.body.innerHTML = bdhtml;
       window.location.reload();
+      // const svg = $('#' + slice.token + '_con').html();
+      // $('#exportPdf'+slice.slice_id).attr('href', 'data:application/jpeg;base64,' + this.base64(svg));
+      // $('#exportPdf'+slice.slice_id).attr('download', slice.slice_name + '.jpg');
+      // document.getElementById('exportPdf'+slice.slice_id).click();
     }
   }
+
+  
 
   serialize() {
     return this.state.layout.map(reactPos => ({
@@ -134,7 +143,7 @@ class GridLayout extends React.Component {
               slice={slice}
               removeSlice={this.removeSlice.bind(this, slice.slice_id)}
               expandedSlices={this.props.dashboard.metadata.expanded_slices}
-              doPrint={this.doPrint.bind(this, slice.slice_id, slice)}
+              doPrint={this.doPrint.bind(this, slice)}
               isManager={this.props.isManager}
             />
           </div>

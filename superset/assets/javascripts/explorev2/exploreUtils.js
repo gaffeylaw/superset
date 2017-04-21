@@ -139,34 +139,39 @@ export function getParamObject(form_data, datasource_type, saveNewSlice) {
     if (form_data[field] !== null && field !== 'datasource'
       && field !== 'filters' && field !== 'styles' && field !== 'baseStyle'
       && field !== 'colStyles' && field !== 'compares' && field !== 'navigates'
-      && field !== 'slices' && field !== 'headerSettings' && field !== 'pivotSetting'
-      && field !== 'pinned' && field !== 'promptColStyles' && field !== 'promptDefaultValues'
+      && field !== 'slices' && field !== 'dashboards' 
+      && field !== 'headerSettings' && field !== 'pivotSetting' && field !== 'pinned'
+      && field !== 'promptColStyles' && field !== 'promptDefaultValues'
       && !(saveNewSlice && field === 'slice_name')) {
       data[field] = form_data[field];
     }
   });
   const filterParams = formatFilters(form_data.filters);
   Object.assign(data, filterParams);
-  const styleParams = formatStyles(form_data.styles);
-  Object.assign(data, styleParams);
-  const baseStyleParams = formatBaseStyle(form_data.baseStyle);
-  Object.assign(data, baseStyleParams);
-  const colStyleParams = formatColStyles(form_data.colStyles);
-  Object.assign(data, colStyleParams);
-  const compareParams = formatCompares(form_data.compares);
-  Object.assign(data, compareParams);
-  const navigateParams = formatNavigates(form_data.navigates);
-  Object.assign(data, navigateParams);
-  const headerSettingParams = formatHeaderSettings(form_data.headerSettings);
-  Object.assign(data, headerSettingParams);
-  const pivotSettingParams = formatPivotSetting(form_data.pivotSetting);
-  Object.assign(data, pivotSettingParams);
-  const pinnedParams = formatPinned(form_data.pinned);
-  Object.assign(data, pinnedParams);
-  const promptColStyleParams = formatPromptColStyles(form_data.promptColStyles);
-  Object.assign(data, promptColStyleParams);
-  const promptDefaultValueParams = formatPromptDefaultValues(form_data.promptDefaultValues);
-  Object.assign(data, promptDefaultValueParams);
+  if (form_data.viz_type === 'table' || form_data.viz_type === 'ag_grid') {
+    const styleParams = formatStyles(form_data.styles);
+    Object.assign(data, styleParams);
+    const baseStyleParams = formatBaseStyle(form_data.baseStyle);
+    Object.assign(data, baseStyleParams);
+    const colStyleParams = formatColStyles(form_data.colStyles);
+    Object.assign(data, colStyleParams);
+    const compareParams = formatCompares(form_data.compares);
+    Object.assign(data, compareParams);
+    const navigateParams = formatNavigates(form_data.navigates);
+    Object.assign(data, navigateParams);
+    const headerSettingParams = formatHeaderSettings(form_data.headerSettings);
+    Object.assign(data, headerSettingParams);
+    const pivotSettingParams = formatPivotSetting(form_data.pivotSetting);
+    Object.assign(data, pivotSettingParams);
+    const pinnedParams = formatPinned(form_data.pinned);
+    Object.assign(data, pinnedParams);
+  }
+  if (form_data.viz_type === 'filter_box') {
+    const promptColStyleParams = formatPromptColStyles(form_data.promptColStyles);
+    Object.assign(data, promptColStyleParams);
+    const promptDefaultValueParams = formatPromptDefaultValues(form_data.promptDefaultValues);
+    Object.assign(data, promptDefaultValueParams);
+  }
   return data;
 }
 

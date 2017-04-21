@@ -51,13 +51,18 @@ function SliceCell({ expandedSlices, removeSlice, slice, doPrint, isManager }) {
                   </a>
                 </span>
               }
-              {false &&
-                <a title="打印报表" data-toggle="tooltip">
-                  <i
-                    className="fa fa-print"
-                    onClick={() => { doPrint(slice.slice_id, slice); }}
-                  />
-                </a>
+              {true &&
+                <span>
+                  <a title="打印报表" data-toggle="tooltip">
+                    <i
+                      className="fa fa-print"
+                      onClick={() => { doPrint(slice); }}
+                    />
+                  </a>
+                  <a title="导出csv" data-toggle="tooltip" href={slice.csv_endpoint}>
+                    <i className="fa fa-download" />
+                  </a>
+                </span>
               }
               {isManager &&
                 <a

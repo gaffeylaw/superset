@@ -100,9 +100,9 @@
     "victory": "^0.12.1",
     "viewport-mercator-project": "^2.1.0",
     "react-draggable-tab": "^0.8.1",
-    "ag-grid": "8.0.x",
-    "ag-grid-enterprise": "8.0.x",
-    "ag-grid-react": "8.0.x"
+    "ag-grid": "9.0.x",
+    "ag-grid-enterprise": "9.0.x",
+    "ag-grid-react": "9.0.x"
   },
   "devDependencies": {
     "babel": "^6.3.26",
