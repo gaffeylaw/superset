@@ -1670,7 +1670,8 @@ class Superset(BaseSupersetView):
 
     def save_slice(self, slc):
         session = db.session()
-        msg = "Slice [{}] has been saved".format(slc.slice_name)
+        # msg = "Slice [{}] has been saved".format(slc.slice_name)
+        msg = _("Slice ") + slc.slice_name + _(" has been saved")
         session.add(slc)
         session.commit()
         flash(msg, "info")
@@ -1678,12 +1679,15 @@ class Superset(BaseSupersetView):
     def overwrite_slice(self, slc):
         can_update = check_ownership(slc, raise_if_false=False)
         if not can_update:
-            flash("You cannot overwrite [{}]".format(slc), "danger")
+            msg = _("You cannot overwrite ") + slc
+            flash(msg, "danger")
+            # flash("You cannot overwrite [{}]".format(slc), "danger")
         else:
             session = db.session()
             session.merge(slc)
             session.commit()
-            msg = "Slice [{}] has been overwritten".format(slc.slice_name)
+            msg = _("Slice ") + slc.slice_name + _(" has been overwritten")
+            # msg = "Slice [{}] has been overwritten".format(slc.slice_name)
             flash(msg, "info")
 
     @api

@@ -17,6 +17,7 @@ const propTypes = {
   dataPreviewQueries: React.PropTypes.array.isRequired,
   actions: React.PropTypes.object.isRequired,
   activeSouthPaneTab: React.PropTypes.string,
+  localMessage: React.PropTypes.object.isRequired,
 };
 
 const defaultProps = {
@@ -36,19 +37,21 @@ class SouthPane extends React.PureComponent {
     let results;
     if (latestQuery) {
       results = (
-        <ResultSet showControls search query={latestQuery} actions={props.actions} />
+        <ResultSet showControls search query={latestQuery} actions={props.actions}
+          localMessage={this.props.localMessage} />
       );
     } else {
-      results = <Alert bsStyle="info">Run a query to display results here</Alert>;
+      results = <Alert bsStyle="info">{this.props.localMessage.run_query_display_results}</Alert>;
     }
 
     const dataPreviewTabs = props.dataPreviewQueries.map((query) => (
       <Tab
-        title={`Preview for ${query.tableName}`}
+        title={`${this.props.localMessage.preview_for} ${query.tableName}`}
         eventKey={query.id}
         key={query.id}
-      >
-        <ResultSet query={query} visualize={false} csv={false} actions={props.actions} cache />
+        >
+        <ResultSet query={query} visualize={false} csv={false} actions={props.actions}
+        localMessage={this.props.localMessage} cache />
       </Tab>
     ));
 
@@ -59,20 +62,21 @@ class SouthPane extends React.PureComponent {
           id={shortid.generate()}
           activeKey={this.props.activeSouthPaneTab}
           onSelect={this.switchTab.bind(this)}
-        >
-          <Tab
-            title="Results"
-            eventKey="Results"
           >
+          <Tab
+            title={this.props.localMessage.query_result}
+            eventKey="Results"
+            >
             <div style={{ overflow: 'auto' }}>
               {results}
             </div>
           </Tab>
           <Tab
-            title="Query History"
+            title={this.props.localMessage.query_history}
             eventKey="History"
-          >
-            <QueryHistory queries={props.editorQueries} actions={props.actions} />
+            >
+            <QueryHistory queries={props.editorQueries} actions={props.actions}
+              localMessage={this.props.localMessage} />
           </Tab>
           {dataPreviewTabs}
         </Tabs>

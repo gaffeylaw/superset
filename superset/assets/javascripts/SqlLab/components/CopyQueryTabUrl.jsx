@@ -4,6 +4,7 @@ import { getShortUrl } from '../../../utils/common';
 
 const propTypes = {
   queryEditor: React.PropTypes.object.isRequired,
+  localMessage: React.PropTypes.object.isRequired,
 };
 
 export default class CopyQueryTabUrl extends React.PureComponent {
@@ -27,10 +28,10 @@ export default class CopyQueryTabUrl extends React.PureComponent {
         inMenu
         copyNode={(
           <div>
-            <i className="fa fa-clipboard" /> <span>share query</span>
+            <i className="fa fa-clipboard" /> <span>{this.props.localMessage.share_query}</span>
           </div>
         )}
-        tooltipText="copy URL to clipboard"
+        tooltipText={this.props.localMessage.copy_url_clipboard}
         shouldShowText={false}
         getText={this.getUrl.bind(this)}
       />

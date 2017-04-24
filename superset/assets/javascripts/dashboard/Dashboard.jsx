@@ -11,10 +11,16 @@ import { render } from 'react-dom';
 import GridLayout from './components/GridLayout';
 import Header from './components/Header';
 
+import { chooseMessage } from '../explorev2/stores/language';
+import zh_CN from '../explorev2/stores/zh_CN';
+import en_US from '../explorev2/stores/en_US';
+
 require('bootstrap');
 require('../../stylesheets/dashboard.css');
 require('../superset-select2.js');
 require('../../visualizations/table.css');
+
+const localMessage = chooseMessage();
 
 export function getInitialState(dashboardData, context) {
   const dashboard = Object.assign({ context }, utils.controllerInterface, dashboardData);
@@ -36,7 +42,7 @@ export function getInitialState(dashboardData, context) {
 }
 
 function unload() {
-  const message = 'You have unsaved changes.';
+  const message = localMessage.unsave_change;
   window.event.returnValue = message; // Gecko + IE
   return message; // Gecko + Webkit, Safari, Chrome etc.
 }
@@ -53,9 +59,9 @@ function renderAlert() {
   render(
     <div className="container-fluid">
       <Alert bsStyle="warning">
-        <strong>You have unsaved changes.</strong> Click the&nbsp;
+        <strong>{localMessage.unsave_change}</strong>{localMessage.click}&nbsp;
         <i className="fa fa-save" />&nbsp;
-        button on the top right to save your changes.
+        {localMessage.click_to_save}
       </Alert>
     </div>,
     document.getElementById('alert-container')
@@ -64,7 +70,7 @@ function renderAlert() {
 
 function initDashboardView(dashboard, isManager) {
   render(
-    <Header dashboard={dashboard} />,
+    <Header dashboard={dashboard} localMessage={localMessage}/>,
     document.getElementById('dashboard-header')
   );
   // eslint-disable-next-line no-param-reassign
@@ -72,6 +78,7 @@ function initDashboardView(dashboard, isManager) {
     <GridLayout
       dashboard={dashboard}
       isManager={isManager}
+      localMessage={localMessage}
     />,
     document.getElementById('grid-container')
   );
@@ -256,13 +263,13 @@ export function dashboardContainer(dashboard) {
         refresh
         .addClass('danger')
         .attr('title',
-              'Served from data cached at ' + data.cached_dttm +
-                '. Click to force refresh')
+              localMessage.served_data + data.cached_dttm +
+                localMessage.click_to_refresh)
                 .tooltip('fixTitle');
       } else {
         refresh
         .removeClass('danger')
-        .attr('title', '刷新数据')
+        .attr('title', localMessage.refresh_data)
         .tooltip('fixTitle');
       }
     },
@@ -429,8 +436,8 @@ export function dashboardContainer(dashboard) {
         error(error) {
           const errorMsg = getAjaxErrorMsg(error);
           utils.showModal({
-            title: 'Error',
-            body: 'Sorry, there was an error adding slices to this dashboard: </ br>' + errorMsg,
+            title: localMessage.error,
+            body: localMessage.error_add_slice_dash + ': </ br>' + errorMsg,
           });
         },
       });

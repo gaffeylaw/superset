@@ -6,9 +6,10 @@ const propTypes = {
   removeSlice: PropTypes.func.isRequired,
   expandedSlices: PropTypes.object,
   isManager: PropTypes.bool.isRequired,
+  localMessage: PropTypes.object.isRequired,
 };
 
-function SliceCell({ expandedSlices, removeSlice, slice, doPrint, isManager }) {
+function SliceCell({ expandedSlices, removeSlice, slice, doPrint, isManager, localMessage }) {
   return (
     <div className="slice-cell" id={`${slice.token}-cell`}>
       <div className="chart-header">
@@ -20,16 +21,17 @@ function SliceCell({ expandedSlices, removeSlice, slice, doPrint, isManager }) {
             <div className="pull-right">
               {isManager &&
                 <span>
-                  <a title="移动报表" data-toggle="tooltip">
+                  <a title={localMessage.move_slice} data-toggle="tooltip">
                     <i className="fa fa-arrows drag" />
                   </a>
-                  <a className="refresh" title="刷新数据" data-toggle="tooltip">
+                  <a className="refresh" title={localMessage.refresh_data}
+                  data-toggle="tooltip">
                     <i className="fa fa-repeat" />
                   </a>
                 </span>
               }
               {(slice.description && isManager) &&
-                <a title="Toggle chart description">
+                <a title={localMessage.toogle_chart_desc}>
                   <i
                     className="fa fa-info-circle slice_info"
                     title={slice.description}
@@ -41,25 +43,26 @@ function SliceCell({ expandedSlices, removeSlice, slice, doPrint, isManager }) {
                 <span>
                   <a
                     href={slice.edit_url}
-                    title="编辑报表"
+                    title={localMessage.edit_slice}
                     data-toggle="tooltip"
                   >
                     <i className="fa fa-pencil" />
                   </a>
-                  <a href={slice.slice_url} title="导航至切片" data-toggle="tooltip">
+                  <a href={slice.slice_url} title={localMessage.navigate_slice}
+                  data-toggle="tooltip">
                     <i className="fa fa-share" />
                   </a>
                 </span>
               }
               {true &&
                 <span>
-                  <a title="打印报表" data-toggle="tooltip">
+                  <a title={localMessage.print_slice} data-toggle="tooltip">
                     <i
                       className="fa fa-print"
                       onClick={() => { doPrint(slice); }}
                     />
                   </a>
-                  <a title="导出csv" data-toggle="tooltip" href={slice.csv_endpoint}>
+                  <a title={localMessage.export_csv} data-toggle="tooltip" href={slice.csv_endpoint}>
                     <i className="fa fa-download" />
                   </a>
                 </span>
@@ -67,7 +70,7 @@ function SliceCell({ expandedSlices, removeSlice, slice, doPrint, isManager }) {
               {isManager &&
                 <a
                   className="remove-chart"
-                  title="移除报表"
+                  title={localMessage.remove_slice}
                   data-toggle="tooltip"
                 >
                   <i

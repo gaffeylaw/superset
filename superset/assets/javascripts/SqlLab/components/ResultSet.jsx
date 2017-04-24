@@ -15,6 +15,7 @@ const propTypes = {
   showSql: React.PropTypes.bool,
   visualize: React.PropTypes.bool,
   cache: React.PropTypes.bool,
+  localMessage: React.PropTypes.object.isRequired,
 };
 const defaultProps = {
   search: true,
@@ -53,7 +54,7 @@ class ResultSet extends React.PureComponent {
       if (this.props.csv) {
         csvButton = (
           <Button bsSize="small" href={'/superset/csv/' + this.props.query.id}>
-            <i className="fa fa-file-text-o" /> .CSV
+            <i className="fa fa-file-text-o" /> {this.props.localMessage.query_csv}
           </Button>
         );
       }
@@ -64,7 +65,7 @@ class ResultSet extends React.PureComponent {
             bsSize="small"
             onClick={this.showModal.bind(this)}
           >
-            <i className="fa fa-line-chart m-l-1" /> Visualize
+            <i className="fa fa-line-chart m-l-1" /> {this.props.localMessage.query_visualize}
           </Button>
         );
       }
@@ -75,7 +76,7 @@ class ResultSet extends React.PureComponent {
             type="text"
             onChange={this.changeSearch.bind(this)}
             className="form-control input-sm"
-            placeholder="Search Results"
+            placeholder={this.props.localMessage.search_results}
           />
         );
       }
@@ -128,6 +129,7 @@ class ResultSet extends React.PureComponent {
   render() {
     const query = this.props.query;
     const results = query.results;
+    const localMessage = this.props.localMessage;
     let data;
     if (this.props.cache && query.cached) {
       data = this.state.data;
@@ -138,7 +140,7 @@ class ResultSet extends React.PureComponent {
     let sql;
 
     if (this.props.showSql) {
-      sql = <HighlightedSql sql={query.sql} />;
+      sql = <HighlightedSql sql={query.sql} localMessage={this.props.localMessage}/>;
     }
     if (['running', 'pending', 'fetching'].indexOf(query.state) > -1) {
       let progressBar;
@@ -169,7 +171,7 @@ class ResultSet extends React.PureComponent {
               className="m-r-5"
               onClick={this.popSelectStar.bind(this)}
             >
-              Query in a new tab
+              {this.props.localMessage.query_in_new_tab}
             </Button>
           </Alert>
         </div>);
@@ -181,6 +183,7 @@ class ResultSet extends React.PureComponent {
               show={this.state.showModal}
               query={this.props.query}
               onHide={this.hideModal.bind(this)}
+              localMessage={this.props.localMessage}
             />
             {this.getControls.bind(this)()}
             {sql}
@@ -200,9 +203,9 @@ class ResultSet extends React.PureComponent {
       } else if (query.resultsKey) {
         return (
           <div>
-            <Alert bsStyle="warning">This query was run asynchronously &nbsp;
+            <Alert bsStyle="warning">{localMessage.fetch_data_preview} &nbsp;
               <Button bsSize="sm" onClick={this.fetchResults.bind(this, query)}>
-                Fetch results
+                {localMessage.fetch_result}
               </Button>
             </Alert>
           </div>
@@ -216,11 +219,11 @@ class ResultSet extends React.PureComponent {
           bsStyle="primary"
           onClick={this.reFetchQueryResults.bind(this, query)}
         >
-          Fetch data preview
+          {localMessage.fetch_data_preview}
         </Button>
       );
     }
-    return (<Alert bsStyle="warning">The query returned no data</Alert>);
+    return (<Alert bsStyle="warning">{localMessage.query_no_data}</Alert>);
   }
 }
 ResultSet.propTypes = propTypes;

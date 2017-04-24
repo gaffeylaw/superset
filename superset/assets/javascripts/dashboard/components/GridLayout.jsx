@@ -10,6 +10,7 @@ const ResponsiveReactGridLayout = WidthProvider(Responsive);
 const propTypes = {
   dashboard: PropTypes.object.isRequired,
   isManager: PropTypes.bool.isManager,
+  localMessage: PropTypes.object.isRequired,
 };
 
 class GridLayout extends React.Component {
@@ -145,6 +146,7 @@ class GridLayout extends React.Component {
               expandedSlices={this.props.dashboard.metadata.expanded_slices}
               doPrint={this.doPrint.bind(this, slice)}
               isManager={this.props.isManager}
+              localMessage={this.props.localMessage}
             />
           </div>
         ))}

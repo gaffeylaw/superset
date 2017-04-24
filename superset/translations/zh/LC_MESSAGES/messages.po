@@ -1799,6 +1799,36 @@ msgstr "数据源描述"
 msgid "Save a Slice"
 msgstr "保存切片"
 
+msgid "Overwrite slice"
+msgstr "覆盖切片"
+
+msgid "Save as"
+msgstr "另存为"
+
+msgid "Do not add to a dashboard"
+msgstr "不要添加到仪表板"
+
+msgid "Add slice to existing dashboard"
+msgstr "将切片添加到现有仪表板"
+
+msgid "Add to new dashboard"
+msgstr "添加到新的仪表板"
+
+msgid "Datasource & Chart Type"
+msgstr "数据源和图表类型"
+
+msgid "Slice "
+msgstr "切片 "
+
+msgid " has been overwritten"
+msgstr " 已被覆盖"
+
+msgid " has been saved"
+msgstr " 已被保存"
+
+msgid " You cannot overwrite"
+msgstr " 你不能覆盖"
+
 #: caravel/templates/caravel/explore.html:309
 msgid "Save & go to dashboard"
 msgstr "保存并进入仪表板"
@@ -1919,3 +1949,104 @@ msgstr "管理"
 # views.py:1162
 msgid "to_view"
 msgstr "查看"
+
+msgid "Show data points as circle markers on the lines"
+msgstr "将数据点显示为线上的圆圈标记"
+
+msgid "Show the value on top of the bars or not"
+msgstr "显示柱状图顶部的值"
+
+msgid "One or many lines to display"
+msgstr "一行或多行显示"
+
+msgid "choose the yAxias"
+msgstr "选择Y轴"
+
+msgid "yAxis"
+msgstr "Y轴"
+
+msgid "line"
+msgstr "行"
+
+msgid "bar"
+msgstr "块"
+
+msgid "One or many lines to display"
+msgstr "一块或多块显示"
+
+msgid "area"
+msgstr "区域"
+
+msgid "One or many areas to display"
+msgstr "一个或多个区域显示"
+
+msgid "Y1 Axis Label"
+msgstr "Y1轴标签"
+
+msgid "Y2 Axis Label"
+msgstr "Y2轴标签"
+
+msgid "Y1 domain"
+msgstr "Y1轴的域"
+
+msgid "the range of y1, for example: 0,100, it means from 0 to 100"
+msgstr "y1的范围，例如：0,100，表示从0到100"
+
+msgid "Y2 domain"
+msgstr "Y2轴的域"
+
+msgid "the range of y2, for example: 0,100, it means from 0 to 100"
+msgstr "y2的范围，例如：0,100，表示从0到100"
+
+msgid "Horizontal Bars"
+msgstr "横向柱状图"
+
+msgid "Ranges"
+msgstr "范围"
+
+msgid "Ranges to highlight with shading"
+msgstr "范围用阴影高亮显示"
+
+msgid "Range labels"
+msgstr "范围标签"
+
+msgid "Labels for the ranges"
+msgstr "范围标签"
+
+msgid "Markers"
+msgstr "标记"
+
+msgid "List of values to mark with triangles"
+msgstr "用三角形标记的值列表"
+
+msgid "Marker labels"
+msgstr "标记标签"
+
+msgid "Labels for the markers"
+msgstr "标记标签"
+
+msgid "Marker lines"
+msgstr "标记线"
+
+msgid "List of values to mark with lines"
+msgstr "用线条标记的值列表"
+
+msgid "Marker line labels"
+msgstr "线条标记的标签"
+
+msgid "Labels for the marker lines"
+msgstr "标记线的标签"
+
+msgid "Y1 axis format"
+msgstr "Y1轴数值格式"
+
+msgid "Labels for the marker lines"
+msgstr "标记线的标签"
+
+msgid "Y2 axis format"
+msgstr "Y2轴数值格式"
+
+msgid "D3 format syntax: https://github.com/d3/d3-format"
+msgstr "自定义格式请参考 https://github.com/mbostock/d3/wiki/Formatting"
+
+

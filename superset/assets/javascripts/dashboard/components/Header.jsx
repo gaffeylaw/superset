@@ -4,6 +4,7 @@ import Controls from './Controls';
 
 const propTypes = {
   dashboard: React.PropTypes.object,
+  localMessage: React.PropTypes.object,
 };
 const defaultProps = {
 };
@@ -26,7 +27,7 @@ class Header extends React.PureComponent {
         </div>
         <div className="pull-right">
         {!this.props.dashboard.context.standalone_mode &&
-          <Controls dashboard={dashboard} />
+          <Controls dashboard={dashboard} localMessage={this.props.localMessage} />
         }
         </div>
         <div className="clearfix" />
