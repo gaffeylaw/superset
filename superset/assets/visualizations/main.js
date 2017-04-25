@@ -33,5 +33,9 @@ const vizMap = {
   linePlusBar: require('./nvd3_vis.js'),
   multi: require('./nvd3_vis.js'),
   ag_grid: require('./agGrid.jsx'),
+  echarts_bar: require('./echarts_vis.js'),
+  echarts_bar_h: require('./echarts_vis.js'),
+  echarts_line: require('./echarts_vis.js'),
+  echarts_line_bar: require('./echarts_vis.js'),
 };
 export default vizMap;

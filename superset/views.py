@@ -1554,7 +1554,8 @@ class Superset(BaseSupersetView):
                 mimetype="application/csv")
         elif request.args.get("standalone") == "true":
             return self.render_template("superset/standalone.html", viz=viz_obj, standalone_mode=True)
-        elif request.args.get("V2") == "true" or is_in_explore_v2_beta:
+        else:
+        ## elif request.args.get("V2") == "true" or is_in_explore_v2_beta:
             slices = db.session.query(models.Slice).all()
             dashboards = db.session.query(models.Dashboard).all()
             
@@ -1581,14 +1582,14 @@ class Superset(BaseSupersetView):
                 bootstrap_data=json.dumps(bootstrap_data),
                 slice=slc,
                 table_name=table_name)
-        else:
-            return self.render_template(
-                "superset/explore.html",
-                viz=viz_obj, slice=slc, datasources=datasources,
-                can_add=slice_add_perm, can_edit=slice_edit_perm,
-                can_download=slice_download_perm,
-                userid=g.user.get_id() if g.user else ''
-            )
+        # else:
+        #     return self.render_template(
+        #         "superset/explore.html",
+        #         viz=viz_obj, slice=slc, datasources=datasources,
+        #         can_add=slice_add_perm, can_edit=slice_edit_perm,
+        #         can_download=slice_download_perm,
+        #         userid=g.user.get_id() if g.user else ''
+        #     )
 
     def save_or_overwrite_slice(
             self, args, slc, slice_add_perm, slice_edit_perm):
@@ -1603,7 +1604,10 @@ class Superset(BaseSupersetView):
             del d['previous_viz_type']
 
         as_list = ('metrics', 'groupby', 'columns', 'all_columns',
-                   'mapbox_label', 'order_by_cols')
+                   'mapbox_label', 'order_by_cols','y_metrics',
+                   'y_left_metrics', 'y_right_metrics', 'x_metrics',
+                   'x_bottom_metrics', 'x_top_metrics', 'line_choice',
+                   'bar_choice')
         for k in d:
             v = d.get(k)
             if k in as_list and not isinstance(v, list):
@@ -1615,7 +1619,7 @@ class Superset(BaseSupersetView):
         datasource_id = args.get('datasource_id')
 
         if action in ('saveas'):
-            d.pop('slice_id')  # don't save old slice_id
+            ## d.pop('slice_id')  # don't save old slice_id
             slc = models.Slice(owners=[g.user] if g.user else [])
 
         slc.params = json.dumps(d, indent=4, sort_keys=True)
@@ -2577,6 +2581,14 @@ class Superset(BaseSupersetView):
         field_options = {
             'datasource': [(d.id, d.full_name) for d in datasources],
             'metrics': datasource.metrics_combo,
+            'y_metrics': datasource.metrics_combo,
+            'y_left_metrics': datasource.metrics_combo,
+            'y_right_metrics': datasource.metrics_combo,
+            'x_metrics': datasource.metrics_combo,
+            'x_bottom_metrics': datasource.metrics_combo,
+            'x_top_metrics': datasource.metrics_combo,
+            'line_choice': datasource.metrics_combo,
+            'bar_choice': datasource.metrics_combo,
             'line': datasource.metrics_combo,
             'bar': datasource.metrics_combo,
             'area': datasource.metrics_combo,

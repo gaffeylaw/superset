@@ -1132,6 +1132,173 @@ class FormFactory(object):
                 "default": "",
                 "description": _("Labels for the marker lines")
             }),
+            'only_left': (BetterBooleanField, {
+                "label": _("Only left"),
+                "default" : True,
+                "description": _("Only the left of Y axis."),
+            }),
+            'only_bottom': (BetterBooleanField, {
+                "label": _("Only bottom"),
+                "default" : True,
+                "description": _("Only the bottom of Y axis."),
+            }),
+            'y_metrics': (SelectMultipleSortableField, {
+                "label": _("Y axis metrics"),
+                "choices": datasource.metrics_combo,
+                "default": [default_metric],
+                "description": _("One or many metrics to display")
+            }),
+            'y_format': (TextField, {
+                "label": _("Y axis format"),
+                "default": "",
+                "description": _("Y axis format. The order must match Metirsc. e.g.:{value} ml;{value} %;")
+            }),
+            'y_degree': (TextField, {
+                "label": _("Y axis degree"),
+                "default": "",
+                "description": _("Y axis degree. The order must match Metirsc. e.g.:{min:0,max:100};{min:0,max:100};")
+            }),
+            'y_axis_name': (TextField, {
+                "label": _("Y axis name"),
+                "default": "",
+                "description": _("Y axis format. ")
+            }),
+
+            'x_metrics': (SelectMultipleSortableField, {
+                "label": _("X axis metrics"),
+                "choices": datasource.metrics_combo,
+                "default": [default_metric],
+                "description": _("One or many metrics to display")
+            }),
+            'x_format': (TextField, {
+                "label": _("X axis format"),
+                "default": "",
+                "description": _("X axis format. The order must match Metirsc. e.g.:{value} ml;{value} %;")
+            }),
+            'x_degree': (TextField, {
+                "label": _("X axis degree"),
+                "default": "",
+                "description": _("X axis degree. The order must match Metirsc. e.g.:{min:0,max:100};{min:0,max:100};")
+            }),
+            'x_axis_name': (TextField, {
+                "label": _("X axis name"),
+                "default": "",
+                "description": _("X axis format. ")
+            }),
+
+            'y_left_metrics': (SelectMultipleSortableField, {
+                "label": _("Left of Y axis metrics"),
+                "choices": datasource.metrics_combo,
+                "default": [default_metric],
+                "description": _("One or many lines to display")
+            }),
+            'y_right_metrics': (SelectMultipleSortableField, {
+                "label": _("Right of Y axis metrics"),
+                "choices": datasource.metrics_combo,
+                "default": [default_metric],
+                "description": _("One or many lines to display")
+            }),
+            'y_left_format': (TextField, {
+                "label": _("Left of Y axis format"),
+                "default": "",
+                "description": _("Y axis format. The order must match Metirsc. e.g.:{value} ml;{value} %;")
+            }),
+            'y_right_format': (TextField, {
+                "label": _("Right of Y axis format"),
+                "default": "",
+                "description": _("Y axis format. The order must match Metirsc. e.g.:{value} ml;{value} %;")
+            }),
+            'y_left_degree': (TextField, {
+                "label": _("Left of Y axis degree"),
+                "default": "",
+                "description": _("Y axis degree. The order must match Metirsc. e.g.:{min:0,max:100};{min:0,max:100};")
+            }),
+            'y_right_degree': (TextField, {
+                "label": _("Right of Y axis degree"),
+                "default": "",
+                "description": _("Y axis degree. The order must match Metirsc. e.g.:{min:0,max:100};{min:0,max:100};")
+            }),
+
+            'x_bottom_metrics': (SelectMultipleSortableField, {
+                "label": _("Bottom of X axis metrics"),
+                "choices": datasource.metrics_combo,
+                "default": [default_metric],
+                "description": _("One or many lines to display")
+            }),
+            'x_top_metrics': (SelectMultipleSortableField, {
+                "label": _("Top of X axis metrics"),
+                "choices": datasource.metrics_combo,
+                "default": [default_metric],
+                "description": _("One or many lines to display")
+            }),
+            'x_bottom_format': (TextField, {
+                "label": _("Bottom of X axis format"),
+                "default": "",
+                "description": _("X axis format. The order must match Metirsc. e.g.:{value} ml;{value} %;")
+            }),
+            'x_top_format': (TextField, {
+                "label": _("Top of X axis format"),
+                "default": "",
+                "description": _("X axis format. The order must match Metirsc. e.g.:{value} ml;{value} %;")
+            }),
+            'x_bottom_degree': (TextField, {
+                "label": _("Bottom of X axis degree"),
+                "default": "",
+                "description": _("X axis degree. The order must match Metirsc. e.g.:{min:0,max:100};{min:0,max:100};")
+            }),
+            'x_top_degree': (TextField, {
+                "label": _("Top of X axis degree"),
+                "default": "",
+                "description": _("X axis degree. The order must match Metirsc. e.g.:{min:0,max:100};{min:0,max:100};")
+            }),
+
+            'top_padding': (TextField, {
+                "label": _("Top Padding"),
+                "default": '80',
+                "description": _("Top Padding of the Chart"),
+            }),
+            'bottom_padding': (TextField, {
+                "label": _("Bottom Padding"),
+                "default": '20',
+                "description": _("Bottom Padding of the Chart"),
+            }),
+            'left_padding': (TextField, {
+                "label": _("Left Padding"),
+                "default": '20',
+                "description": _("Left Padding of the Chart"),
+            }),
+            'right_padding': (TextField, {
+                "label": _("Right Padding"),
+                "default": '20',
+                "description": _("Right Padding of the Chart"),
+            }),
+            'is_avg': (BetterBooleanField, {
+                "label": _("Show AVG"),
+                "default" : False,
+                "description": _("Show the avg line."),
+            }),
+            'is_max_min': (BetterBooleanField, {
+                "label": _("Show MAX & MIN"),
+                "default" : False,
+                "description": _("Show the max min line."),
+            }),
+            'is_bar_value': (BetterBooleanField, {
+                "label": _("Show Bar Value"),
+                "default" : False,
+                "description": _("Show bar value."),
+            }),
+            'line_choice': (SelectMultipleSortableField, {
+                "label": _("line metrics"),
+                "choices": datasource.metrics_combo,
+                "default": [default_metric],
+                "description": _("One or many lines to display")
+            }),
+            'bar_choice': (SelectMultipleSortableField, {
+                "label": _("bar metrics"),
+                "choices": datasource.metrics_combo,
+                "default": [default_metric],
+                "description": _("One or many lines to display")
+            }),
         }
 
         # Override default arguments with form overrides

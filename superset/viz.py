@@ -1593,6 +1593,308 @@ class agGridViz(BaseViz):
     def json_dumps(self, obj):
         return json.dumps(obj, default=utils.json_iso_dttm_ser)
 
+class echartsBarViz(BaseViz):
+
+    viz_type = "echarts_bar"
+    verbose_name = _("echarts bar View")
+    credits = 'a <a href="https://github.com/airbnb/superset">Superset</a> original'
+
+    fieldsets = ({
+        'label': _("Metrics and Dimensions"),
+        'description': _('Metrics and Dimensions'),
+        'fields': ('metrics', 'groupby')
+    },{
+        'label': _("Only Left Y Axis"),
+        'description': _('Only Left Y Axis'),
+        'fields': (
+            ('only_left','y_metrics'),
+            ('y_format','y_degree'),
+            'y_axis_name',
+        )
+    },{
+        'label': _("Multi Y Axis"),
+        'description': _('Multi Y Axis'),
+        'fields': (
+            ('y_left_metrics', 'y_right_metrics'),
+            ('y_left_format', 'y_right_format'),
+            ('y_left_degree', 'y_right_degree'),
+        )
+    },{
+        'label': _("Padding"),
+        'description': _('Padding'),
+        'fields': (
+            ('top_padding', 'bottom_padding'),
+            ('left_padding', 'right_padding'),
+        )
+    },{
+        'label': _("Other Options"),
+        'description': _('Other Options'),
+        'fields': (
+            ('is_avg', 'is_max_min'),
+            'is_bar_value', 
+        )
+    })
+    form_overrides = ({
+        'groupby': {
+            'default': ['X aixs'],
+        },
+    })
+    
+    is_timeseries = False
+
+    def query_obj(self):
+        d = super(echartsBarViz, self).query_obj()
+        fd = self.form_data
+        order_by_cols = fd.get('order_by_cols') or []
+        d['orderby'] = [json.loads(t) for t in order_by_cols]
+        return d
+
+    def get_df(self, query_obj=None):
+        df = super(echartsBarViz, self).get_df(query_obj)
+        if (
+                self.form_data.get("granularity") == "all" and
+                DTTM_ALIAS in df):
+            del df[DTTM_ALIAS]
+        return df
+
+    def get_data(self):
+        df = self.get_df()
+        return dict(
+            records=df.to_dict(orient="records"),
+            columns=list(df.columns),
+        )
+
+    def json_dumps(self, obj):
+        return json.dumps(obj, default=utils.json_iso_dttm_ser)
+
+class echartsBarHViz(BaseViz):
+
+    viz_type = "echarts_bar_h"
+    verbose_name = _("echarts bar horizohtal View")
+    credits = 'a <a href="https://github.com/airbnb/superset">Superset</a> original'
+
+    fieldsets = ({
+        'label': _("Metrics and Dimensions"),
+        'description': _('Metrics and Dimensions'),
+        'fields': ('metrics', 'groupby')
+    },{
+        'label': _("Only Bottom X Axis"),
+        'description': _('Only Bottom X Axis'),
+        'fields': (
+            ('only_bottom','x_metrics'),
+            ('x_format','x_degree'),
+            'x_axis_name',
+        )
+    },{
+        'label': _("Multi X Axis"),
+        'description': _('Multi X Axis'),
+        'fields': (
+            ('x_bottom_metrics', 'x_top_metrics'),
+            ('x_bottom_format', 'x_top_format'),
+            ('x_bottom_degree', 'x_top_degree'),
+        )
+    },{
+        'label': _("Padding"),
+        'description': _('Padding'),
+        'fields': (
+            ('top_padding', 'bottom_padding'),
+            ('left_padding', 'right_padding'),
+        )
+    },{
+        'label': _("Other Options"),
+        'description': _('Other Options'),
+        'fields': (
+            ('is_avg', 'is_max_min'),
+            'is_bar_value', 
+        )
+    })
+    form_overrides = ({
+        'groupby': {
+            'default': ['Y aixs'],
+        },
+    })
+    
+    is_timeseries = False
+
+    def query_obj(self):
+        d = super(echartsBarHViz, self).query_obj()
+        fd = self.form_data
+        order_by_cols = fd.get('order_by_cols') or []
+        d['orderby'] = [json.loads(t) for t in order_by_cols]
+        return d
+
+    def get_df(self, query_obj=None):
+        df = super(echartsBarHViz, self).get_df(query_obj)
+        if (
+                self.form_data.get("granularity") == "all" and
+                DTTM_ALIAS in df):
+            del df[DTTM_ALIAS]
+        return df
+
+    def get_data(self):
+        df = self.get_df()
+        return dict(
+            records=df.to_dict(orient="records"),
+            columns=list(df.columns),
+        )
+
+    def json_dumps(self, obj):
+        return json.dumps(obj, default=utils.json_iso_dttm_ser)
+
+class echartsLineViz(BaseViz):
+
+    viz_type = "echarts_line"
+    verbose_name = _("echarts line View")
+    credits = 'a <a href="https://github.com/airbnb/superset">Superset</a> original'
+
+    fieldsets = ({
+        'label': _("Metrics and Dimensions"),
+        'description': _('Metrics and Dimensions'),
+        'fields': ('metrics', 'groupby')
+    },{
+        'label': _("Only Left Y Axis"),
+        'description': _('Only Left Y Axis'),
+        'fields': (
+            ('only_left','y_metrics'),
+            ('y_format','y_degree'),
+            'y_axis_name',
+        )
+    },{
+        'label': _("Multi Y Axis"),
+        'description': _('Multi Y Axis'),
+        'fields': (
+            ('y_left_metrics', 'y_right_metrics'),
+            ('y_left_format', 'y_right_format'),
+            ('y_left_degree', 'y_right_degree'),
+        )
+    },{
+        'label': _("Padding"),
+        'description': _('Padding'),
+        'fields': (
+            ('top_padding', 'bottom_padding'),
+            ('left_padding', 'right_padding'),
+        )
+    },{
+        'label': _("Other Options"),
+        'description': _('Other Options'),
+        'fields': (
+            ('is_avg', 'is_max_min'),
+            'is_bar_value', 
+        )
+    })
+    form_overrides = ({
+        'groupby': {
+            'default': ['X aixs'],
+        },
+    })
+    
+    is_timeseries = False
+
+    def query_obj(self):
+        d = super(echartsLineViz, self).query_obj()
+        fd = self.form_data
+        order_by_cols = fd.get('order_by_cols') or []
+        d['orderby'] = [json.loads(t) for t in order_by_cols]
+        return d
+
+    def get_df(self, query_obj=None):
+        df = super(echartsLineViz, self).get_df(query_obj)
+        if (
+                self.form_data.get("granularity") == "all" and
+                DTTM_ALIAS in df):
+            del df[DTTM_ALIAS]
+        return df
+
+    def get_data(self):
+        df = self.get_df()
+        return dict(
+            records=df.to_dict(orient="records"),
+            columns=list(df.columns),
+        )
+
+    def json_dumps(self, obj):
+        return json.dumps(obj, default=utils.json_iso_dttm_ser)
+
+class echartsLineBarViz(BaseViz):
+
+    viz_type = "echarts_line_bar"
+    verbose_name = _("echarts line Bar View")
+    credits = 'a <a href="https://github.com/airbnb/superset">Superset</a> original'
+
+    fieldsets = ({
+        'label': _("Metrics and Dimensions"),
+        'description': _('Metrics and Dimensions'),
+        'fields': ('metrics', 'groupby')
+    },{
+        'label': _("Line and Bar"),
+        'description': _('Line and Bar'),
+        'fields': (
+            ('line_choice','bar_choice'),
+        )
+    },{
+        'label': _("Only Left Y Axis"),
+        'description': _('Only Left Y Axis'),
+        'fields': (
+            ('only_left','y_metrics'),
+            ('y_format','y_degree'),
+            'y_axis_name',
+        )
+    },{
+        'label': _("Multi Y Axis"),
+        'description': _('Multi Y Axis'),
+        'fields': (
+            ('y_left_metrics', 'y_right_metrics'),
+            ('y_left_format', 'y_right_format'),
+            ('y_left_degree', 'y_right_degree'),
+        )
+    },{
+        'label': _("Padding"),
+        'description': _('Padding'),
+        'fields': (
+            ('top_padding', 'bottom_padding'),
+            ('left_padding', 'right_padding'),
+        )
+    },{
+        'label': _("Other Options"),
+        'description': _('Other Options'),
+        'fields': (
+            ('is_avg', 'is_max_min'),
+            'is_bar_value', 
+        )
+    })
+    form_overrides = ({
+        'groupby': {
+            'default': ['X aixs'],
+        },
+    })
+    
+    is_timeseries = False
+
+    def query_obj(self):
+        d = super(echartsLineBarViz, self).query_obj()
+        fd = self.form_data
+        order_by_cols = fd.get('order_by_cols') or []
+        d['orderby'] = [json.loads(t) for t in order_by_cols]
+        return d
+
+    def get_df(self, query_obj=None):
+        df = super(echartsLineBarViz, self).get_df(query_obj)
+        if (
+                self.form_data.get("granularity") == "all" and
+                DTTM_ALIAS in df):
+            del df[DTTM_ALIAS]
+        return df
+
+    def get_data(self):
+        df = self.get_df()
+        return dict(
+            records=df.to_dict(orient="records"),
+            columns=list(df.columns),
+        )
+
+    def json_dumps(self, obj):
+        return json.dumps(obj, default=utils.json_iso_dttm_ser)
+
 class SunburstViz(BaseViz):
 
     """A multi level sunburst chart"""
@@ -2269,6 +2571,12 @@ viz_types_list = [
     MapboxViz,
     HistogramViz,
     SeparatorViz,
+
+    echartsBarViz,
+    echartsBarHViz,
+    echartsLineViz,
+    echartsLineBarViz,
+
 ]
 
 viz_types = OrderedDict([(v.viz_type, v) for v in viz_types_list

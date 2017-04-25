@@ -1,7 +1,7 @@
 
 import zh_CN from '../stores/zh_CN';
 import en_US from '../stores/en_US';
-// const $ = window.$ = require('jquery'); // eslint-disable-line
+const $ = window.$ = require('jquery'); // eslint-disable-line
 
 export function chooseMessage() {
 

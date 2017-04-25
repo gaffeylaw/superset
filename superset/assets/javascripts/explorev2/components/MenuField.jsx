@@ -9,6 +9,8 @@ import { en_US } from '../stores/en_US';
 
 require('./Components.css');
 
+const localMessage = chooseMessage();
+
 const propTypes = {
   name: PropTypes.string.isRequired,
   choices: PropTypes.array,
@@ -29,47 +31,15 @@ const defaultProps = {
   onChange: () => {},
 };
 
-const vizType = [
-    { chart: 'area', icon: 'fa fa-area-chart' },
-    { chart: 'bar', icon: 'fa fa-bar-chart' },
-    { chart: 'big_number', icon: 'fa fa-header' },
-    { chart: 'big_number_total', icon: 'fa fa-header' },
-    { chart: 'box_plot', icon: 'fa fa-bar-chart' },
-    { chart: 'bubble', icon: 'fa fa-bar-chart' },
-    { chart: 'bullet', icon: 'fa fa-bar-chart' },
-    { chart: 'cal_heatmap', icon: 'fa fa-bar-chart' },
-    { chart: 'compare', icon: 'fa fa-line-chart' },
-    { chart: 'directed_force', icon: 'fa fa-bar-chart' },
-    { chart: 'dist_bar', icon: 'fa fa-bar-chart' },
-    { chart: 'filter_box', icon: 'fa fa-check-square' },
-    { chart: 'heatmap', icon: 'fa fa-bar-chart' },
-    { chart: 'histogram', icon: 'fa fa-bar-chart' },
-    { chart: 'horizon', icon: 'fa fa-bar-chart' },
-    { chart: 'iframe', icon: 'fa fa-columns' },
-    { chart: 'line', icon: 'fa fa-line-chart' },
-    { chart: 'mapbox', icon: 'fa fa-bar-chart' },
-    { chart: 'markup', icon: 'fa fa-bar-chart' },
-    { chart: 'para', icon: 'fa fa-bar-chart' },
-    { chart: 'pie', icon: 'fa fa-pie-chart' },
-    { chart: 'pivot_table', icon: 'fa fa-table' },
-    { chart: 'sankey', icon: 'fa fa-bar-chart' },
-    { chart: 'separator', icon: 'fa fa-bar-chart' },
-    { chart: 'sunburst', icon: 'fa fa-bar-chart' },
-    { chart: 'table', icon: 'fa fa-table' },
-    { chart: 'treemap', icon: 'fa fa-bar-chart' },
-    { chart: 'word_cloud', icon: 'fa fa-bar-chart' },
-    { chart: 'world_map', icon: 'fa fa-map-marker' },
-    { chart: 'linePlusBar', icon: 'fa fa-line-chart' },
-    { chart: 'multi', icon: 'fa fa-line-chart' },
-    { chart: 'ag_grid', icon: 'fa fa-table' },
-];
+const vizType = localMessage.menu_viztype;
 
 const selectedMenu = {
   chart: '',
   icon: '',
+  name: '',
 };
 
-const localMessage = chooseMessage();
+
 
 export default class MenuField extends React.Component {
   constructor(props) {
@@ -79,6 +49,7 @@ export default class MenuField extends React.Component {
       if (vizType[viz].chart === this.props.value) {
         selectedMenu.chart = vizType[viz].chart;
         selectedMenu.icon = vizType[viz].icon;
+        selectedMenu.name = vizType[viz].name;
         break;
       }
     }
@@ -89,6 +60,7 @@ export default class MenuField extends React.Component {
       if (vizType[viz].chart === optionValue) {
         selectedMenu.chart = vizType[viz].chart;
         selectedMenu.icon = vizType[viz].icon;
+        selectedMenu.name = vizType[viz].name;
         this.props.onChange(this.props.name, optionValue);
         break;
       }
@@ -170,6 +142,13 @@ export default class MenuField extends React.Component {
         <i className="fa fa-caret-right pull-right"></i>
       </span>
     );
+    const echartTitle = (
+      <span>
+        <i className="fa fa-ellipsis-h icon-span"></i>
+        <font size="2">{localMessage.echart_chart}</font>
+        <i className="fa fa-caret-right pull-right"></i>
+      </span>
+    );
     //  Tab, comma or Enter will trigger a new option created for FreeFormSelect
     const MenuWrap = (
       <Menu {...menuProps}>
@@ -180,6 +159,33 @@ export default class MenuField extends React.Component {
               <font size="2">{localMessage.filter_box}</font>
             </span>
           </MenuItem>
+          <Divider />
+          <SubMenu title={echartTitle} key="E01">
+            <MenuItem key="echarts_bar">
+              <span>
+                <i className="fa fa-bar-chart icon-span"></i>
+                <font size="2">{localMessage.echarts_bar}</font>
+              </span>
+            </MenuItem>
+            <MenuItem key="echarts_bar_h">
+              <span>
+                <i className="fa fa-bar-chart icon-span"></i>
+                <font size="2">{localMessage.echarts_bar_h}</font>
+              </span>
+            </MenuItem>
+            <MenuItem key="echarts_line">
+              <span>
+                <i className="fa fa-line-chart icon-span"></i>
+                <font size="2">{localMessage.echarts_line}</font>
+              </span>
+            </MenuItem>
+            <MenuItem key="echarts_line_bar">
+              <span>
+                <i className="fa fa-line-chart icon-span"></i>
+                <font size="2">{localMessage.echarts_line_bar}</font>
+              </span>
+            </MenuItem>
+          </SubMenu>
           <Divider />
           <MenuItem key="table">
             <span>
@@ -193,6 +199,7 @@ export default class MenuField extends React.Component {
               <font size="2">ag_grid</font>
             </span>
           </MenuItem>
+          
           <MenuItem key="pivot_table">
             <span>
               <i className="fa fa-table icon-span"></i>
@@ -431,7 +438,7 @@ export default class MenuField extends React.Component {
           <span style={{ paddingLeft: '5px' }}>
             <font size="2">{localMessage.current_chart}</font>
             <i className={`${selectedMenu.icon} icon-current-span`}></i>
-            <font size="2">{selectedMenu.chart}</font>
+            <font size="2">{selectedMenu.name}</font>
           </span>
         </div>
       </div>
