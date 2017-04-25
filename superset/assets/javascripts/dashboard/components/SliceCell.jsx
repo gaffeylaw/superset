@@ -8,7 +8,7 @@ const propTypes = {
   isManager: PropTypes.bool.isRequired,
 };
 
-function SliceCell({ expandedSlices, removeSlice, slice, doPrint, isManager }) {
+function SliceCell({ expandedSlices, removeSlice, slice, doPrint, getCsv, isManager }) {
   return (
     <div className="slice-cell" id={`${slice.token}-cell`}>
       <div className="chart-header">
@@ -59,8 +59,11 @@ function SliceCell({ expandedSlices, removeSlice, slice, doPrint, isManager }) {
                       onClick={() => { doPrint(slice); }}
                     />
                   </a>
-                  <a title="导出csv" data-toggle="tooltip" href={slice.csv_endpoint}>
-                    <i className="fa fa-download" />
+                  <a title="导出csv" data-toggle="tooltip">
+                    <i
+                      className="fa fa-download"
+                      onClick={() => { getCsv(slice); }}
+                    />
                   </a>
                 </span>
               }

@@ -201,12 +201,6 @@ def upgrade():
     sa.Column('changed_by_fk', sa.Integer(), sa.ForeignKey("ab_user.id"), nullable=True),
     sa.PrimaryKeyConstraint('id')
     )
-    op.create_table('portal_role',
-    sa.Column('id', sa.Integer(), nullable=False),
-    sa.Column('portal_id', sa.Integer(), sa.ForeignKey("portal.id"), nullable=False),
-    sa.Column('role_id', sa.Integer(), sa.ForeignKey("ab_role.id"), nullable=False),
-    sa.PrimaryKeyConstraint('id')
-    )
     ### portal table end ###
 
     ### mail and scheduler start ###
