@@ -85,6 +85,10 @@ class BaseViz(object):
                 if k in form.data}
         defaults.update(data)
         self.form_data = defaults
+
+        # if groupby is none, set it to []
+        self.form_data['groupby'] = (self.form_data['groupby'] == None and [] or self.form_data['groupby'])
+
         self.query = ""
         self.form_data['previous_viz_type'] = self.viz_type
         self.token = self.form_data.get(

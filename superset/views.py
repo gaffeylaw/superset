@@ -307,6 +307,15 @@ class DashboardFilter(SupersetFilter):
         return query
 
 
+class PortalFilter(SupersetFilter):
+    def apply(self, query, func):  # noqa
+        if self.has_all_datasource_access():
+            return query
+        portal_perms = self.get_view_menus('portal_access')
+        query = query.filter(models.Portal.portal_name.in_(portal_perms))
+        return query
+
+
 def validate_json(form, field):  # noqa
     try:
         json.loads(field.data)
@@ -334,7 +343,7 @@ class DeleteMixin(object):
 
 
 class SupersetModelView(ModelView):
-    page_size = 500
+    page_size = 10
 
 
 class TableColumnInlineView(CompactCRUDMixin, SupersetModelView):  # noqa
@@ -349,7 +358,7 @@ class TableColumnInlineView(CompactCRUDMixin, SupersetModelView):  # noqa
     list_columns = [
         'column_name', 'type', 'groupby', 'filterable', 'count_distinct',
         'sum', 'min', 'max', 'is_dttm']
-    page_size = 500
+    page_size = 10
     description_columns = {
         'is_dttm': (_(
             "Whether to make this column available as a "
@@ -406,7 +415,7 @@ class DruidColumnInlineView(CompactCRUDMixin, SupersetModelView):  # noqa
         'column_name', 'type', 'groupby', 'filterable', 'count_distinct',
         'sum', 'min', 'max']
     can_delete = False
-    page_size = 500
+    page_size = 10
     label_columns = {
         'column_name': _("Column"),
         'type': _("Type"),
@@ -462,7 +471,7 @@ class SqlMetricInlineView(CompactCRUDMixin, SupersetModelView):  # noqa
         ),
     }
     add_columns = edit_columns
-    page_size = 500
+    page_size = 10
     label_columns = {
         'metric_name': _("Metric"),
         'description': _("Description"),
@@ -488,7 +497,7 @@ class DruidMetricInlineView(CompactCRUDMixin, SupersetModelView):  # noqa
         'metric_name', 'description', 'verbose_name', 'metric_type', 'json',
         'datasource', 'd3format', 'is_restricted']
     add_columns = edit_columns
-    page_size = 500
+    page_size = 10
     validators_columns = {
         'json': [validate_json],
     }
@@ -548,6 +557,7 @@ class DatabaseView(SupersetModelView, DeleteMixin):  # noqa
     add_template = "superset/models/database/add.html"
     edit_template = "superset/models/database/edit.html"
     base_order = ('changed_on', 'desc')
+    page_size = 10
     description_columns = {
         'sqlalchemy_uri': utils.markdown(
             "Refer to the "
@@ -657,6 +667,7 @@ class TableModelView(SupersetModelView, DeleteMixin):  # noqa
     show_columns = edit_columns + ['perm']
     related_views = [TableColumnInlineView, SqlMetricInlineView]
     base_order = ('changed_on', 'desc')
+    page_size = 10
     description_columns = {
         'offset': _("Timezone offset (in hours) for this datasource"),
         'table_name': _(
@@ -740,6 +751,7 @@ class AccessRequestsModelView(SupersetModelView, DeleteMixin):
         'roles_with_datasource', 'created_on']
     order_columns = ['username', 'datasource_link']
     base_order = ('changed_on', 'desc')
+    page_size = 10
     label_columns = {
         'username': _("User"),
         'user_roles': _("User Roles"),
@@ -807,6 +819,8 @@ class SliceModelView(SupersetModelView, DeleteMixin):  # noqa
         'slice_name', 'description', 'viz_type', 'owners', 'dashboards',
         'params', 'cache_timeout']
     base_order = ('changed_on', 'desc')
+    order_columns = ['creator','modified']
+    page_size = 10
     description_columns = {
         'description': Markup(
             "The content here can be displayed as widget headers in the "
@@ -900,6 +914,7 @@ class DashboardModelView(SupersetModelView, DeleteMixin):  # noqa
     show_columns = edit_columns + ['table_names']
     add_columns = edit_columns
     base_order = ('changed_on', 'desc')
+    page_size = 10
     description_columns = {
         'position_json': _(
             "This json object describes the positioning of the widgets in "
@@ -998,6 +1013,7 @@ class LogModelView(SupersetModelView):
     list_columns = ('user', 'action', 'dttm')
     edit_columns = ('user', 'action', 'dttm', 'json')
     base_order = ('dttm', 'desc')
+    page_size = 10
     label_columns = {
         'user': _("User"),
         'action': _("Action"),
@@ -1041,8 +1057,8 @@ class DruidDatasourceModelView(SupersetModelView, DeleteMixin):  # noqa
         'cache_timeout']
     add_columns = edit_columns
     show_columns = add_columns + ['perm']
-    page_size = 500
     base_order = ('datasource_name', 'asc')
+    page_size = 10
     description_columns = {
         'offset': _("Timezone offset (in hours) for this datasource"),
         'description': Markup(
@@ -1113,7 +1129,7 @@ class PortalModelManageView(SupersetModelView, DeleteMixin):  # noqa
         'footer', 'portal_href']
     add_columns = edit_columns
     show_columns = add_columns
-    page_size = 500
+    page_size = 10
     label_columns = {
         'portal_link': _("portal_name"),
         'portal_name': _("portal_name"),
@@ -1125,6 +1141,12 @@ class PortalModelManageView(SupersetModelView, DeleteMixin):  # noqa
         'portal_href': _("portal_href"),
     }
 
+    def pre_add(self, portal):
+        security.merge_perm(sm, 'portal_access', portal.portal_name)
+
+    def pre_update(self, portal):
+        self.pre_add(portal)
+
 
 class PortalModelView(SupersetModelView, DeleteMixin):  # noqa
     datamodel = SQLAInterface(models.Portal)
@@ -1135,7 +1157,8 @@ class PortalModelView(SupersetModelView, DeleteMixin):  # noqa
         'footer', 'portal_href']
     add_columns = edit_columns
     show_columns = add_columns
-    page_size = 500
+    base_filters = [['portal_name', PortalFilter, lambda: []]]
+    page_size = 10
     label_columns = {
         'portal_link2': _("portal_name"),
         'portal_name': _("portal_name"),
@@ -1146,6 +1169,7 @@ class PortalModelView(SupersetModelView, DeleteMixin):  # noqa
         'footer': _("footer"),
         'portal_href': _("portal_href"),
     }
+    
 
 appbuilder.add_view(
     PortalModelManageView,

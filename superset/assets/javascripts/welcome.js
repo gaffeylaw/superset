@@ -16,7 +16,7 @@ function modelViewTable(selector, modelView, orderCol, order) {
   url += '?_oc_' + modelView + '=' + orderCol;
   url += '&_od_' + modelView + '=' + order;
   $.getJSON(url, function (data) {
-    const columns = ['dashboard_link', 'creator', 'modified'];
+    const columns = ['portal_link2', 'description', 'creator', 'modified'];
     const tableData = $.map(data.result, function (el) {
       const row = $.map(columns, function (col) {
         return el[col];
@@ -53,5 +53,5 @@ function modelViewTable(selector, modelView, orderCol, order) {
   });
 }
 $(document).ready(function () {
-  modelViewTable('#dash_table', 'DashboardModelViewAsync', 'changed_on', 'desc');
+  modelViewTable('#dash_table', 'PortalModelView', 'changed_on', 'desc');
 });
