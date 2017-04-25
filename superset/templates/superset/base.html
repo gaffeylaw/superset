@@ -8,6 +8,18 @@
 
   {% block head_js %}
     {{super()}}
+    {% with filename="vendor" %}
+      {% include "superset/partials/_script_tag.html" %}
+    {% endwith %}
+    {% with filename="aggrid" %}
+      {% include "superset/partials/_script_tag.html" %}
+    {% endwith %}
+    {% with filename="react1" %}
+        {% include "superset/partials/_script_tag.html" %}
+    {% endwith %}
+    {% with filename="react2" %}
+        {% include "superset/partials/_script_tag.html" %}
+    {% endwith %}
     {% with filename="css-theme" %}
       {% include "superset/partials/_script_tag.html" %}
     {% endwith %}

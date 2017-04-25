@@ -13,8 +13,16 @@ const VERSION_STRING = JSON.parse(fs.readFileSync('package.json')).version;
 const config = {
 
   entry: {
-    // vendor: ['react', 'd3', 'bootstrap', 'jquery', 'nvd3', 'redux', 'ag-grid', 
-    //         'ag-grid-enterprise', 'ag-grid-react', 'echarts'],
+    vendor: ['react', 'd3', 'd3-cloud', 'd3-sankey', 'd3-scale', 'd3-tip', 
+             'bootstrap', 'jquery', 'nvd3', 'redux' ,'echarts'],
+    aggrid: ['ag-grid', 'ag-grid-enterprise', 'ag-grid-react'],
+    react1: ['react-ace', 'react-bootstrap', 'react-bootstrap-table',
+            'react-dom', 'react-draggable', 'react-draggable-tab',
+            'react-dropzone', 'react-gravatar'],
+    react2: ['react-grid-layout','react-intl', 'react-map-gl', 'react-redux',
+             'react-resizable', 'react-select', 'react-datepicker', 
+             'react-syntax-highlighter'],
+     
     'css-theme': APP_DIR + '/javascripts/css-theme.js',
     common: APP_DIR + '/javascripts/common.js',
     dashboard: ['babel-polyfill', APP_DIR + '/javascripts/dashboard/Dashboard.jsx'],
@@ -128,12 +136,17 @@ const config = {
     'react/lib/ReactContext': true,
   },
   plugins: [
+    new webpack.ProvidePlugin({
+            $: "jquery",
+            jQuery: "jquery",
+            "window.jQuery": "jquery"
+        }),
     new webpack.DefinePlugin({
       'process.env': {
         NODE_ENV: JSON.stringify(process.env.NODE_ENV),
       },
     }),
-    // new webpack.optimize.CommonsChunkPlugin({name: "vendor", minChunks: Infinity}),
+    new webpack.optimize.CommonsChunkPlugin({name: ["react2", "react1", "aggrid", "vendor"],  minChunks: Infinity}),
   ],
 };
 if (process.env.NODE_ENV === 'production') {
