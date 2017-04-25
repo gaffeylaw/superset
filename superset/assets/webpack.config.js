@@ -13,7 +13,8 @@ const VERSION_STRING = JSON.parse(fs.readFileSync('package.json')).version;
 const config = {
 
   entry: {
-    // vender: ['react', 'd3', 'bootstrap', 'jquery', 'nvd3', 'redux'],
+    // vendor: ['react', 'd3', 'bootstrap', 'jquery', 'nvd3', 'redux', 'ag-grid', 
+    //         'ag-grid-enterprise', 'ag-grid-react', 'echarts'],
     'css-theme': APP_DIR + '/javascripts/css-theme.js',
     common: APP_DIR + '/javascripts/common.js',
     dashboard: ['babel-polyfill', APP_DIR + '/javascripts/dashboard/Dashboard.jsx'],

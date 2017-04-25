@@ -22,6 +22,12 @@ function echartsVis(slice) {
   const render = function () {
     // $.getJSON(slice.jsonEndpoint(), function (payload) {
     d3.json(slice.jsonEndpoint(), function (error, payload) {
+      
+      if (error !== null) {
+        slice.error(error.responseText, error);
+        return;
+      }
+
       slice.container.html('')
       // init the echarts
       let height = slice.height() - 15;

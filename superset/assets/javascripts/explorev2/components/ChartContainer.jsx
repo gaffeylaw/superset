@@ -18,8 +18,8 @@ const CHART_STATUS_MAP = {
 const propTypes = {
   actions: PropTypes.object.isRequired,
   can_download: PropTypes.bool.isRequired,
-  slice_id: PropTypes.string.isRequired,
-  slice_name: PropTypes.string.isRequired,
+  // slice_id: PropTypes.string.isRequired,
+  // slice_name: PropTypes.string.isRequired,
   viz_type: PropTypes.string.isRequired,
   height: PropTypes.string.isRequired,
   containerId: PropTypes.string.isRequired,
