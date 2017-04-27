@@ -10,6 +10,7 @@ const propTypes = {
   tables: React.PropTypes.array,
   actions: React.PropTypes.object,
   networkOn: React.PropTypes.bool,
+  localMessage: React.PropTypes.object,
 };
 
 const defaultProps = {
@@ -95,7 +96,7 @@ class SqlEditorLeftBar extends React.PureComponent {
   render() {
     let networkAlert = null;
     if (!this.props.networkOn) {
-      networkAlert = <p><Label bsStyle="danger">OFFLINE</Label></p>;
+      networkAlert = <p><Label bsStyle="danger">{this.props.localMessage.offline}</Label></p>;
     }
     const shouldShowReset = window.location.search === '?reset=1';
     return (
@@ -109,15 +110,17 @@ class SqlEditorLeftBar extends React.PureComponent {
               actions={this.props.actions}
               valueRenderer={(o) => (
                 <div>
-                  <span className="text-muted">Database:</span> {o.label}
+                  <span className="text-muted">{this.props.localMessage.database}:</span> {o.label}
                 </div>
               )}
+              localMessage={this.props.localMessage}
             />
           </div>
           <div className="m-t-5">
             <Select
               name="select-schema"
-              placeholder={`Select a schema (${this.state.schemaOptions.length})`}
+              placeholder={`${this.props.localMessage.select_schema}
+              (${this.state.schemaOptions.length})`}
               options={this.state.schemaOptions}
               value={this.props.queryEditor.schema}
               valueRenderer={(o) => (
@@ -135,7 +138,8 @@ class SqlEditorLeftBar extends React.PureComponent {
               name="select-table"
               ref="selectTable"
               isLoading={this.state.tableLoading}
-              placeholder={`Add a table (${this.state.tableOptions.length})`}
+              placeholder={`${this.props.localMessage.add_table}
+              (${this.state.tableOptions.length})`}
               autosize={false}
               onChange={this.changeTable.bind(this)}
               options={this.state.tableOptions}
@@ -148,12 +152,13 @@ class SqlEditorLeftBar extends React.PureComponent {
                 table={table}
                 key={table.id}
                 actions={this.props.actions}
+                localMessage={this.props.localMessage}
               />
             ))}
           </div>
           {shouldShowReset &&
             <Button bsSize="small" bsStyle="danger" onClick={this.resetState.bind(this)}>
-              <i className="fa fa-bomb" /> Reset State
+              <i className="fa fa-bomb" /> {this.props.localMessage.reset_state}
             </Button>
           }
         </div>

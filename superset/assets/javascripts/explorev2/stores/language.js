@@ -21,8 +21,3 @@ export function chooseMessage() {
       return en_US;
   }
 }
-
-export function chooseLocale() {
-  const lan = $('.dropdown-toggle .flag').attr('class').split(' ')[1] === 'us' ? 'en' : 'zh';
-  return lan;
-}

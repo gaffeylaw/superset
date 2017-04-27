@@ -17,6 +17,7 @@ const propTypes = {
   tables: React.PropTypes.array.isRequired,
   networkOn: React.PropTypes.bool,
   editorHeight: React.PropTypes.string.isRequired,
+  localMessage: React.PropTypes.object.isRequired,
 };
 const defaultProps = {
   queryEditors: [],
@@ -81,7 +82,7 @@ class TabbedSqlEditors extends React.PureComponent {
   }
   renameTab(qe) {
     /* eslint no-alert: 0 */
-    const newTitle = prompt('Enter a new title for the tab');
+    const newTitle = prompt(this.props.localMessage.enter_new_title_tab);
     if (newTitle) {
       this.props.actions.queryEditorSetTitle(qe, newTitle);
     }
@@ -100,7 +101,7 @@ class TabbedSqlEditors extends React.PureComponent {
     queryCount++;
     const activeQueryEditor = this.activeQueryEditor();
     const qe = {
-      title: `Untitled Query ${queryCount}`,
+      title: `(${this.props.localMessage.untitled_query}) ${queryCount}`,
       dbId: (activeQueryEditor && activeQueryEditor.dbId) ?
         activeQueryEditor.dbId :
         this.props.defaultDbId,
@@ -144,20 +145,21 @@ class TabbedSqlEditors extends React.PureComponent {
             bsSize="small"
             id={'ddbtn-tab-' + i}
             title=""
-          >
+            >
             <MenuItem eventKey="1" onClick={this.removeQueryEditor.bind(this, qe)}>
-              <i className="fa fa-close" /> close tab
+              <i className="fa fa-close" /> {this.props.localMessage.close_tab}
             </MenuItem>
             <MenuItem eventKey="2" onClick={this.renameTab.bind(this, qe)}>
-              <i className="fa fa-i-cursor" /> rename tab
+              <i className="fa fa-i-cursor" /> {this.props.localMessage.rename_tab}
             </MenuItem>
             {qe &&
-              <CopyQueryTabUrl queryEditor={qe} />
+              <CopyQueryTabUrl queryEditor={qe} localMessage={this.props.localMessage}/>
             }
             <MenuItem eventKey="4" onClick={this.toggleLeftBar.bind(this)}>
               <i className="fa fa-cogs" />
               &nbsp;
-              {this.state.hideLeftBar ? 'expand tool bar' : 'hide tool bar'}
+              {this.state.hideLeftBar ? this.props.localMessage.expand_tool_bar :
+                this.props.localMessage.hide_tool_bar}
             </MenuItem>
           </DropdownButton>
         </div>
@@ -167,7 +169,7 @@ class TabbedSqlEditors extends React.PureComponent {
           key={qe.id}
           title={tabTitle}
           eventKey={qe.id}
-        >
+          >
           <div className="panel panel-default">
             <div className="panel-body">
               {isSelected &&
@@ -182,7 +184,8 @@ class TabbedSqlEditors extends React.PureComponent {
                   actions={this.props.actions}
                   networkOn={this.props.networkOn}
                   hideLeftBar={this.state.hideLeftBar}
-                />
+                  localMessage={this.props.localMessage}
+                  />
               }
             </div>
           </div>
@@ -194,7 +197,7 @@ class TabbedSqlEditors extends React.PureComponent {
         activeKey={this.props.tabHistory[this.props.tabHistory.length - 1]}
         onSelect={this.handleSelect.bind(this)}
         id="a11y-query-editor-tabs"
-      >
+        >
         {editors}
         <Tab
           title={
@@ -202,7 +205,7 @@ class TabbedSqlEditors extends React.PureComponent {
               <i className="fa fa-plus-circle" />&nbsp;
             </div>}
           eventKey="add_tab"
-        />
+          />
       </Tabs>
     );
   }

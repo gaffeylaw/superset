@@ -6,6 +6,7 @@ const propTypes = {
   triggerNode: React.PropTypes.node.isRequired,
   code: React.PropTypes.string,
   codeCallback: React.PropTypes.func,
+  localMessage: React.PropTypes.object.isRequired,
 };
 
 const defaultProps = {
@@ -31,7 +32,7 @@ export default class CodeModal extends React.PureComponent {
         triggerNode={this.props.triggerNode}
         isButton
         beforeOpen={this.beforeOpen.bind(this)}
-        modalTitle="Active Dashboard Filters"
+        modalTitle={this.props.localMessage.active_dashboard_filters}
         modalBody={
           <div className="CodeModal">
             <pre>

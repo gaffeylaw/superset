@@ -10,6 +10,7 @@ const propTypes = {
   css: React.PropTypes.string,
   dashboard: React.PropTypes.object.isRequired,
   triggerNode: React.PropTypes.node.isRequired,
+  localMessage: React.PropTypes.object.isRequired,
 };
 
 class SaveModal extends React.PureComponent {
@@ -37,7 +38,7 @@ class SaveModal extends React.PureComponent {
       saveType: 'newDashboard',
     });
   }
-  saveDashboardRequest(data, url, saveType) {
+  saveDashboardRequest(data, url, saveType, localMessage) {
     const dashboard = this.props.dashboard;
     const saveModal = this.modal;
     $.ajax({
@@ -53,8 +54,8 @@ class SaveModal extends React.PureComponent {
           window.location = '/superset/dashboard/' + resp.id + '/';
         } else {
           showModal({
-            title: 'Success',
-            body: 'This dashboard was saved successfully.',
+            title: localMessage.success,
+            body: localMessage.success_save_dashboard,
           });
         }
       },
@@ -62,8 +63,8 @@ class SaveModal extends React.PureComponent {
         saveModal.close();
         const errorMsg = getAjaxErrorMsg(error);
         showModal({
-          title: 'Error',
-          body: 'Sorry, there was an error saving this dashboard: </ br>' + errorMsg,
+          title: localMessage.error,
+          body: localMessage.error_add_dashboard + ': </ br>' + errorMsg,
         });
       },
     });
@@ -87,13 +88,13 @@ class SaveModal extends React.PureComponent {
     let url = null;
     if (saveType === 'overwrite') {
       url = '/superset/save_dash/' + dashboard.id + '/';
-      this.saveDashboardRequest(data, url, saveType);
+      this.saveDashboardRequest(data, url, saveType, this.props.localMessage);
     } else if (saveType === 'newDashboard') {
       if (!newDashboardTitle) {
         this.modal.close();
         showModal({
-          title: 'Error',
-          body: 'You must pick a name for the new dashboard',
+          title: this.props.localMessage.error,
+          body: this.props.localMessage.error_add_dashboard,
         });
       } else {
         data.dashboard_title = newDashboardTitle;
@@ -108,7 +109,7 @@ class SaveModal extends React.PureComponent {
         ref={(modal) => { this.modal = modal; }}
         triggerNode={this.props.triggerNode}
         isButton
-        modalTitle="Save Dashboard"
+        modalTitle={this.props.localMessage.save_dashboard}
         modalBody={
           <FormGroup>
             <Radio
@@ -116,18 +117,19 @@ class SaveModal extends React.PureComponent {
               onChange={this.handleSaveTypeChange}
               checked={this.state.saveType === 'overwrite'}
             >
-              Overwrite Dashboard [{this.props.dashboard.dashboard_title}]
+              {this.props.localMessage.overwrite_dashboard}
+              [{this.props.dashboard.dashboard_title}]
             </Radio>
             <Radio
               value="newDashboard"
               onChange={this.handleSaveTypeChange}
               checked={this.state.saveType === 'newDashboard'}
             >
-              Save as:
+              {this.props.localMessage.save_as}:
             </Radio>
             <FormControl
               type="text"
-              placeholder="[dashboard name]"
+              placeholder={this.props.localMessage.dashboard_name}
               onFocus={this.handleNameChange}
               onChange={this.handleNameChange}
             />
@@ -139,7 +141,7 @@ class SaveModal extends React.PureComponent {
               bsStyle="primary"
               onClick={() => { this.saveDashboard(this.state.saveType, this.state.newDashName); }}
             >
-              Save
+              {this.props.localMessage.save}
             </Button>
           </div>
         }

@@ -16,6 +16,7 @@ const propTypes = {
   maxWidth: React.PropTypes.number,
   maxLines: React.PropTypes.number,
   shrink: React.PropTypes.bool,
+  localMessage: React.PropTypes.object,
 };
 
 class HighlightedSql extends React.Component {
@@ -57,7 +58,7 @@ class HighlightedSql extends React.Component {
     if (props.rawSql && props.rawSql !== this.props.sql) {
       rawSql = (
         <div>
-          <h4>Raw SQL</h4>
+          <h4>{this.props.localMessage.raw_sql}</h4>
           <SyntaxHighlighter language="sql" style={github}>
             {props.rawSql}
           </SyntaxHighlighter>
@@ -67,7 +68,7 @@ class HighlightedSql extends React.Component {
     this.setState({
       modalBody: (
         <div>
-          <h4>Source SQL</h4>
+          <h4>{this.props.localMessage.source_sql}</h4>
           <SyntaxHighlighter language="sql" style={github}>
             {this.props.sql}
           </SyntaxHighlighter>

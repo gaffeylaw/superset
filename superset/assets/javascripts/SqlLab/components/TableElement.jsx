@@ -12,6 +12,7 @@ const propTypes = {
   table: React.PropTypes.object,
   actions: React.PropTypes.object,
   timeout: React.PropTypes.number,  // used for tests
+  localMessage: React.PropTypes.object,
 };
 
 const defaultProps = {
@@ -65,7 +66,7 @@ class TableElement extends React.PureComponent {
       let partitionClipBoard;
       if (table.partitions.partitionQuery) {
         partitionQuery = table.partitions.partitionQuery;
-        const tt = 'Copy partition query to clipboard';
+        const tt = this.props.localMessage.copy_partition_query_to_clipboard;
         partitionClipBoard = (
           <CopyToClipboard
             text={partitionQuery}
@@ -140,7 +141,7 @@ class TableElement extends React.PureComponent {
           triggerNode={
             <Link
               className="fa fa-key pull-left m-l-2"
-              tooltip={`View keys & indexes (${table.indexes.length})`}
+              tooltip={`${this.props.localMessage.view_keys} (${table.indexes.length})`}
             />
           }
         />
@@ -177,8 +178,8 @@ class TableElement extends React.PureComponent {
                   onClick={this.toggleSortColumns.bind(this)}
                   tooltip={
                     !this.state.sortColumns ?
-                    'Sort columns alphabetically' :
-                    'Original table column order'}
+                    this.props.localMessage.sort_columns_alphabetically :
+                    this.props.localMessage.original_table_column_order}
                   href="#"
                 />
                 {table.selectStar &&
@@ -188,13 +189,13 @@ class TableElement extends React.PureComponent {
                     }
                     text={table.selectStar}
                     shouldShowText={false}
-                    tooltipText="Copy SELECT statement to clipboard"
+                    tooltipText={this.props.localMessage.copy_select_statement_to_clipboard}
                   />
                 }
                 <Link
                   className="fa fa-trash table-remove pull-left m-l-2"
                   onClick={this.removeTable.bind(this)}
-                  tooltip="Remove table preview"
+                  tooltip={this.props.localMessage.remove_table_preview}
                   href="#"
                 />
               </ButtonGroup>

@@ -14,6 +14,12 @@ import AddPage from './components/AddPage';
 import ModifyPage from './components/ModifyPage';
 import MailPage from './components/MailPage';
 
+import { chooseMessage } from '../explorev2/stores/language';
+import zh_CN from '../explorev2/stores/zh_CN';
+import en_US from '../explorev2/stores/en_US';
+
+const localMessage = chooseMessage();
+
 const appContainer = document.getElementById('app');
 const bootstrapData = JSON.parse(appContainer.getAttribute('data-bootstrap'));
 
@@ -59,28 +65,28 @@ let store = createStore(
 if (state.type === 'list') {
   render(
     <Provider store={store}>
-      <ListPage form_data={state} />
+      <ListPage form_data={state} localMessage={localMessage} />
     </Provider>,
     appContainer
   );
 } else if (state.type === 'add') {
   render(
     <Provider store={store}>
-      <AddPage form_data={state} />
+      <AddPage form_data={state} localMessage={localMessage}/>
     </Provider>,
     appContainer
   );
 } else if (state.type === 'modify') {
   render(
     <Provider store={store}>
-      <ModifyPage form_data={state} />
+      <ModifyPage form_data={state} localMessage={localMessage} />
     </Provider>,
     appContainer
   );
 } else if (state.mailPage === 'true') {
   render(
     <Provider store={store}>
-      <MailPage form_data={state} />
+      <MailPage form_data={state} localMessage={localMessage}/>
     </Provider>,
     appContainer
   );

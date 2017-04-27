@@ -12,6 +12,7 @@ import SliceAdder from './SliceAdder';
 
 const propTypes = {
   dashboard: React.PropTypes.object.isRequired,
+  localMessage: React.PropTypes.object.isRequired,
 };
 
 class Controls extends React.PureComponent {
@@ -47,7 +48,7 @@ class Controls extends React.PureComponent {
     return (
       <ButtonGroup>
         <Button
-          tooltip="Force refresh the whole dashboard"
+          tooltip={this.props.localMessage.force_refresh_dashboard}
           onClick={this.refresh.bind(this)}
         >
           <i className="fa fa-refresh" />
@@ -57,16 +58,19 @@ class Controls extends React.PureComponent {
           triggerNode={
             <i className="fa fa-plus" />
           }
+          localMessage={this.props.localMessage}
         />
         <RefreshIntervalModal
           onChange={refreshInterval => dashboard.startPeriodicRender(refreshInterval * 1000)}
           triggerNode={
             <i className="fa fa-clock-o" />
           }
+          localMessage={this.props.localMessage}
         />
         <CodeModal
           codeCallback={dashboard.readFilters.bind(dashboard)}
           triggerNode={<i className="fa fa-filter" />}
+          localMessage={this.props.localMessage}
         />
         <CssEditor
           dashboard={dashboard}
@@ -76,13 +80,14 @@ class Controls extends React.PureComponent {
           initialCss={dashboard.css}
           templates={this.state.cssTemplates}
           onChange={this.changeCss.bind(this)}
+          localMessage={this.props.localMessage}
         />
         <Button
           disabled={!canSave}
           onClick={() => {
             window.location = `/dashboardmodelview/edit/${dashboard.id}`;
           }}
-          tooltip="Edit this dashboard's property"
+          tooltip={this.props.localMessage.edit_dashboard_property}
         >
           <i className="fa fa-edit" />
         </Button>
@@ -92,6 +97,7 @@ class Controls extends React.PureComponent {
           triggerNode={
             <i className="fa fa-save" />
           }
+          localMessage={this.props.localMessage}
         />
       </ButtonGroup>
     );

@@ -15,7 +15,7 @@ class Mail:
             # EMAIL SETTINGS
             MAIL_SERVER=server,
             MAIL_PORT=port,
-            MAIL_USE_SSL=True,
+            # MAIL_USE_SSL=True,
             MAIL_USE_SMTP=True,
             MAIL_USERNAME=username,
             MAIL_PASSWORD=password,

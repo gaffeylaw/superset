@@ -7,6 +7,7 @@ const propTypes = {
   actions: React.PropTypes.object,
   databaseId: React.PropTypes.number,
   valueRenderer: React.PropTypes.func,
+  localMessage: React.PropTypes.object.isRequired,
 };
 
 class DatabaseSelect extends React.PureComponent {
@@ -33,7 +34,7 @@ class DatabaseSelect extends React.PureComponent {
       if (data.result.length === 0) {
         this.props.actions.addAlert({
           bsStyle: 'danger',
-          msg: "It seems you don't have access to any database",
+          msg: this.props.localMessage.no_access_datebase,
         });
       }
     });
@@ -43,7 +44,7 @@ class DatabaseSelect extends React.PureComponent {
       <div>
         <Select
           name="select-db"
-          placeholder={`Select a database (${this.state.databaseOptions.length})`}
+          placeholder={`${this.props.localMessage.select_database} (${this.state.databaseOptions.length})`}
           options={this.state.databaseOptions}
           value={this.props.databaseId}
           isLoading={this.state.databaseLoading}

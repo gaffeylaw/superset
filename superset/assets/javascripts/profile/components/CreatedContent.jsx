@@ -4,6 +4,7 @@ import TableLoader from './TableLoader';
 
 const propTypes = {
   user: React.PropTypes.object.isRequired,
+  localMessage: React.PropTypes.object.isRequired,
 };
 
 class CreatedContent extends React.PureComponent {
@@ -17,35 +18,39 @@ class CreatedContent extends React.PureComponent {
     };
   }
   renderSliceTable() {
-    const mutator = (data) => data.map(slice => ({
-      slice: <a href={slice.url}>{slice.title}</a>,
-      favorited: moment.utc(slice.dttm).fromNow(),
-      _favorited: slice.dttm,
-    }));
+    const mutator = (data) => data.map(slice => {
+      const data = {};
+      data[this.props.localMessage.slice] = <a href={slice.url}>{slice.title}</a>;
+      data[this.props.localMessage.favorited] = moment.utc(slice.dttm).fromNow();
+      // _favorited: slice.dttm;
+      return data;
+    });
     return (
       <TableLoader
         dataEndpoint={`/superset/created_slices/${this.props.user.userId}/`}
         className="table table-condensed"
-        columns={['slice', 'favorited']}
+        columns={this.props.localMessage.slc_create_column}
         mutator={mutator}
-        noDataText="No slices"
+        noDataText={this.props.localMessage.no_slices}
         sortable
       />
     );
   }
   renderDashboardTable() {
-    const mutator = (data) => data.map(dash => ({
-      dashboard: <a href={dash.url}>{dash.title}</a>,
-      favorited: moment.utc(dash.dttm).fromNow(),
-      _favorited: dash.dttm,
-    }));
+    const mutator = (data) => data.map(dash => {
+      const data = {};
+      data[this.props.localMessage.dashboard] = <a href={dash.url}>{dash.title}</a>;
+      data[this.props.localMessage.favorited] = moment.utc(dash.dttm).fromNow();
+      _favorited: dash.dttm;
+      return data;
+    });
     return (
       <TableLoader
         className="table table-condensed"
         mutator={mutator}
         dataEndpoint={`/superset/created_dashboards/${this.props.user.userId}/`}
-        noDataText="No dashboards"
-        columns={['dashboard', 'favorited']}
+        noDataText={this.props.localMessage.no_dashboards}
+        columns={this.props.localMessage.dash_create_column}
         sortable
       />
     );
@@ -53,10 +58,10 @@ class CreatedContent extends React.PureComponent {
   render() {
     return (
       <div>
-        <h3>Dashboards</h3>
+        <h3>{this.props.localMessage.dashboard}</h3>
         {this.renderDashboardTable()}
         <hr />
-        <h3>Slices</h3>
+        <h3>{this.props.localMessage.slice}</h3>
         {this.renderSliceTable()}
       </div>
     );
