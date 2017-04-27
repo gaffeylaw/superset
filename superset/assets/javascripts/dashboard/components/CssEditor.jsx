@@ -13,6 +13,7 @@ const propTypes = {
   triggerNode: React.PropTypes.node.isRequired,
   onChange: React.PropTypes.func,
   templates: React.PropTypes.array,
+  localMessage: React.PropTypes.object.isRequired,
 };
 
 const defaultProps = {
@@ -61,10 +62,10 @@ class CssEditor extends React.PureComponent {
     if (this.props.templates) {
       return (
         <div style={{ zIndex: 10 }}>
-          <h5>Load a template</h5>
+          <h5>{this.props.localMessage.load_template}</h5>
           <Select
             options={this.props.templates}
-            placeholder="Load a CSS template"
+            placeholder={this.props.localMessage.load_a_css_template}
             onChange={this.changeCssTemplate.bind(this)}
           />
         </div>
@@ -82,7 +83,7 @@ class CssEditor extends React.PureComponent {
           <div>
             {this.renderTemplateSelector()}
             <div style={{ zIndex: 1 }}>
-              <h5>Live CSS Editor</h5>
+              <h5>{this.props.localMessage.live_css_editor}</h5>
               <div style={{ border: 'solid 1px grey' }}>
                 <AceEditor
                   mode="css"

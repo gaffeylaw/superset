@@ -1,4 +1,4 @@
-# Chinese translations for PROJECT.
+portal_href# Chinese translations for PROJECT.
 # Copyright (C) 2016 ORGANIZATION
 # This file is distributed under the same license as the PROJECT project.
 # FIRST AUTHOR <EMAIL@ADDRESS>, 2016.
@@ -1226,7 +1226,7 @@ msgstr "更新时间"
 
 #: caravel/views.py:382
 msgid "SQLAlchemy URI"
-msgstr ""
+msgstr "数据库uri"
 
 #: caravel/views.py:383 caravel/views.py:442 caravel/views.py:533
 #: caravel/views.py:697
@@ -1267,15 +1267,15 @@ msgstr "集群"
 
 #: caravel/views.py:483
 msgid "Coordinator Host"
-msgstr ""
+msgstr "协调器主机"
 
 #: caravel/views.py:484
 msgid "Coordinator Port"
-msgstr ""
+msgstr "协调器端口"
 
 #: caravel/views.py:485
 msgid "Coordinator Endpoint"
-msgstr ""
+msgstr "协调器端点"
 
 #: caravel/views.py:486
 msgid "Broker Host"
@@ -1287,7 +1287,7 @@ msgstr "代理端口"
 
 #: caravel/views.py:488
 msgid "Broker Endpoint"
-msgstr ""
+msgstr "代理端点"
 
 #: caravel/views.py:522
 msgid ""
@@ -1372,7 +1372,7 @@ msgstr "标题"
 
 #: caravel/views.py:607
 msgid "Slug"
-msgstr ""
+msgstr "别名"
 
 #: caravel/views.py:608
 msgid "Slices"
@@ -1408,7 +1408,7 @@ msgstr "操作"
 
 #: caravel/views.py:655
 msgid "dttm"
-msgstr "DTTM"
+msgstr "日期时间"
 
 #: caravel/views.py:683
 msgid "Timezone offset (in hours) for this datasource"
@@ -1799,6 +1799,36 @@ msgstr "数据源描述"
 msgid "Save a Slice"
 msgstr "保存切片"
 
+msgid "Overwrite slice"
+msgstr "覆盖切片"
+
+msgid "Save as"
+msgstr "另存为"
+
+msgid "Do not add to a dashboard"
+msgstr "不要添加到仪表板"
+
+msgid "Add slice to existing dashboard"
+msgstr "将切片添加到现有仪表板"
+
+msgid "Add to new dashboard"
+msgstr "添加到新的仪表板"
+
+msgid "Datasource & Chart Type"
+msgstr "数据源和图表类型"
+
+msgid "Slice "
+msgstr "切片 "
+
+msgid " has been overwritten"
+msgstr " 已被覆盖"
+
+msgid " has been saved"
+msgstr " 已被保存"
+
+msgid " You cannot overwrite"
+msgstr " 你不能覆盖"
+
 #: caravel/templates/caravel/explore.html:309
 msgid "Save & go to dashboard"
 msgstr "保存并进入仪表板"
@@ -1842,7 +1872,7 @@ msgstr "所有者"
 
 #: caravel/view.py:446
 msgid "Main Dttm Col"
-msgstr "Main Dttm Col"
+msgstr "主要时间字段"
 
 #: caravel/view.py:549
 msgid "Druid Datasource"
@@ -1919,3 +1949,380 @@ msgstr "管理"
 # views.py:1162
 msgid "to_view"
 msgstr "查看"
+
+msgid "Show data points as circle markers on the lines"
+msgstr "将数据点显示为线上的圆圈标记"
+
+msgid "Show the value on top of the bars or not"
+msgstr "显示柱状图顶部的值"
+
+msgid "One or many lines to display"
+msgstr "一行或多行显示"
+
+msgid "choose the yAxias"
+msgstr "选择Y轴"
+
+msgid "yAxis"
+msgstr "Y轴"
+
+msgid "line"
+msgstr "行"
+
+msgid "bar"
+msgstr "块"
+
+msgid "One or many lines to display"
+msgstr "一块或多块显示"
+
+msgid "area"
+msgstr "区域"
+
+msgid "One or many areas to display"
+msgstr "一个或多个区域显示"
+
+msgid "Y1 Axis Label"
+msgstr "Y1轴标签"
+
+msgid "Y2 Axis Label"
+msgstr "Y2轴标签"
+
+msgid "Y1 domain"
+msgstr "Y1轴的域"
+
+msgid "the range of y1, for example: 0,100, it means from 0 to 100"
+msgstr "y1的范围，例如：0,100，表示从0到100"
+
+msgid "Y2 domain"
+msgstr "Y2轴的域"
+
+msgid "the range of y2, for example: 0,100, it means from 0 to 100"
+msgstr "y2的范围，例如：0,100，表示从0到100"
+
+msgid "Horizontal Bars"
+msgstr "横向柱状图"
+
+msgid "Ranges"
+msgstr "范围"
+
+msgid "Ranges to highlight with shading"
+msgstr "范围用阴影高亮显示"
+
+msgid "Range labels"
+msgstr "范围标签"
+
+msgid "Labels for the ranges"
+msgstr "范围标签"
+
+msgid "Markers"
+msgstr "标记"
+
+msgid "List of values to mark with triangles"
+msgstr "用三角形标记的值列表"
+
+msgid "Marker labels"
+msgstr "标记标签"
+
+msgid "Labels for the markers"
+msgstr "标记标签"
+
+msgid "Marker lines"
+msgstr "标记线"
+
+msgid "List of values to mark with lines"
+msgstr "用线条标记的值列表"
+
+msgid "Marker line labels"
+msgstr "线条标记的标签"
+
+msgid "Labels for the marker lines"
+msgstr "标记线的标签"
+
+msgid "Y1 axis format"
+msgstr "Y1轴数值格式"
+
+msgid "Labels for the marker lines"
+msgstr "标记线的标签"
+
+msgid "Y2 axis format"
+msgstr "Y2轴数值格式"
+
+msgid "D3 format syntax: https://github.com/d3/d3-format"
+msgstr "自定义格式请参考 https://github.com/mbostock/d3/wiki/Formatting"
+
+msgid "Import the dashboards."
+msgstr "导入仪表板。"
+
+msgid "Upload"
+msgstr "上传"
+
+msgid "None"
+msgstr "无"
+
+msgid "cumsum"
+msgstr "累加"
+
+msgid "Type"
+msgstr "类型"
+
+msgid ""
+"a valid SQL expression as supported by the underlying backend. "
+"Example: `substr(name, 1, 1)`"
+msgstr "底层后端支持的有效SQL表达式。例子：`substr（name，1，1）`"
+
+msgid ""
+"The pattern of timestamp format, use "
+"<a href='https://docs.python.org/2/library/"
+"datetime.html#strftime-strptime-behavior'>"
+"python datetime string pattern</a> "
+"expression. If time is stored in epoch "
+"format, put `epoch_s` or `epoch_ms`. Leave `Database Expression` "
+"below empty if timestamp is stored in "
+"String or Integer(epoch) type"
+msgstr “时间戳格式的模式，使用”
+"<a href ='https：//docs.python.org/2/library/datetime.html＃strftime-strptime-behavior'>"
+"python 日期格式 </a>表达，如果时间存储在时间点，放 'epoch_s' 或 'epoch_ms'"
+"如果时间戳存储在  String或Integer（epoch）类型"
+
+msgid ""
+"The database expression to cast internal datetime "
+"constants to database date/timestamp type according to the DBAPI. "
+"The expression should follow the pattern of "
+"%Y-%m-%d %H:%M:%S, based on different DBAPI. "
+"The string should be a python string formatter \n"
+"`Ex: TO_DATE('{}', 'YYYY-MM-DD HH24:MI:SS')` for Oracle"
+"Superset uses default expression based on DB URI if this "
+"field is blank."
+msgstr "要投射内部日期时间的数据库表达式 根据数据库API的数据库日期/时间戳类型的常量”
+"表达方式应该遵循 ％Y-％m-％d％H：％M：％S，基于不同的数据库API"
+"字符串应该是一个python字符串格式化程序\ n"
+"例如：对于Oracle TO_DATE（'{}'，'YYYY-MM-DD HH24：MI：SS'）"
+"如果这个字段是空白的,Superset使用基于数据库 URI的认表达式."
+
+msgid ""
+"this field can be used to specify  "
+"a `dimensionSpec` as documented [here]"
+"(http://druid.io/docs/latest/querying/dimensionspecs.html). "
+"Make sure to input valid JSON and that the "
+"`outputName` matches the `column_name` defined "
+"above."
+msgstr "这个字段可以用来指定一个`dimensionSpec`作为文档[这里]"
+"（http://druid.io/docs/latest/querying/dimensionspecs.html）。"
+" 确保输入有效的JSON，并且`outputName`与上面定义的`column_name`匹配。"
+
+msgid "a valid SQL expression as supported by the underlying backend. "
+"Example: `count(DISTINCT userid)`"
+msgstr "底层后端支持的有效SQL表达式。 示例：`count（DISTINCT userid）`"
+
+msgid  "d3 formatting string as defined [here]"
+"(https://github.com/d3/d3-format/blob/master/README.md#format). "
+"For instance, this default formatting applies in the Table "
+"visualization and allow for different metric to use different formats"
+msgstr "d3格式化字符串定义[here]（https://github.com/d3/d3-format/blob/master/README.md#format）。"
+"例如，此默认格式适用于表可视化，并允许不同的度量使用不同的格式"
+
+msgid "use `postagg` as the metric type if you are defining a "
+"[Druid Post Aggregation](http://druid.io/docs/latest/querying/post-aggregations.html)"
+msgstr "如果您定义了[Druid Post Aggregation（http://druid.io/docs/latest/querying/post-aggregations.html）），"
+"则使用“postagg”作为度量类型"
+
+
+msgid "Refer to the [SqlAlchemy docs]"
+"(http://docs.sqlalchemy.org/en/rel_1_0/core/engines.html#database-urls) "
+"for more information on how to structure your URI."
+msgstr "请参阅[SqlAlchemy docs]（http://docs.sqlalchemy.org/en/rel_1_0/core/engines.html#database-urls）"
+"有关如何构造URI的更多信息"
+
+
+msgid ""
+"JSON string containing extra configuration elements. "
+"The ``engine_params`` object gets unpacked into the "
+"[sqlalchemy.create_engine]"
+"(http://docs.sqlalchemy.org/en/latest/core/engines.html#"
+"sqlalchemy.create_engine) call, while the ``metadata_params`` "
+"gets unpacked into the [sqlalchemy.MetaData]"
+"(http://docs.sqlalchemy.org/en/rel_1_0/core/metadata.html"
+"#sqlalchemy.schema.MetaData) call. "
+msgstr "包含额外配置元素的JSON字符串。 ``engine_params``对象解压到[sqlalchemy.create_engine]（
+"http://docs.sqlalchemy.org/en/latest/core/engines.html#sqlalchemy.create_engine）中调用,"
+"而``metadata_params`` 将其解压到[sqlalchemy.MetaData"
+"（http://docs.sqlalchemy.org/en/rel_1_0/core/metadata.html#sqlalchemy.schema.MetaData）中调用。"
+
+msgid "Perm"
+msgstr "权限"
+
+msgid "Backend"
+msgstr "数据库类型"
+
+msgid "Allow Run Sync"
+msgstr "允许同步运行"
+
+msgid "Allow Run Async"
+msgstr "允许异步运行"
+
+msgid "Allow DML"
+msgstr "允许数据操纵语言"
+
+msgid "Created By"
+msgstr "创建者"
+
+msgid "Created On"
+msgstr "创建时间"
+
+msgid "Changed By"
+msgstr "修改人"
+
+msgid "Changed On"
+msgstr "修改时间"
+
+msgid "Expose in SQL Lab"
+msgstr "在SQL LAB中可见"
+
+msgid "Expose this DB in SQL Lab"
+msgstr "在SQL Lab中暴露这个数据库"
+
+msgid "Allow CREATE TABLE AS"
+msgstr "允许CTAS"
+
+msgid "Allow CREATE TABLE AS option in SQL Lab"
+msgstr "在SQL Lab中允许CREATE TABLE AS选项"
+
+msgid ""
+"Allow users to run synchronous queries, this is the default "
+"and should work well for queries that can be executed "
+"within a web request scope (<~1 minute)"
+msgstr "允许用户运行同步查询,这是默认的,适用于请求一分钟内的查询"
+
+msgid "Allow users to run queries, against an async backend. "
+"This assumes that you have a Celery worker setup as well as a results backend."
+msgstr "允许用户对异步后端运行查询。 这假设您有一个Celery工作者设置以及结果后端。"
+
+msgid "Allow users to run non-SELECT statements (UPDATE, DELETE, CREATE, ...) in SQL Lab"
+msgstr "允许用户在SQL Lab中运行非SELECT语句（UPDATE，DELETE，CREATE，...）"
+
+msgid "When allowing CREATE TABLE AS option in SQL Lab, this option forces the "
+"table to be created in this schema"
+msgstr "当在SQL Lab中允许CREATE TABLE AS选项时，此选项强制在此schema中创建表"
+
+msgid "The datasource seems to have been deleted"
+msgstr "数据源似乎已被删除"
+
+msgid "The access requests seem to have been deleted"
+msgstr "权限似乎已被删除"
+
+msgid "The user seems to have been deleted"
+msgstr "用户似乎已被删除"
+
+msgid "You don't have access to this datasource"
+msgstr "您无权访问此数据源"
+
+msgid "Datasource Id"
+msgstr "数据源标识"
+
+msgid "Datasource Type"
+msgstr "数据源类型"
+
+msgid "Datasource Name"
+msgstr "数据源名称"
+
+msgid "The content here can be displayed as widget headers in the "
+"dashboard view. Supports "
+"<a href='https://daringfireball.net/projects/markdown/'>"
+"markdown</a>"
+msgstr "这里的内容可以在仪表板视图中显示为小部件头。 "
+"支持<a href='https://daringfireball.net/projects/markdown/'> 简化 </a>"
+
+msgid "Template Name"
+msgstr "模板名称"
+
+msgid "D3format"
+msgstr "D3格式"
+
+msgid "Is Restricted"
+msgstr "是否被限制"
+
+msgid "Supports <a href='https://daringfireball.net/projects/markdown/'>markdown</a>"
+msgstr "支持<a href='https://daringfireball.net/projects/markdown/'> 简化 </a>"
+
+msgid "Metadata Last Refreshed"
+msgstr "元数据上次刷新时间"
+
+msgid "Dimension Spec Json"
+msgstr "维度详细Json"
+
+msgid "DT"
+msgstr "日期"
+
+msgid "Dashboard Id"
+msgstr "仪表板标识"
+
+msgid "Slice Id"
+msgstr "切片标识"
+
+msgid "Action"
+msgstr "操作"
+
+msgid "My Email"
+msgstr "我的邮件"
+
+msgid "My Scheduler"
+msgstr "我的调度任务"
+
+msgid "Status"
+msgstr "状态"
+
+msgid "Start Time"
+msgstr "开始时间"
+
+msgid "End Time"
+msgstr "结束时间"
+
+msgid "Select As Cta"
+msgstr "Select As Cta"
+
+msgid "Results Key"
+msgstr "结果集"
+
+msgid "Error Message"
+msgstr "错误信息"
+
+msgid "Tmp Table Name"
+msgstr "临时表名称"
+
+msgid "Rows"
+msgstr "结果数"
+
+msgid "Client Id"
+msgstr "客户端标识"
+
+msgid "Executed Sql"
+msgstr "执行Sql"
+
+msgid "Limit reached"
+msgstr "达到上限"
+
+msgid "Progress"
+msgstr "进度"
+
+msgid "Sql Editor Id"
+msgstr "Sql编辑器标识"
+
+msgid "Tab Name"
+msgstr "标签页名称"
+
+msgid "Limit Used"
+msgstr "使用限制"
+
+msgid "Select As Cta Used"
+msgstr "使用 Select As Cta"
+
+msgid "Select Sql"
+msgstr "查询语句"
+
+msgid "Warn"
+msgstr "预警"
+
+msgid "Documentation"
+msgstr "文档"
+
+msgid "Superset's Github"
+msgstr "在github上访问superset"

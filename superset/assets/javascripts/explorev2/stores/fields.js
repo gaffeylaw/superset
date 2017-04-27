@@ -975,14 +975,14 @@ export const fields = {
   },
   y_axis_format1: {
     type: 'FreeFormSelectField',
-    label: localeMessage.y_axis_format,
+    label: localeMessage.y1_axis_format,
     default: '.3s',
     choices: D3_TIME_FORMAT_OPTIONS,
     description: D3_FORMAT_DOCS,
   },
   y_axis_format2: {
     type: 'FreeFormSelectField',
-    label: localeMessage.y_axis_format,
+    label: localeMessage.y2_axis_format,
     default: '.3s',
     choices: D3_TIME_FORMAT_OPTIONS,
     description: D3_FORMAT_DOCS,

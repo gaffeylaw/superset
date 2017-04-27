@@ -241,14 +241,14 @@ class FormFactory(object):
             'show_markers': (BetterBooleanField, {
                 "label": _("Show Markers"),
                 "default": False,
-                "description": (
+                "description": _(
                     "Show data points as circle markers on top of the lines "
                     "in the chart")
             }),
             'show_bar_value': (BetterBooleanField, {
                 "label": _("Bar Values"),
                 "default": False,
-                "description": "Show the value on top of the bars or not"
+                "description": _("Show the value on top of the bars or not")
             }),
             'order_bars': (BetterBooleanField, {
                 "label": _("Sort Bars"),
@@ -1090,12 +1090,12 @@ class FormFactory(object):
             'y_domain1': (TextField, {
                 "label": _("Y1 domain"),
                 "default": '',
-                "description": "the range of y1, for example: 0,100, it means from 0 to 100"
+                "description": _("the range of y1, for example: 0,100, it means from 0 to 100")
             }),
             'y_domain2': (TextField, {
                 "label": _("Y2 domain"),
                 "default": '',
-                "description": "the range of y2, for example: 0,100, it means from 0 to 100"
+                "description": _("the range of y2, for example: 0,100, it means from 0 to 100")
             }),
             'bar_horizontal': (BetterBooleanField, {
                 "label": _("Horizontal Bars"),

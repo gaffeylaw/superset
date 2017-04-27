@@ -6,24 +6,23 @@ import { Alert } from 'react-bootstrap';
 const propTypes = {
   queries: React.PropTypes.array.isRequired,
   actions: React.PropTypes.object.isRequired,
+  localMessage: React.PropTypes.object.isRequired,
 };
 
 const QueryHistory = (props) => {
   if (props.queries.length > 0) {
     return (
       <QueryTable
-        columns={[
-          'state', 'started', 'duration', 'progress',
-          'rows', 'sql', 'output', 'actions',
-        ]}
+        columns={props.localMessage.query_history_columns}
         queries={props.queries}
         actions={props.actions}
+        localMessage={props.localMessage}
       />
     );
   }
   return (
     <Alert bsStyle="info">
-      No query history yet...
+      {props.localMessage.no_query_history}
     </Alert>
   );
 };

@@ -3,11 +3,16 @@ import * as actions from './actions';
 import { now } from '../modules/dates';
 import { addToObject, alterInObject, alterInArr, removeFromArr, getFromArr, addToArr }
   from '../reduxUtils.js';
+import { chooseMessage } from '../explorev2/stores/language';
+import zh_CN from '../explorev2/stores/zh_CN';
+import en_US from '../explorev2/stores/en_US';
+
+const localMessage = chooseMessage();
 
 export function getInitialState(defaultDbId) {
   const defaultQueryEditor = {
     id: shortid.generate(),
-    title: 'Untitled Query',
+    title: localMessage.untitled_query,
     sql: 'SELECT *\nFROM\nWHERE',
     selectedText: null,
     latestQueryId: null,

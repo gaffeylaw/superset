@@ -1,5 +1,10 @@
 const $ = window.$ = require('jquery');
 import React from 'react';
+import { chooseMessage } from '../../explorev2/stores/language';
+import zh_CN from '../../explorev2/stores/zh_CN';
+import en_US from '../../explorev2/stores/en_US';
+
+const localMessage = chooseMessage();
 
 const propTypes = {
   form_data: React.PropTypes.object.isRequired,
@@ -63,14 +68,14 @@ export default class ListPage extends React.PureComponent {
       dataType: 'json',
       success: function (data) {
         if (data) {
-          alert('操作成功');
+          alert(localMessage.done_success);
           location.href = '/superset/mySchedulers/list/1';
         } else {
-          alert('操作失败');
+          alert(localMessage.done_fail);
         }
       },
       error: function () {
-        alert('unknown error');
+        alert(localMessage.unknown_error);
       },
     });
   }
@@ -90,19 +95,19 @@ export default class ListPage extends React.PureComponent {
       bodyDiv.push(
         <tr>
           <td>{index + 1}</td>
-          <td>{s.mode}</td>
+          <td>{localMessage[s.mode]}</td>
           <td>{thisState.parseExpr(s)}</td>
           <td>{s.start_date}</td>
           <td>{s.end_date}</td>
           <td>
-            {flag1 && '是'}
-            {flag2 && '已关闭'}
+            {flag1 && localMessage.yes}
+            {flag2 && localMessage.closed}
             {s.isActive !== true &&
               <button
                 className="btn btn-success"
                 onClick={thisState.operateJob.bind(this, s.id, 'add')}
               >
-                激活
+                {localMessage.activation}
               </button>
             }
           </td>
@@ -113,40 +118,42 @@ export default class ListPage extends React.PureComponent {
                   className="btn btn-danger"
                   onClick={thisState.operateJob.bind(this, s.id, 'pause')}
                 >
-                  停止
+                  {localMessage.stop}
                 </button>
                 <button
                   className="btn btn-success"
                   disabled="disabled"
                   style={{ marginLeft: '20px' }}
                 >
-                  启动
+                  {localMessage.start_up}
                 </button>
               </div>
             }
             {(s.isRunning !== true && flag1) &&
               <div>
-                <button className="btn btn-danger" disabled="disabled">停止</button>
+                <button className="btn btn-danger" disabled="disabled">
+                {localMessage.stop}
+                </button>
                 <button
                   className="btn btn-success"
                   style={{ marginLeft: '20px' }}
                   onClick={thisState.operateJob.bind(this, s.id, 'resume')}
                 >
-                  启动
+                  {localMessage.start_up}
                 </button>
               </div>
             }
             {(s.isActive !== true || flag2) &&
               <div>
                 <button className="btn btn-danger" disabled="disabled">
-                  停止
+                  {localMessage.stop}
                 </button>
                 <button
                   className="btn btn-success"
                   style={{ marginLeft: '20px' }}
                   disabled="disabled"
                 >
-                  启动
+                  {localMessage.start_up}
                 </button>
               </div>
             }
@@ -156,14 +163,14 @@ export default class ListPage extends React.PureComponent {
               className="btn btn-primary"
               onClick={thisState.modifyScheduler.bind(this, s.id)}
             >
-              修改
+              {localMessage.modify}
             </button>
             <button
               className="btn btn-danger"
               style={{ marginLeft: '20px' }}
               onClick={thisState.operateJob.bind(this, s.id, 'delete')}
             >
-              删除
+              {localMessage.delete}
             </button>
           </td>
         </tr>
@@ -177,19 +184,19 @@ export default class ListPage extends React.PureComponent {
           style={{ marginLeft: '50px' }}
           onClick={this.addScheduler.bind(this)}
         >
-          添加调度
+          {localMessage.add_schedule}
         </button>
         <table className="table table-striped" style={{ width: '95%' }}>
           <thead>
             <tr>
-              <th>序号</th>
-              <th>调度方式</th>
-              <th>调度表达式</th>
-              <th>开始时间</th>
-              <th>结束时间</th>
-              <th>是否激活</th>
-              <th>状态</th>
-              <th>操作</th>
+              <th>{localMessage.serial_number}</th>
+              <th>{localMessage.scheduling_method}</th>
+              <th>{localMessage.schedule_expression}</th>
+              <th>{localMessage.start_time}</th>
+              <th>{localMessage.end_time}</th>
+              <th>{localMessage.is_active}</th>
+              <th>{localMessage.status}</th>
+              <th>{localMessage.actions}</th>
             </tr>
           </thead>
           <tbody>

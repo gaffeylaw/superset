@@ -12,11 +12,11 @@
 {% block body %}
     {% include "superset/flash_wrapper.html" %}
     <div class="container">
-        <title>Import the dashboards.</title>
-        <h1>Import the dashboards.</h1>
+        <title>{{ _("Import the dashboards.") }}</title>
+        <h1>{{ _("Import the dashboards.") }}</h1>
         <form method=post enctype=multipart/form-data>
           <p><input type=file name=file>
-             <input type=submit value=Upload>
+             <input type=submit value={{ _("Upload") }}>
           </p>
         </form>
     </div>

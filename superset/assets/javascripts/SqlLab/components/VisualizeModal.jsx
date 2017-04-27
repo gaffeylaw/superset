@@ -4,13 +4,10 @@ import { Alert, Button, Col, Modal } from 'react-bootstrap';
 import Select from 'react-select';
 import { Table } from 'reactable';
 import shortid from 'shortid';
+import { chooseMessage } from '../../explorev2/stores/language';
+import zh_CN from '../../explorev2/stores/zh_CN';
+import en_US from '../../explorev2/stores/en_US';
 
-const CHART_TYPES = [
-  { value: 'dist_bar', label: 'Distribution - Bar Chart', requiresTime: false },
-  { value: 'pie', label: 'Pie Chart', requiresTime: false },
-  { value: 'line', label: 'Time Series - Line Chart', requiresTime: true },
-  { value: 'bar', label: 'Time Series - Bar Chart', requiresTime: true },
-];
 
 const propTypes = {
   onHide: React.PropTypes.func,
@@ -20,9 +17,17 @@ const propTypes = {
 const defaultProps = {
   show: false,
   query: {},
-  onHide: () => {},
+  onHide: () => { },
 };
 
+const localMessage = chooseMessage();
+
+const CHART_TYPES = [
+  { value: 'dist_bar', label: localMessage.dist_bar_viz, requiresTime: false },
+  { value: 'pie', label: localMessage.pie_viz, requiresTime: false },
+  { value: 'line', label: localMessage.line_viz, requiresTime: true },
+  { value: 'bar', label: localMessage.bar_viz, requiresTime: true },
+];
 class VisualizeModal extends React.PureComponent {
   constructor(props) {
     super(props);
@@ -42,9 +47,9 @@ class VisualizeModal extends React.PureComponent {
   }
   setStateFromProps(props) {
     if (
-        !props.query ||
-        !props.query.results ||
-        !props.query.results.columns) {
+      !props.query ||
+      !props.query.results ||
+      !props.query.results.columns) {
       return;
     }
     const columns = {};
@@ -68,7 +73,7 @@ class VisualizeModal extends React.PureComponent {
       }
     });
     if (this.state.chartType === null) {
-      hints.push('Pick a chart type!');
+      hints.push(localMessage.pick_chart_type);
     } else if (this.state.chartType.requiresTime) {
       let hasTime = false;
       for (const colName in cols) {
@@ -78,7 +83,7 @@ class VisualizeModal extends React.PureComponent {
         }
       }
       if (!hasTime) {
-        hints.push('To use this chart type you need at least one column flagged as a date');
+        hints.push(localMessage.need_data_column);
       }
     }
     this.setState({ hints });
@@ -130,44 +135,40 @@ class VisualizeModal extends React.PureComponent {
         <div className="VisualizeModal">
           <Modal show={this.props.show} onHide={this.props.onHide}>
             <Modal.Body>
-              No results available for this query
+              {localMessage.no_result_avaliable}
             </Modal.Body>
           </Modal>
         </div>
       );
     }
-    const tableData = this.props.query.results.columns.map((col) => ({
-      column: col.name,
-      is_dimension: (
+    const tableData = this.props.query.results.columns.map((col) => {
+      const header = {};
+      header[localMessage.vis_column] = col.name;
+      header[localMessage.vis_is_dimension] = (
         <input
           type="checkbox"
           onChange={this.changeCheckbox.bind(this, 'is_dim', col.name)}
           checked={(this.state.columns[col.name]) ? this.state.columns[col.name].is_dim : false}
           className="form-control"
-        />
-      ),
-      is_date: (
+          />
+      );
+      header[localMessage.vis_is_date] = (
         <input
           type="checkbox"
           className="form-control"
           onChange={this.changeCheckbox.bind(this, 'is_date', col.name)}
           checked={(this.state.columns[col.name]) ? this.state.columns[col.name].is_date : false}
-        />
+          />
       ),
-      agg_func: (
-        <Select
-          options={[
-            { value: 'sum', label: 'SUM(x)' },
-            { value: 'min', label: 'MIN(x)' },
-            { value: 'max', label: 'MAX(x)' },
-            { value: 'avg', label: 'AVG(x)' },
-            { value: 'count_distinct', label: 'COUNT(DISTINCT x)' },
-          ]}
-          onChange={this.changeAggFunction.bind(this, col.name)}
-          value={(this.state.columns[col.name]) ? this.state.columns[col.name].agg : null}
-        />
-      ),
-    }));
+        header[localMessage.vis_agg_func] = (
+          <Select
+            options={localMessage.agg_func_options}
+            onChange={this.changeAggFunction.bind(this, col.name)}
+            value={(this.state.columns[col.name]) ? this.state.columns[col.name].agg : null}
+            />
+        );
+      return header;
+    });
     const alerts = this.state.hints.map((hint, i) => (
       <Alert bsStyle="warning" key={i}>{hint}</Alert>
     ));
@@ -175,45 +176,45 @@ class VisualizeModal extends React.PureComponent {
       <div className="VisualizeModal">
         <Modal show={this.props.show} onHide={this.props.onHide}>
           <Modal.Header closeButton>
-            <Modal.Title>Visualize</Modal.Title>
+            <Modal.Title>{localMessage.visualize}</Modal.Title>
           </Modal.Header>
           <Modal.Body>
             {alerts}
             <div className="row">
               <Col md={6}>
-                Chart Type
+                {localMessage.vis_chart_type}
                 <Select
                   name="select-chart-type"
-                  placeholder="[Chart Type]"
+                  placeholder={localMessage.chart_type}
                   options={CHART_TYPES}
                   value={(this.state.chartType) ? this.state.chartType.value : null}
                   autosize={false}
                   onChange={this.changeChartType.bind(this)}
-                />
+                  />
               </Col>
               <Col md={6}>
-                Datasource Name
+                {localMessage.vis_datasource_name}
                 <input
                   type="text"
                   className="form-control input-sm"
-                  placeholder="datasource name"
+                  placeholder={localMessage.datasource_name}
                   onChange={this.changeDatasourceName.bind(this)}
                   value={this.state.datasourceName}
-                />
+                  />
               </Col>
             </div>
             <hr />
             <Table
               className="table table-condensed"
-              columns={['column', 'is_dimension', 'is_date', 'agg_func']}
+              columns={localMessage.vis_columns}
               data={tableData}
-            />
+              />
             <Button
               onClick={this.visualize.bind(this)}
               bsStyle="primary"
               disabled={(this.state.hints.length > 0)}
-            >
-              Visualize
+              >
+              {localMessage.visualize}
             </Button>
           </Modal.Body>
         </Modal>

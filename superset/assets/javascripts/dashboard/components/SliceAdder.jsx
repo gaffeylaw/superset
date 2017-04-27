@@ -7,6 +7,7 @@ require('react-bootstrap-table/css/react-bootstrap-table.css');
 const propTypes = {
   dashboard: PropTypes.object.isRequired,
   triggerNode: PropTypes.node.isRequired,
+  localMessage: PropTypes.object.isRequired,
 };
 
 class SliceAdder extends React.Component {
@@ -130,13 +131,13 @@ class SliceAdder extends React.Component {
               isKey
               dataSort
             >
-              Name
+              {this.props.localMessage.name}
             </TableHeaderColumn>
             <TableHeaderColumn
               dataField="vizType"
               dataSort
             >
-              Viz
+              {this.props.localMessage.viz}
             </TableHeaderColumn>
             <TableHeaderColumn
               dataField="modified"
@@ -145,7 +146,7 @@ class SliceAdder extends React.Component {
               // Will cause react-bootstrap-table to interpret the HTML returned
               dataFormat={modified => modified}
             >
-              Modified
+              {this.props.localMessage.modified}
             </TableHeaderColumn>
           </BootstrapTable>
           <button
@@ -155,7 +156,7 @@ class SliceAdder extends React.Component {
             onClick={this.addSlices}
             disabled={!enableAddSlice}
           >
-            Add Slices
+            {this.props.localMessage.add_slices}
           </button>
         </div>
       </div>
@@ -164,11 +165,11 @@ class SliceAdder extends React.Component {
     return (
       <ModalTrigger
         triggerNode={this.props.triggerNode}
-        tooltip="Add a new slice to the dashboard"
+        tooltip={this.props.localMessage.add_newSlice_to_dashboard}
         isButton
         modalBody={modalContent}
         bsSize="large"
-        modalTitle="Add Slices to Dashboard"
+        modalTitle={this.props.localMessage.add}
       />
     );
   }

@@ -1,5 +1,10 @@
 const $ = window.$ = require('jquery');
 import React from 'react';
+import { chooseMessage } from '../../explorev2/stores/language';
+import zh_CN from '../../explorev2/stores/zh_CN';
+import en_US from '../../explorev2/stores/en_US';
+
+const localMessage = chooseMessage();
 
 const propTypes = {
   form_data: React.PropTypes.object.isRequired,
@@ -41,13 +46,13 @@ export default class MailPage extends React.PureComponent {
       dataType: 'json',
       success: function (data) {
         if (data) {
-          alert('connect success')
+          alert(localMessage.connect_success)
         } else {
-          alert('connect failed');
+          alert(localMessage.connect_failed);
         }
       },
       error: function () {
-        alert('unknown error');
+        alert(localMessage.unknown_error);
       },
     });
   }
@@ -74,16 +79,16 @@ export default class MailPage extends React.PureComponent {
       dataType: 'json',
       success: function (data) {
         if (data.status === 'true') {
-          alert('operate success!');
+          alert(localMessage.operate_success);
           if (operate === 'add') {
             location.href = '/superset/myEmail/show';
           }
         } else {
-          alert('operate failed');
+          alert(localMessage.operate_failed);
         }
       },
       error: function () {
-        alert('unknown error');
+        alert(localMessage.unknown_error);
       },
     });
   }
@@ -93,9 +98,9 @@ export default class MailPage extends React.PureComponent {
       <div className="addDiv">
         <form onSubmit={this.modifyMail.bind(this)}>
           <fieldset>
-            <legend>邮箱设置</legend>
+            <legend>{localMessage.mailbox_settings}</legend>
             <div className="col-lg-12">
-              <div className="col-lg-4 text-right">SMTP服务器:</div>
+              <div className="col-lg-4 text-right">{localMessage.smtp_server}:</div>
               <div className="col-lg-8">
                 <input
                   id="server"
@@ -106,13 +111,13 @@ export default class MailPage extends React.PureComponent {
               </div>
             </div>
             <div className="col-lg-12">
-              <div className="col-lg-4 text-right">端口:</div>
+              <div className="col-lg-4 text-right">{localMessage.port}:</div>
               <div className="col-lg-8">
                 <input id="port" type="number" defaultValue={this.state.mail.port} required />
               </div>
             </div>
             <div className="col-lg-12">
-              <div className="col-lg-4 text-right">发件人名称:</div>
+              <div className="col-lg-4 text-right">{localMessage.sender_name}:</div>
               <div className="col-lg-8">
                 <input
                   id="sendName"
@@ -123,7 +128,7 @@ export default class MailPage extends React.PureComponent {
               </div>
             </div>
             <div className="col-lg-12">
-              <div className="col-lg-4 text-right">发件人地址:</div>
+              <div className="col-lg-4 text-right">{localMessage.sender_address}:</div>
               <div className="col-lg-8">
                 <input
                   id="sendAddress"
@@ -134,7 +139,7 @@ export default class MailPage extends React.PureComponent {
               </div>
             </div>
             <div className="col-lg-12">
-              <div className="col-lg-4 text-right">用户名:</div>
+              <div className="col-lg-4 text-right">{localMessage.user_name}:</div>
               <div className="col-lg-8">
                 <input
                   id="username"
@@ -145,7 +150,7 @@ export default class MailPage extends React.PureComponent {
               </div>
             </div>
             <div className="col-lg-12">
-              <div className="col-lg-4 text-right">口令:</div>
+              <div className="col-lg-4 text-right">{localMessage.password}:</div>
               <div className="col-lg-8">
                 <input
                   id="password"
@@ -162,11 +167,12 @@ export default class MailPage extends React.PureComponent {
                   onClick={this.testMail.bind(this)}
                   style={{ marginLeft: '110px' }}
                 >
-                  测试连接
+                  {localMessage.test_conn}
                 </button>
               </div>
               <div>
-                <button className="btn btn-primary" type="submit">修改</button>
+                <button className="btn btn-primary" type="submit">{localMessage.modify}
+                </button>
               </div>
             </div>
           </fieldset>

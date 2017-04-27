@@ -33,6 +33,7 @@ const propTypes = {
   dataPreviewQueries: React.PropTypes.array.isRequired,
   queryEditor: React.PropTypes.object.isRequired,
   hideLeftBar: React.PropTypes.bool,
+  localMessage: React.PropTypes.object.isRequired,
 };
 
 const defaultProps = {
@@ -105,10 +106,10 @@ class SqlEditor extends React.PureComponent {
 
   render() {
     let runButtons = [];
-    let runText = 'Run Query';
+    let runText = this.props.localMessage.run_query;
     let btnStyle = 'primary';
     if (this.props.queryEditor.selectedText) {
-      runText = 'Run Selection';
+      runText = this.props.localMessage.run_selection;
       btnStyle = 'warning';
     }
     if (this.props.database && this.props.database.allow_run_sync) {
@@ -126,7 +127,7 @@ class SqlEditor extends React.PureComponent {
       );
     }
     if (this.props.database && this.props.database.allow_run_async) {
-      const asyncToolTip = 'Run query asynchronously';
+      const asyncToolTip = this.props.localMessage.run_query_asyc;
       runButtons.push(
         <Button
           bsSize="small"
@@ -137,7 +138,7 @@ class SqlEditor extends React.PureComponent {
           key="run-async-btn"
           tooltip={asyncToolTip}
         >
-          <i className="fa fa-table" /> Run Async
+          <i className="fa fa-table" /> {this.props.localMessage.run_async}
         </Button>
       );
     }
@@ -157,7 +158,7 @@ class SqlEditor extends React.PureComponent {
             style={{ width: '100px' }}
             onClick={this.stopQuery.bind(this)}
           >
-            <a className="fa fa-stop" /> Stop
+            <a className="fa fa-stop" /> {this.props.localMessage.stop}
           </BootstrapButton>
         </ButtonGroup>
       );
@@ -166,9 +167,8 @@ class SqlEditor extends React.PureComponent {
     if (this.props.latestQuery && this.props.latestQuery.limit_reached) {
       const tooltip = (
         <Tooltip id="tooltip">
-          It appears that the number of rows in the query results displayed
-          was limited on the server side to
-          the {this.props.latestQuery.rows} limit.
+          {this.props.localMessage.limit_tooltip1} {this.props.latestQuery.rows} 
+          {this.props.localMessage.limit_tooltip2}.
         </Tooltip>
       );
       limitWarning = (
@@ -179,7 +179,7 @@ class SqlEditor extends React.PureComponent {
     }
     let ctasControls;
     if (this.props.database && this.props.database.allow_ctas) {
-      const ctasToolTip = 'Create table as with query results';
+      const ctasToolTip = this.props.localMessage.create_table_as_result;
       ctasControls = (
         <FormGroup>
           <InputGroup>
@@ -187,7 +187,7 @@ class SqlEditor extends React.PureComponent {
               type="text"
               bsSize="small"
               className="input-sm"
-              placeholder="new table name"
+              placeholder={this.props.localMessage.new_table_name}
               onChange={this.ctasChanged.bind(this)}
             />
             <InputGroup.Button>
@@ -244,6 +244,7 @@ class SqlEditor extends React.PureComponent {
                 tables={this.props.tables}
                 networkOn={this.props.networkOn}
                 actions={this.props.actions}
+                localMessage={this.props.localMessage}
               />
             </Col>
           </Collapse>
@@ -264,6 +265,7 @@ class SqlEditor extends React.PureComponent {
                   editorQueries={this.props.editorQueries}
                   dataPreviewQueries={this.props.dataPreviewQueries}
                   actions={this.props.actions}
+                  localMessage={this.props.localMessage}
                 />
               </div>
             </div>

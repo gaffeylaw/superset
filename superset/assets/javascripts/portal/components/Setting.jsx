@@ -4,6 +4,11 @@ import React from 'react';
 import Select from 'react-select';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
+import { chooseMessage } from '../../explorev2/stores/language';
+import zh_CN from '../../explorev2/stores/zh_CN';
+import en_US from '../../explorev2/stores/en_US';
+
+const localMessage = chooseMessage(); 
 
 const propTypes = {
   form_data: React.PropTypes.array.isRequired,
@@ -25,7 +30,7 @@ class Setting extends React.PureComponent {
         icon: null,
       },
       icon: null,
-      iconChoices: [{ key: '无', value: '' },
+      iconChoices: [{ key: localMessage.none, value: '' },
                     { key: 'home', value: 'fa fa-home' },
                     { key: 'university', value: 'fa fa-university' },
                     { key: 'chart', value: 'fa fa-line-chart' },
@@ -186,21 +191,21 @@ class Setting extends React.PureComponent {
     this.setState({
       parentMenu: {
         value: 0,
-        label: '无',
+        label: localMessage.none,
       },
     });
 
     this.setState({
       dashboard: {
         value: '',
-        label: '无',
+        label: localMessage.none,
       },
     });
 
     this.setState({
       icon: {
         value: '',
-        label: '无',
+        label: localMessage.none,
       },
     });
 
@@ -341,7 +346,7 @@ class Setting extends React.PureComponent {
     const array = $('#file')[0].files[0].name.split('.');
     const fileType = array[array.length - 1];
     if (fileType !== 'jpg' && fileType !== 'png' && fileType !== 'jpeg') {
-      alert('请选择jpg, png, jpeg图片格式上传');
+      alert(localMessage.picture_upload_error);
       return;
     }
     const timeStamp = new Date().getTime();
@@ -361,7 +366,7 @@ class Setting extends React.PureComponent {
         if (result === 'true') {
           $('#img').attr('src', '/static/logo/logo_' + portalId + '_' + timeStamp + '.png');
         } else {
-          alert('upload failed');
+          alert(localMessage.upload_failed);
         }
       },
     });
@@ -391,27 +396,27 @@ class Setting extends React.PureComponent {
             <div style={{ width: '40%', float: 'left', marginTop: '50px', marginLeft: '100px' }}>
               <div className="col-lg-12" style={{ height: '50px' }}>
                 <div className="col-lg-2" style={{ textAlign: 'right' }}>
-                  <span>菜单名</span>
+                  <span>{localMessage.menu_name}</span>
                 </div>
                 <div className="col-lg-10">
                   <input
                     id="menuName"
                     type="text"
                     className="form-control input-sm"
-                    placeholder="菜单名"
+                    placeholder={localMessage.menu_name}
                   />
                 </div>
               </div>
               <div className="col-lg-12" style={{ height: '50px' }}>
                 <div className="col-lg-2" style={{ textAlign: 'right' }}>
-                  <span>父菜单</span>
+                  <span>{localMessage.parent_menu}</span>
                 </div>
                 <div className="col-lg-10">
                   <Select
                     multi={false}
                     name="select-column"
-                    placeholder="父菜单"
-                    options={[[0, '无']].concat(this.props.form_data.menus)
+                    placeholder={localMessage.parent_menu}
+                    options={[[0, localMessage.none]].concat(this.props.form_data.menus)
                               .map((m) => ({ value: m[0], label: m[1] }))}
                     value={this.state.parentMenu}
                     autosize={false}
@@ -422,13 +427,13 @@ class Setting extends React.PureComponent {
               {(this.state.parentMenu === null || this.state.parentMenu.value === 0) &&
                 <div className="col-lg-12" style={{ height: '50px' }}>
                   <div className="col-lg-2" style={{ textAlign: 'right' }}>
-                    <span>图标</span>
+                    <span>{localMessage.icon}</span>
                   </div>
                   <div className="col-lg-10">
                     <Select
                       multi={false}
                       name="select-column"
-                      placeholder="图标"
+                      placeholder={localMessage.icon}
                       options={this.state.iconChoices.map((i) =>
                                 ({ value: i.value, label: i.key }))}
                       optionRenderer={this.renderOption.bind(this)}
@@ -441,14 +446,14 @@ class Setting extends React.PureComponent {
               }
               <div className="col-lg-12" style={{ height: '50px' }}>
                 <div className="col-lg-2" style={{ textAlign: 'right' }}>
-                  <span>仪表盘资源</span>
+                  <span>{localMessage.dashboard_name}</span>
                 </div>
                 <div className="col-lg-10">
                   <Select
                     multi={false}
                     name="select-column"
-                    placeholder="仪表盘资源"
-                    options={[['', '无']].concat(this.props.form_data.dashboards)
+                    placeholder={localMessage.dashboard_name}
+                    options={[['', localMessage.none]].concat(this.props.form_data.dashboards)
                             .map((d) => ({ value: d[0], label: d[1] }))}
                     value={this.state.dashboard}
                     autosize={false}
@@ -458,7 +463,7 @@ class Setting extends React.PureComponent {
               </div>
               <div className="col-lg-12" style={{ height: '50px' }}>
                 <div className="col-lg-2" style={{ textAlign: 'right' }}>
-                  <span>设为首页</span>
+                  <span>{localMessage.set_index}</span>
                 </div>
                 <div className="col-lg-1">
                   <input id="isIndex" type="checkbox" onClick={this.changeIsIndex.bind(this)} />
@@ -470,21 +475,21 @@ class Setting extends React.PureComponent {
                   onClick={this.operateMenu.bind(this, 'add')}
                   style={{ marginLeft: '20px', height: '40px' }}
                 >
-                  添加
+                  {localMessage.add}
                 </button>
                 <button
                   className="btn btn-success"
                   onClick={this.operateMenu.bind(this, 'modify')}
                   style={{ marginLeft: '20px', height: '40px' }}
                 >
-                  修改
+                  {localMessage.modify}
                 </button>
                 <button
                   className="btn btn-danger"
                   onClick={this.operateMenu.bind(this, 'delete')}
                   style={{ marginLeft: '20px', height: '40px' }}
                 >
-                  删除
+                  {localMessage.delete}
                 </button>
                 <a
                   className="btn btn-primary"
@@ -492,12 +497,12 @@ class Setting extends React.PureComponent {
                   href={'/superset/portal/' + this.props.form_data.portal[0] + '/show'}
                   style={{ marginLeft: '20px', height: '40px' }}
                 >
-                  门户预览
+                  {localMessage.portal_preview}
                 </a>
               </div>
               <div className="col-lg-12" style={{ marginTop: '30px' }}>
                 <div className="col-lg-2" style={{ textAlign: 'right' }}>
-                  <span>上传logo</span>
+                  <span>{localMessage.upload_logo}</span>
                 </div>
                 <div className="col-lg-1">
                   <input

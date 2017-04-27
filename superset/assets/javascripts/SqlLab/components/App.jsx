@@ -9,7 +9,11 @@ import Alerts from './Alerts';
 
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
+import { chooseMessage } from '../../explorev2/stores/language';
+import zh_CN from '../../explorev2/stores/zh_CN';
+import en_US from '../../explorev2/stores/en_US';
 
+const localMessage = chooseMessage();
 class App extends React.PureComponent {
   constructor(props) {
     super(props);
@@ -49,7 +53,8 @@ class App extends React.PureComponent {
         <div className="container-fluid">
           <div className="row">
             <div className="col-md-12">
-              <QuerySearch height={this.state.contentHeight} />
+              <QuerySearch height={this.state.contentHeight} localMessage=
+                {localMessage} />
             </div>
           </div>
         </div>
@@ -58,7 +63,8 @@ class App extends React.PureComponent {
       content = (
         <div>
           <QueryAutoRefresh />
-          <TabbedSqlEditors editorHeight={this.state.contentHeight} />
+          <TabbedSqlEditors editorHeight={this.state.contentHeight} localMessage=
+            {localMessage} />
         </div>
       );
     }

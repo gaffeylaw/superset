@@ -5,6 +5,7 @@ import $ from 'jquery';
 
 const propTypes = {
   user: React.PropTypes.object,
+  localMessage: React.PropTypes.object.isRequired,
 };
 
 export default class RecentActivity extends React.PureComponent {
@@ -21,13 +22,16 @@ export default class RecentActivity extends React.PureComponent {
     });
   }
   render() {
+    const localMessage = this.props.localMessage;
     const mutator = function (data) {
-      return data.map(row => ({
-        action: row.action,
-        item: <a href={row.item_url}>{row.item_title}</a>,
-        time: moment.utc(row.time).fromNow(),
-        _time: row.time,
-      }));
+      return data.map(row => {
+        const data = {};
+        data[localMessage.action] = row.action;
+        data[localMessage.item] = <a href={row.item_url}>{row.item_title}</a>;
+        data[localMessage.time] = moment.utc(row.time).fromNow();
+        // _time = row.time;
+        return data;
+      });
     };
     return (
       <div>
@@ -35,8 +39,9 @@ export default class RecentActivity extends React.PureComponent {
           className="table table-condensed"
           mutator={mutator}
           sortable
+          // columns={this.props.localMessage.recent_action_column}
           dataEndpoint={`/superset/recent_activity/${this.props.user.userId}/`}
-        />
+          />
       </div>
     );
   }

@@ -1,6 +1,11 @@
 const $ = window.$ = require('jquery');
 import React from 'react';
 import Select from 'react-select';
+import { chooseMessage } from '../../explorev2/stores/language';
+import zh_CN from '../../explorev2/stores/zh_CN';
+import en_US from '../../explorev2/stores/en_US';
+
+const localMessage = chooseMessage();
 
 const propTypes = {
   form_data: React.PropTypes.object.isRequired,
@@ -100,13 +105,13 @@ export default class ModifyPage extends React.PureComponent {
       dataType: 'json',
       success: function (data) {
         if (data.status === 'true') {
-          alert('modify success!');
+          alert(localMessage.modify_success);
         } else {
-          alert('modify failed');
+          alert(localMessage.modify_failed);
         }
       },
       error: function () {
-        alert('unknown error');
+        alert(localMessage.unknown_error);
       },
     });
   }
@@ -129,13 +134,13 @@ export default class ModifyPage extends React.PureComponent {
       dataType: 'json',
       success: function (data) {
         if (data.status === 'true') {
-          alert('modify success!');
+          alert(localMessage.modify_success);
         } else {
-          alert('modify failed');
+          alert(localMessage.modify_failed);
         }
       },
       error: function () {
-        alert('unknown error');
+        alert(localMessage.unknown_error);
       },
     });
   }
@@ -194,24 +199,24 @@ export default class ModifyPage extends React.PureComponent {
           style={{ marginLeft: '50px' }}
           onClick={this.back.bind(this)}
         >
-          返回
+          {localMessage.return}
         </button>
         <div className="addDiv">
           <form onSubmit={this.modifyScheduler.bind(this)} >
             <fieldset id="schedulerField">
-              <legend>调度设置</legend>
+              <legend>{localMessage.schedule_settings}</legend>
               <div className="col-lg-12">
-                <div className="col-lg-4 text-right">选择调度方式:</div>
+                <div className="col-lg-4 text-right">{localMessage.select_scheduling}:</div>
                 <div className="col-lg-8">
                   <select id="mode" defaultValue={this.props.form_data.scheduler.mode}>
-                    <option>interval</option>
-                    <option>cron</option>
-                    <option>date</option>
+                    <option>{localMessage.interval}</option>
+                    <option>{localMessage.cron}</option>
+                    <option>{localMessage.date}</option>
                   </select>
                 </div>
               </div>
               <div className="col-lg-12" style={{ height: '120px' }}>
-                <div className="col-lg-4 text-right">调度表达式:</div>
+                <div className="col-lg-4 text-right">{localMessage.schedule_expression}:</div>
                 <div className="col-lg-8">
                   <textarea id="expr" defaultValue={this.state.expr} cols="15" rows="4" required>
                   </textarea>
@@ -219,32 +224,32 @@ export default class ModifyPage extends React.PureComponent {
               </div>
               <div className="col-lg-12" style={{ height: '80px' }}>
                 <p style={{ marginLeft: '35px' }}>
-                  注: 时间用 'YYYY-MM-DD hh:mm:ss'' 或者 'YYYY-MM-DD' 字符串表示, 多个条件用&&连接
+                  {localMessage.schedule_tooltip}
                 </p>
                 <a
                   style={{ marginLeft: '200px' }}
                   target="_blank"
                   href="http://debugo.com/apscheduler/"
                 >
-                  cron表达式详情链接
+                  {localMessage.cron_help_href}
                 </a>
               </div>
               <div className="col-lg-12">
-                <button className="btn btn-primary" type="submit">修改</button>
+                <button className="btn btn-primary" type="submit">{localMessage.save}</button>
               </div>
             </fieldset>
           </form>
 
           <form onSubmit={this.modifyCondition.bind(this)}>
             <fieldset style={{ width: '600px' }}>
-              <legend>条件设置</legend>
+              <legend>{localMessage.condition_setting}</legend>
               <div className="col-lg-12">
-                <div className="col-lg-3 text-right">监测仪表盘:</div>
+                <div className="col-lg-3 text-right">{localMessage.monitor_dashboard}:</div>
                 <div className="col-lg-9">
                   <Select
                     multi={false}
                     name="select-column"
-                    placeholder="选择仪表盘"
+                    placeholder={localMessage.choose_dash}
                     options={this.state.dashboards.map((m) => ({ value: m.id, label: m.name }))}
                     value={this.state.dashboard}
                     autosize={false}
@@ -253,12 +258,12 @@ export default class ModifyPage extends React.PureComponent {
                 </div>
               </div>
               <div className="col-lg-12">
-                <div className="col-lg-3 text-right">监测切片:</div>
+                <div className="col-lg-3 text-right">{localMessage.monitor_slice}:</div>
                 <div className="col-lg-9">
                   <Select
                     multi={false}
                     name="select-column"
-                    placeholder="选择切片"
+                    placeholder={localMessage.choose_monitor_slice}
                     options={this.state.slices.map((m) => ({ value: m.id, label: m.name }))}
                     value={this.state.slice}
                     autosize={false}
@@ -267,12 +272,12 @@ export default class ModifyPage extends React.PureComponent {
                 </div>
               </div>
               <div className="col-lg-12">
-                <div className="col-lg-3 text-right">监测指标:</div>
+                <div className="col-lg-3 text-right">{localMessage.monitor_metric}:</div>
                 <div className="col-lg-9">
                   <Select
                     multi={false}
                     name="select-column"
-                    placeholder="选择指标"
+                    placeholder={localMessage.choose_metric}
                     options={this.state.metrics.map((m) => ({ value: m, label: m }))}
                     value={this.state.metric}
                     autosize={false}
@@ -281,7 +286,8 @@ export default class ModifyPage extends React.PureComponent {
                 </div>
               </div>
               <div className="col-lg-12">
-                <div className="col-lg-3 text-right">指定表达式:</div>
+                <div className="col-lg-3 text-right">{localMessage.specifies_expression}:
+                </div>
                 <div className="col-lg-9">
                   <input
                     id="conditionExpr"
@@ -293,12 +299,13 @@ export default class ModifyPage extends React.PureComponent {
                 </div>
               </div>
               <div className="col-lg-12">
-                <div className="col-lg-3 text-right">邮件发送切片:</div>
+                <div className="col-lg-3 text-right">{localMessage.mail_send_slice}:
+                </div>
                 <div className="col-lg-9">
                   <Select
                     multi={false}
                     name="select-column"
-                    placeholder="选择发送切片"
+                    placeholder={localMessage.choose_send_slice}
                     options={this.state.sendSlices.map((m) => ({ value: m.id, label: m.name }))}
                     value={this.state.sendSlice}
                     autosize={false}
@@ -307,7 +314,8 @@ export default class ModifyPage extends React.PureComponent {
                 </div>
               </div>
               <div className="col-lg-12">
-                <div className="col-lg-3 text-right">收件人地址:</div>
+                <div className="col-lg-3 text-right">{localMessage.receiver_address}:
+                </div>
                 <div className="col-lg-9">
                   <input
                     id="receiveAddress"
@@ -320,7 +328,7 @@ export default class ModifyPage extends React.PureComponent {
               </div>
               <div className="col-lg-12">
                 <button style={{ marginRight: '10px' }} className="btn btn-primary" type="submit">
-                  修改
+                 {localMessage.modify}
                 </button>
               </div>
             </fieldset>

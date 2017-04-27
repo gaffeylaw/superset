@@ -10,6 +10,7 @@ import { STATUS_OPTIONS, TIME_OPTIONS } from '../constants';
 
 const propTypes = {
   actions: React.PropTypes.object.isRequired,
+  localMessage: React.PropTypes.object.isRequired,
 };
 
 class QuerySearch extends React.PureComponent {
@@ -137,7 +138,7 @@ class QuerySearch extends React.PureComponent {
           <div className="col-sm-2">
             <Select
               name="select-user"
-              placeholder="[User]"
+              placeholder={this.props.localMessage.search_user}
               options={this.state.userOptions}
               value={this.state.userId}
               isLoading={this.state.userLoading}
@@ -149,6 +150,7 @@ class QuerySearch extends React.PureComponent {
             <DatabaseSelect
               onChange={this.onChange.bind(this)}
               databaseId={this.state.databaseId}
+              localMessage={this.props.localMessage}
             />
           </div>
           <div className="col-sm-4">
@@ -156,15 +158,15 @@ class QuerySearch extends React.PureComponent {
               type="text"
               onChange={this.changeSearch.bind(this)}
               className="form-control input-sm"
-              placeholder="Search Results"
+              placeholder={this.props.localMessage.search_results}
             />
           </div>
           <div className="col-sm-1">
             <Select
               name="select-from"
-              placeholder="[From]-"
+              placeholder={this.props.localMessage.search_from}
               options={TIME_OPTIONS.
-                slice(1, TIME_OPTIONS.length).map((t) => ({ value: t, label: t }))}
+                slice(1, TIME_OPTIONS.length).map((t) => ({ value: t[0], label: t[1] }))}
               value={this.state.from}
               autosize={false}
               onChange={this.changeFrom.bind(this)}
@@ -173,8 +175,8 @@ class QuerySearch extends React.PureComponent {
           <div className="col-sm-1">
             <Select
               name="select-to"
-              placeholder="[To]-"
-              options={TIME_OPTIONS.map((t) => ({ value: t, label: t }))}
+              placeholder={this.props.localMessage.search_to}
+              options={TIME_OPTIONS.map((t) => ({ value: t[0], label: t[1] }))}
               value={this.state.to}
               autosize={false}
               onChange={this.changeTo.bind(this)}
@@ -183,8 +185,8 @@ class QuerySearch extends React.PureComponent {
           <div className="col-sm-1">
             <Select
               name="select-status"
-              placeholder="[Query Status]"
-              options={STATUS_OPTIONS.map((s) => ({ value: s, label: s }))}
+              placeholder={this.props.localMessage.query_status}
+              options={STATUS_OPTIONS.map((s) => ({ value: s[0], label: s[1] }))}
               value={this.state.status}
               isLoading={false}
               autosize={false}
@@ -192,7 +194,7 @@ class QuerySearch extends React.PureComponent {
             />
           </div>
           <Button bsSize="small" bsStyle="success" onClick={this.refreshQueries.bind(this)}>
-            Search
+            {this.props.localMessage.search}
           </Button>
         </div>
         {this.state.queriesLoading ?
@@ -205,14 +207,12 @@ class QuerySearch extends React.PureComponent {
           >
             <div className="scrollbar-content">
               <QueryTable
-                columns={[
-                  'state', 'db', 'user', 'date',
-                  'progress', 'rows', 'sql', 'querylink',
-                ]}
+                columns={this.props.localMessage.query_table_columns}
                 onUserClicked={this.onUserClicked.bind(this)}
                 onDbClicked={this.onDbClicked.bind(this)}
                 queries={this.state.queriesArray}
                 actions={this.props.actions}
+                localMessage={this.props.localMessage}
               />
             </div>
           </div>

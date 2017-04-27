@@ -3,13 +3,14 @@ import { Badge, Label } from 'react-bootstrap';
 
 const propTypes = {
   user: React.PropTypes.object.isRequired,
+  localMessage: React.PropTypes.object.isRequired,
 };
-export default function Security({ user }) {
+export default function Security({ user, localMessage }) {
   return (
     <div>
       <div className="roles">
         <h4>
-          Roles <Badge>{Object.keys(user.roles).length}</Badge>
+          {localMessage.roles} <Badge>{Object.keys(user.roles).length}</Badge>
         </h4>
         {Object.keys(user.roles).map(role => <Label key={role}>{role}</Label>)}
         <hr />
@@ -18,7 +19,8 @@ export default function Security({ user }) {
         {user.permissions.database_access &&
           <div>
             <h4>
-              Databases <Badge>{user.permissions.database_access.length}</Badge>
+              {localMessage.databases}
+              <Badge>{user.permissions.database_access.length}</Badge>
             </h4>
             {user.permissions.database_access.map(role => <Label key={role}>{role}</Label>)}
             <hr />
@@ -29,7 +31,8 @@ export default function Security({ user }) {
         {user.permissions.datasource_access &&
           <div>
             <h4>
-              Datasources <Badge>{user.permissions.datasource_access.length}</Badge>
+              {localMessage.datasources}
+              <Badge>{user.permissions.datasource_access.length}</Badge>
             </h4>
             {user.permissions.datasource_access.map(role => <Label key={role}>{role}</Label>)}
           </div>

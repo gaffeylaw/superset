@@ -364,10 +364,22 @@ class TableColumnInlineView(CompactCRUDMixin, SupersetModelView):  # noqa
             "Whether to make this column available as a "
             "[Time Granularity] option, column has to be DATETIME or "
             "DATETIME-like")),
-        'expression': utils.markdown(
+        # 'expression': utils.markdown(
+        #     "a valid SQL expression as supported by the underlying backend. "
+        #     "Example: `substr(name, 1, 1)`", True),
+        'expression': (_(
             "a valid SQL expression as supported by the underlying backend. "
-            "Example: `substr(name, 1, 1)`", True),
-        'python_date_format': utils.markdown(Markup(
+            "Example: `substr(name, 1, 1)`")),
+        # 'python_date_format': utils.markdown(Markup(
+        #     "The pattern of timestamp format, use "
+        #     "<a href='https://docs.python.org/2/library/"
+        #     "datetime.html#strftime-strptime-behavior'>"
+        #     "python datetime string pattern</a> "
+        #     "expression. If time is stored in epoch "
+        #     "format, put `epoch_s` or `epoch_ms`. Leave `Database Expression` "
+        #     "below empty if timestamp is stored in "
+        #     "String or Integer(epoch) type"), True),
+        'python_date_format': (_(
             "The pattern of timestamp format, use "
             "<a href='https://docs.python.org/2/library/"
             "datetime.html#strftime-strptime-behavior'>"
@@ -375,8 +387,9 @@ class TableColumnInlineView(CompactCRUDMixin, SupersetModelView):  # noqa
             "expression. If time is stored in epoch "
             "format, put `epoch_s` or `epoch_ms`. Leave `Database Expression` "
             "below empty if timestamp is stored in "
-            "String or Integer(epoch) type"), True),
-        'database_expression': utils.markdown(
+            "String or Integer(epoch) type")),
+        # 'database_expression': utils.markdown(
+            'database_expression': (_(
             "The database expression to cast internal datetime "
             "constants to database date/timestamp type according to the DBAPI. "
             "The expression should follow the pattern of "
@@ -384,7 +397,7 @@ class TableColumnInlineView(CompactCRUDMixin, SupersetModelView):  # noqa
             "The string should be a python string formatter \n"
             "`Ex: TO_DATE('{}', 'YYYY-MM-DD HH24:MI:SS')` for Oracle"
             "Superset uses default expression based on DB URI if this "
-            "field is blank.", True),
+            "field is blank.")),
     }
     label_columns = {
         'column_name': _("Column"),
@@ -400,7 +413,8 @@ class TableColumnInlineView(CompactCRUDMixin, SupersetModelView):  # noqa
         'expression': _("Expression"),
         'is_dttm': _("Is temporal"),
         'python_date_format': _("Datetime Format"),
-        'database_expression': _("Database Expression")
+        'database_expression': _("Database Expression"),
+        'type': _("Type")
     }
 appbuilder.add_view_no_menu(TableColumnInlineView)
 
@@ -426,16 +440,23 @@ class DruidColumnInlineView(CompactCRUDMixin, SupersetModelView):  # noqa
         'sum': _("Sum"),
         'min': _("Min"),
         'max': _("Max"),
+        'created_by': _("Created By"),
+        'created_on': _("Created On"),
+        'changed_by': _("Changed By"),
+        'changed_on': _("Changed On"),
+        'description': _("Description"),
+        'dimension_spec_json': _("Dimension Spec Json")
+
     }
     description_columns = {
-        'dimension_spec_json': utils.markdown(
+        # 'dimension_spec_json': utils.markdown(
+            'dimension_spec_json': (_(
             "this field can be used to specify  "
             "a `dimensionSpec` as documented [here]"
             "(http://druid.io/docs/latest/querying/dimensionspecs.html). "
             "Make sure to input valid JSON and that the "
             "`outputName` matches the `column_name` defined "
-            "above.",
-            True),
+            "above.")),
     }
 
     def post_update(self, col):
@@ -455,20 +476,21 @@ class SqlMetricInlineView(CompactCRUDMixin, SupersetModelView):  # noqa
         'metric_name', 'description', 'verbose_name', 'metric_type',
         'expression', 'table', 'd3format', 'is_restricted']
     description_columns = {
-        'expression': utils.markdown(
+        # 'expression': utils.markdown(
+            'expression': (_(
             "a valid SQL expression as supported by the underlying backend. "
-            "Example: `count(DISTINCT userid)`", True),
+            "Example: `count(DISTINCT userid)`")),
         'is_restricted': _("Whether the access to this metric is restricted "
                            "to certain roles. Only roles with the permission "
                            "'metric access on XXX (the name of this metric)' "
                            "are allowed to access this metric"),
-        'd3format': utils.markdown(
+        # 'd3format': utils.markdown(
+        'd3format': (_(
             "d3 formatting string as defined [here]"
             "(https://github.com/d3/d3-format/blob/master/README.md#format). "
             "For instance, this default formatting applies in the Table "
             "visualization and allow for different metric to use different "
-            "formats", True
-        ),
+            "formats")),
     }
     add_columns = edit_columns
     page_size = 10
@@ -502,11 +524,11 @@ class DruidMetricInlineView(CompactCRUDMixin, SupersetModelView):  # noqa
         'json': [validate_json],
     }
     description_columns = {
-        'metric_type': utils.markdown(
+        # 'metric_type': utils.markdown(
+        'metric_type': (_(
             "use `postagg` as the metric type if you are defining a "
             "[Druid Post Aggregation]"
-            "(http://druid.io/docs/latest/querying/post-aggregations.html)",
-            True),
+            "(http://druid.io/docs/latest/querying/post-aggregations.html)")),
         'is_restricted': _("Whether the access to this metric is restricted "
                            "to certain roles. Only roles with the permission "
                            "'metric access on XXX (the name of this metric)' "
@@ -519,6 +541,8 @@ class DruidMetricInlineView(CompactCRUDMixin, SupersetModelView):  # noqa
         'metric_type': _("Type"),
         'json': _("JSON"),
         'datasource': _("Druid Datasource"),
+        'd3format': _("D3format"),
+        'is_restricted': _("Is Restricted"),
     }
 
     def post_add(self, metric):
@@ -559,12 +583,13 @@ class DatabaseView(SupersetModelView, DeleteMixin):  # noqa
     base_order = ('changed_on', 'desc')
     page_size = 10
     description_columns = {
-        'sqlalchemy_uri': utils.markdown(
+        # 'sqlalchemy_uri': utils.markdown(
+        'sqlalchemy_uri': (_(
             "Refer to the "
             "[SqlAlchemy docs]"
             "(http://docs.sqlalchemy.org/en/rel_1_0/core/engines.html#"
             "database-urls) "
-            "for more information on how to structure your URI.", True),
+            "for more information on how to structure your URI.")),
         'expose_in_sqllab': _("Expose this DB in SQL Lab"),
         'allow_run_sync': _(
             "Allow users to run synchronous queries, this is the default "
@@ -582,7 +607,8 @@ class DatabaseView(SupersetModelView, DeleteMixin):  # noqa
         'force_ctas_schema': _(
             "When allowing CREATE TABLE AS option in SQL Lab, "
             "this option forces the table to be created in this schema"),
-        'extra': utils.markdown(
+        # 'extra': utils.markdown(
+        'extra': (_(
             "JSON string containing extra configuration elements. "
             "The ``engine_params`` object gets unpacked into the "
             "[sqlalchemy.create_engine]"
@@ -590,7 +616,7 @@ class DatabaseView(SupersetModelView, DeleteMixin):  # noqa
             "sqlalchemy.create_engine) call, while the ``metadata_params`` "
             "gets unpacked into the [sqlalchemy.MetaData]"
             "(http://docs.sqlalchemy.org/en/rel_1_0/core/metadata.html"
-            "#sqlalchemy.schema.MetaData) call. ", True),
+            "#sqlalchemy.schema.MetaData) call. ")),
     }
     label_columns = {
         'expose_in_sqllab': _("Expose in SQL Lab"),
@@ -603,6 +629,16 @@ class DatabaseView(SupersetModelView, DeleteMixin):  # noqa
         'sqlalchemy_uri': _("SQLAlchemy URI"),
         'cache_timeout': _("Cache Timeout"),
         'extra': _("Extra"),
+        'backend': _("Backend"),
+        'allow_run_sync': _("Allow Run Sync"),
+        'allow_run_async': _("Allow Run Async"),
+        'allow_dml': _("Allow DML"),
+        'perm': _("Perm"),
+        'tables': _("Tables"),
+        'created_by': _("Created By"),
+        'created_on': _("Created On"),
+        'changed_by': _("Changed By"),
+        'changed_on': _("Changed On")
     }
 
     def pre_add(self, db):
@@ -675,7 +711,8 @@ class TableModelView(SupersetModelView, DeleteMixin):  # noqa
         'schema': _(
             "Schema, as used only in some databases like Postgres, Redshift "
             "and DB2"),
-        'description': Markup(
+        # 'description': Markup(
+        'description': _(
             "Supports <a href='https://daringfireball.net/projects/markdown/'>"
             "markdown</a>"),
         'sql': _(
@@ -694,6 +731,11 @@ class TableModelView(SupersetModelView, DeleteMixin):  # noqa
         'default_endpoint': _("Default Endpoint"),
         'offset': _("Offset"),
         'cache_timeout': _("Cache Timeout"),
+        'perm': _("Perm"),
+        'description': _("Description"),
+        'table_name': _("Table Name"),
+        'main_dttm_col': _("Main Dttm Col"),
+        'owner': _("Owner")
     }
 
     def pre_add(self, table):
@@ -759,6 +801,11 @@ class AccessRequestsModelView(SupersetModelView, DeleteMixin):
         'datasource_link': _("Datasource"),
         'roles_with_datasource': _("Roles to grant"),
         'created_on': _("Created On"),
+        'created_by': _("Created By"),
+        'changed_on': _('Changed On'),
+        'changed_by': _("Changed By"),
+        'datasource_id': _("Datasource Id"),
+        'datasource_type': _("Datasource Type")
     }
 
 appbuilder.add_view(
@@ -787,6 +834,13 @@ class DruidClusterModelView(SupersetModelView, DeleteMixin):  # noqa
         'broker_host': _("Broker Host"),
         'broker_port': _("Broker Port"),
         'broker_endpoint': _("Broker Endpoint"),
+        'cache_timeout': _("Cache Timeout"),
+        'metadata_last_refreshed': _("Metadata Last Refreshed"),
+        'created_by': _("Created By"),
+        'created_on': _("Created On"),
+        'changed_by': _("Changed By"),
+        'changed_on': _("Changed On"),
+        'datasources': _("Druid Datasources"),
     }
 
     def pre_add(self, cluster):
@@ -822,7 +876,8 @@ class SliceModelView(SupersetModelView, DeleteMixin):  # noqa
     order_columns = ['creator','modified']
     page_size = 10
     description_columns = {
-        'description': Markup(
+        # 'description': Markup(
+        'description': _(
             "The content here can be displayed as widget headers in the "
             "dashboard view. Supports "
             "<a href='https://daringfireball.net/projects/markdown/'>"
@@ -850,6 +905,14 @@ class SliceModelView(SupersetModelView, DeleteMixin):  # noqa
         'slice_name': _("Name"),
         'table': _("Table"),
         'viz_type': _("Visualization Type"),
+        'datasource_id': _("Datasource Id"),
+        'datasource_type': _("Datasource Type"),
+        'datasource_name': _("Datasource Name"),
+        'created_by': _("Created By"),
+        'created_on': _("Created On"),
+        'changed_by': _("Changed By"),
+        'changed_on': _("Changed On"),
+        'perm': _("Perm"),
     }
 
     def pre_update(self, obj):
@@ -1019,6 +1082,9 @@ class LogModelView(SupersetModelView):
         'action': _("Action"),
         'dttm': _("dttm"),
         'json': _("JSON"),
+        'dashboard_id': _("Dashboard Id"),
+        'dt': _("DT"),
+        'slice_id': _("Slice Id"),
     }
 
 appbuilder.add_view(
@@ -1033,6 +1099,30 @@ appbuilder.add_view(
 class QueryView(SupersetModelView):
     datamodel = SQLAInterface(models.Query)
     list_columns = ['user', 'database', 'status', 'start_time', 'end_time']
+    label_columns = {
+        'user': _("User"),
+        'database': _("Database"),
+        'status': _("Status"),
+        'start_time': _("Start Time"),
+        'end_time': _("End Time"),
+        'ctas': _("Select As Cta"),
+        'results_key': _("Results Key"),
+        'error_message': _("Error Message"),
+        'changed_on': _("Changed On"),
+        'tmp_table_name': _("Tmp Table Name"),
+        'rows': _("Rows"),
+        'client_id': _("Client Id"),
+        'limit': _("Row limit"),
+        'executed_sql': _("Executed Sql"),
+        'limit_reached': _("Limit reached"),
+        'progress': _("Progress"),
+        'sql_editor_id': _("Sql Editor Id"),
+        'tab_name': _("Tab Name"),
+        'limit_used': _("Limit Used"),
+        'select_as_cta_used': _("Select As Cta Used"),
+        'select_sql': _("Select Sql"),
+
+    }
 
 appbuilder.add_view(
     QueryView,
@@ -1061,7 +1151,8 @@ class DruidDatasourceModelView(SupersetModelView, DeleteMixin):  # noqa
     page_size = 10
     description_columns = {
         'offset': _("Timezone offset (in hours) for this datasource"),
-        'description': Markup(
+        # 'description': Markup(
+        'description': _(
             "Supports <a href='"
             "https://daringfireball.net/projects/markdown/'>markdown</a>"),
     }
@@ -1076,6 +1167,10 @@ class DruidDatasourceModelView(SupersetModelView, DeleteMixin):  # noqa
         'default_endpoint': _("Default Endpoint"),
         'offset': _("Time Offset"),
         'cache_timeout': _("Cache Timeout"),
+        'datasource_name': _("Datasource Name"),
+        'changed_on_': _("Changed On"),
+        'changed_by_': _("Changed By"),
+        'perm': _("Perm"),
     }
 
     def pre_add(self, datasource):
@@ -1698,7 +1793,8 @@ class Superset(BaseSupersetView):
 
     def save_slice(self, slc):
         session = db.session()
-        msg = "Slice [{}] has been saved".format(slc.slice_name)
+        # msg = "Slice [{}] has been saved".format(slc.slice_name)
+        msg = _("Slice ") + slc.slice_name + _(" has been saved")
         session.add(slc)
         session.commit()
         flash(msg, "info")
@@ -1706,12 +1802,15 @@ class Superset(BaseSupersetView):
     def overwrite_slice(self, slc):
         can_update = check_ownership(slc, raise_if_false=False)
         if not can_update:
-            flash("You cannot overwrite [{}]".format(slc), "danger")
+            msg = _("You cannot overwrite ") + slc
+            flash(msg, "danger")
+            # flash("You cannot overwrite [{}]".format(slc), "danger")
         else:
             session = db.session()
             session.merge(slc)
             session.commit()
-            msg = "Slice [{}] has been overwritten".format(slc.slice_name)
+            msg = _("Slice ") + slc.slice_name + _(" has been overwritten")
+            # msg = "Slice [{}] has been overwritten".format(slc.slice_name)
             flash(msg, "info")
 
     @api
@@ -3418,6 +3517,13 @@ class CssTemplateModelView(SupersetModelView, DeleteMixin):
     list_columns = ['template_name']
     edit_columns = ['template_name', 'css']
     add_columns = edit_columns
+    label_columns = {
+        'template_name': _("Template Name"),
+        'created_by': _("Created By"),
+        'created_on': _("Created On"),
+        'changed_by': _("Changed By"),
+        'changed_on': _("Changed On"),
+    }
 
 
 class CssTemplateAsyncModelView(CssTemplateModelView):
