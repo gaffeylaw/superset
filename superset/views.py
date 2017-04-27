@@ -3300,12 +3300,17 @@ class Superset(BaseSupersetView):
             sql = request.form.get('sql')
             # parse database name from sql
             import re
-            regex = '\w+\.\w+\.\w+'
-            pattern = re.compile(regex)
-            list = pattern.findall(sql)
-            database_name = list[0].split('.')[0]
-            sql = sql.replace(list[0], list[0][(list[0].find('.') + 1):])
-            print(sql)
+            database_name = 'main'
+            try:
+                regex = '\w+\.\w+\.\w+'
+                pattern = re.compile(regex)
+                list = pattern.findall(sql)
+                database_name = list[0].split('.')[0]
+                sql = sql.replace(list[0], list[0][(list[0].find('.') + 1):])
+            except Exception as e:
+                logging.exception(e)
+            logging.info("==========prompt by sql sets===========")
+            logging.info(sql)
 
             session = db.session()
             mydb = session.query(models.Database)\
