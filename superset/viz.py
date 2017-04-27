@@ -102,8 +102,6 @@ class BaseViz(object):
 
     @classmethod
     def flat_form_fields(cls):
-        print("========")
-        print(cls)
         l = set()
         for d in cls.fieldsets:
             for obj in d['fields']:
@@ -1643,6 +1641,12 @@ class echartsBarViz(BaseViz):
             ('is_avg', 'is_max_min'),
             'is_bar_value', 
         )
+    },{
+        'label': _("Options"),
+        'fields': (
+            'table_timestamp_format',
+            'row_limit',       
+        )
     })
     form_overrides = ({
         'groupby': {
@@ -1717,6 +1721,12 @@ class echartsBarHViz(BaseViz):
             ('is_avg', 'is_max_min'),
             'is_bar_value', 
         )
+    },{
+        'label': _("Options"),
+        'fields': (
+            'table_timestamp_format',
+            'row_limit',       
+        )
     })
     form_overrides = ({
         'groupby': {
@@ -1790,6 +1800,12 @@ class echartsLineViz(BaseViz):
         'fields': (
             ('is_avg', 'is_max_min'),
             'is_bar_value', 
+        )
+    },{
+        'label': _("Options"),
+        'fields': (
+            'table_timestamp_format',
+            'row_limit',       
         )
     })
     form_overrides = ({
@@ -1870,6 +1886,12 @@ class echartsLineBarViz(BaseViz):
         'fields': (
             ('is_avg', 'is_max_min'),
             'is_bar_value', 
+        )
+    },{
+        'label': _("Options"),
+        'fields': (
+            'table_timestamp_format',
+            'row_limit',       
         )
     })
     form_overrides = ({

@@ -54,12 +54,8 @@ SECRET_KEY = '\2\1thisismyscretkey\1\2\e\y\y\h'  # noqa
 SQLALCHEMY_DATABASE_URI = 'sqlite:///' + os.path.join(DATA_DIR, 'superset.db')
 # SQLALCHEMY_DATABASE_URI = 'mysql+pymysql://root:root@localhost/superset'
 # SQLALCHEMY_DATABASE_URI = 'postgresql://root:password@localhost/myapp'
-# SQLALCHEMY_DATABASE_URI = 'mysql+pymysql://root:123123@localhost:3306/superset'
+# SQLALCHEMY_DATABASE_URI = 'mysql+pymysql://root:123123@localhost:3306/supersetScheduler'
 # SQLALCHEMY_DATABASE_URI = 'mysql+pymysql://scm:123456Ms3@139.196.22.161:3306/superset'
-<<<<<<< HEAD
-SQLALCHEMY_DATABASE_URI = 'mysql+pymysql://presto:presto@172.20.0.179:3370/presto'
-=======
->>>>>>> 1255155ab4f7f9cb6fc3b967cd3ee8f158580189
 
 # The limit of queries fetched for query search
 QUERY_SEARCH_LIMIT = 1000
@@ -160,8 +156,8 @@ IMG_UPLOAD_URL = '/static/uploads/'
 # IMG_SIZE = (300, 200, True)
 
 CACHE_DEFAULT_TIMEOUT = None
-# CACHE_CONFIG = {'CACHE_TYPE': 'null'}
-CACHE_CONFIG = {'CACHE_TYPE': 'redis','CACHE_DEFAULT_TIMEOUT':30,'CACHE_KEY_PREFIX':'superset_','CACHE_REDIS_HOST':'localhost','CACHE_REDIS_PORT':6379,'CACHE_REDIS_DB':1,'CACHE_REDIS_URL':'redis://root@localhost:6379/1',}
+CACHE_CONFIG = {'CACHE_TYPE': 'null'}
+# CACHE_CONFIG = {'CACHE_TYPE': 'redis','CACHE_DEFAULT_TIMEOUT':30,'CACHE_KEY_PREFIX':'superset_','CACHE_REDIS_HOST':'localhost','CACHE_REDIS_PORT':6379,'CACHE_REDIS_DB':1,'CACHE_REDIS_URL':'redis://root@localhost:6379/1',}
 
 # CORS Options
 ENABLE_CORS = False
