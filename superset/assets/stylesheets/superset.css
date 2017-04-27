@@ -180,9 +180,9 @@ div.widget .chart-header a {
   display: none;
 }
 
-div.widget .slice_container {
+/*div.widget .slice_container {
   overflow: auto;
-}
+}*/
 
 .navbar .alert {
     padding: 5px 10px;

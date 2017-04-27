@@ -100,6 +100,252 @@ const visTypes = {
     },
   },
 
+  echarts_bar: {
+    label: localeMessage.echart_bar,
+    controlPanelSections: [
+      {
+        label: localeMessage.metrics_and_dim,
+        description: localeMessage.metrics_and_dim_desc,
+        fieldSetRows: [
+          ['metrics'],
+          ['groupby'],
+        ],
+      },
+      {
+        label: localeMessage.only_left,
+        description: localeMessage.only_left_desc,
+        fieldSetRows: [
+          ['only_left','y_metrics'],
+          ['y_format','y_degree'],
+          ['y_axis_name'],
+        ],
+      },
+      {
+        label: localeMessage.muti_y_axis,
+        description: localeMessage.muti_y_axis_desc,
+        fieldSetRows: [
+          ['y_left_metrics', 'y_right_metrics'],
+          ['y_left_format', 'y_right_format'],
+          ['y_left_degree', 'y_right_degree'],
+        ],
+      },
+      {
+        label: localeMessage.padding,
+        description: localeMessage.padding_desc,
+        fieldSetRows: [
+          ['top_padding', 'bottom_padding'],
+          ['left_padding', 'right_padding'],
+        ],
+      },
+      {
+        label: localeMessage.other_option,
+        description: localeMessage.other_option_desc,
+        fieldSetRows: [
+          ['is_avg', 'is_max_min'],
+          ['is_bar_value'],
+        ],
+      },
+      {
+        label: localeMessage.row_limit,
+        description: localeMessage.row_limit,
+        fieldSetRows: [
+          ['row_limit'],
+        ],
+      },
+    ],
+    fieldOverrides: {
+      groupby: {
+        label: localeMessage.x_axis,
+      }, 
+    },
+  },
+
+  echarts_bar_h: {
+    label: localeMessage.echart_bar_h,
+    controlPanelSections: [
+      {
+        label: localeMessage.metrics_and_dim,
+        description: localeMessage.metrics_and_dim_desc,
+        fieldSetRows: [
+          ['metrics'],
+          ['groupby'],
+        ],
+      },
+      {
+        label: localeMessage.only_bottom,
+        description: localeMessage.only_bottom_desc,
+        fieldSetRows: [
+          ['only_bottom','x_metrics'],
+          ['x_format','x_degree'],
+          ['x_axis_name'],
+        ],
+      },
+      {
+        label: localeMessage.muti_x_axis,
+        description: localeMessage.muti_x_axis_desc,
+        fieldSetRows: [
+          ['x_bottom_metrics', 'x_top_metrics'],
+          ['x_bottom_format', 'x_top_format'],
+          ['x_bottom_degree', 'x_top_degree'],
+        ],
+      },
+      {
+        label: localeMessage.padding,
+        description: localeMessage.padding_desc,
+        fieldSetRows: [
+          ['top_padding', 'bottom_padding'],
+          ['left_padding', 'right_padding'],
+        ],
+      },
+      {
+        label: localeMessage.other_option,
+        description: localeMessage.other_option_desc,
+        fieldSetRows: [
+          ['is_avg', 'is_max_min'],
+          ['is_bar_value'],
+        ],
+      },
+      {
+        label: localeMessage.row_limit,
+        description: localeMessage.row_limit,
+        fieldSetRows: [
+          ['row_limit'],
+        ],
+      },
+    ],
+    fieldOverrides: {
+      groupby: {
+        label: localeMessage.y_axis,
+      }, 
+    },
+  },
+  
+  echarts_line: {
+    label: localeMessage.echart_line,
+    controlPanelSections: [
+      {
+        label: localeMessage.metrics_and_dim,
+        description: localeMessage.metrics_and_dim_desc,
+        fieldSetRows: [
+          ['metrics'],
+          ['groupby'],
+        ],
+      },
+      {
+        label: localeMessage.only_left,
+        description: localeMessage.only_left_desc,
+        fieldSetRows: [
+          ['only_left','y_metrics'],
+          ['y_format','y_degree'],
+          ['y_axis_name'],
+        ],
+      },
+      {
+        label: localeMessage.muti_y_axis,
+        description: localeMessage.muti_y_axis_desc,
+        fieldSetRows: [
+          ['y_left_metrics', 'y_right_metrics'],
+          ['y_left_format', 'y_right_format'],
+          ['y_left_degree', 'y_right_degree'],
+        ],
+      },
+      {
+        label: localeMessage.padding,
+        description: localeMessage.padding_desc,
+        fieldSetRows: [
+          ['top_padding', 'bottom_padding'],
+          ['left_padding', 'right_padding'],
+        ],
+      },
+      {
+        label: localeMessage.other_option,
+        description: localeMessage.other_option_desc,
+        fieldSetRows: [
+          ['is_avg', 'is_max_min'],
+          ['is_bar_value'],
+        ],
+      },
+      {
+        label: localeMessage.row_limit,
+        description: localeMessage.row_limit,
+        fieldSetRows: [
+          ['row_limit'],
+        ],
+      },
+    ],
+    fieldOverrides: {
+      groupby: {
+        label: localeMessage.x_axis,
+      }, 
+    },
+  },
+
+  echarts_line_bar: {
+    label: localeMessage.echart_line_bar,
+    controlPanelSections: [
+      {
+        label: localeMessage.metrics_and_dim,
+        description: localeMessage.metrics_and_dim_desc,
+        fieldSetRows: [
+          ['metrics'],
+          ['groupby'],
+        ],
+      },
+      {
+        label: localeMessage.line_bar,
+        description: localeMessage.line_bar_desc,
+        fieldSetRows: [
+          ['line_choice','bar_choice'],
+        ],
+      },
+      {
+        label: localeMessage.only_left,
+        description: localeMessage.only_left_desc,
+        fieldSetRows: [
+          ['only_left','y_metrics'],
+          ['y_format','y_degree'],
+          ['y_axis_name'],
+        ],
+      },
+      {
+        label: localeMessage.muti_y_axis,
+        description: localeMessage.muti_y_axis_desc,
+        fieldSetRows: [
+          ['y_left_metrics', 'y_right_metrics'],
+          ['y_left_format', 'y_right_format'],
+          ['y_left_degree', 'y_right_degree'],
+        ],
+      },
+      {
+        label: localeMessage.padding,
+        description: localeMessage.padding_desc,
+        fieldSetRows: [
+          ['top_padding', 'bottom_padding'],
+          ['left_padding', 'right_padding'],
+        ],
+      },
+      {
+        label: localeMessage.other_option,
+        description: localeMessage.other_option_desc,
+        fieldSetRows: [
+          ['is_avg', 'is_max_min'],
+          ['is_bar_value'],
+        ],
+      },
+      {
+        label: localeMessage.row_limit,
+        description: localeMessage.row_limit,
+        fieldSetRows: [
+          ['row_limit'],
+        ],
+      },
+    ],
+    fieldOverrides: {
+      groupby: {
+        label: localeMessage.x_axis,
+      }, 
+    },
+  },
   // add new style
   ag_grid: {
     label: localeMessage.ag_grid,

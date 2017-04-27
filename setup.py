@@ -45,6 +45,15 @@ setup(
         'thrift>=0.9.3',
         'thrift-sasl>=0.2.1',
         'werkzeug==0.11.10',
+        # extra plugin
+        'pymysql==0.7.11',
+        'redis==2.10.5',
+        'apscheduler==3.3.1',
+        'Flask-Mail==0.9.1',
+        'beautifulsoup4==4.5.3',
+        'cairosvg==2.0.2',
+        # 'dryscrape==1.0',
+
     ],
     extras_require={
         'cors': ['Flask-Cors>=2.0.0'],

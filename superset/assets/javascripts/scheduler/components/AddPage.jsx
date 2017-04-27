@@ -1,6 +1,11 @@
 const $ = window.$ = require('jquery');
 import React from 'react';
 import Select from 'react-select';
+import { chooseMessage } from '../../explorev2/stores/language';
+import zh_CN from '../../explorev2/stores/zh_CN';
+import en_US from '../../explorev2/stores/en_US';
+
+const localMessage = chooseMessage();
 
 require('../app.css');
 
@@ -40,18 +45,18 @@ export default class AddPage extends React.PureComponent {
       dataType: 'json',
       success: function (data) {
         if (data.status === 'true') {
-          alert('save success!');
+          alert(localMessage.save_success);
           thisState.setState({
             schedulerDisabled: true,
             conditionDisabled: false,
             schedulerId: data.schedulerId,
           });
         } else {
-          alert('save failed');
+          alert(localMessage.save_failed);
         }
       },
       error: function () {
-        alert('unknown error');
+        alert(localMessage.unknown_error);
       },
     });
   }
@@ -73,14 +78,14 @@ export default class AddPage extends React.PureComponent {
       dataType: 'json',
       success: function (data) {
         if (data.status === 'true') {
-          alert('save success!');
+          alert(localMessage.save_success);
           location.href = '/superset/mySchedulers/list/1';
         } else {
-          alert('save failed');
+          alert(localMessage.save_failed);
         }
       },
       error: function () {
-        alert('unknown error');
+        alert(localMessage.unknown_error);
       },
     });
   }
@@ -138,113 +143,120 @@ export default class AddPage extends React.PureComponent {
       <div className="addDiv">
         <form onSubmit={this.submitScheduler.bind(this)}>
           <fieldset id="schedulerFieldSet">
-            <legend>调度设置</legend>
+            <legend>{localMessage.schedule_settings}</legend>
             <div className="col-lg-12">
-              <div className="col-lg-4 text-right">选择调度方式:</div>
+              <div className="col-lg-4 text-right">{localMessage.select_scheduling}:
+              </div>
               <div className="col-lg-8">
                 <select id="mode">
-                  <option selected>interval</option>
-                  <option>cron</option>
-                  <option>date</option>
+                  <option selected value="interval">{localMessage.interval}</option>
+                  <option value="cron">{localMessage.cron}</option>
+                  <option value="date">{localMessage.date}</option>
                 </select>
               </div>
             </div>
             <div className="col-lg-12" style={{ height: '120px' }}>
-              <div className="col-lg-4 text-right">调度表达式:</div>
+              <div className="col-lg-4 text-right">{localMessage.schedule_expression}:
+              </div>
               <div className="col-lg-8">
                 <textarea id="expr" cols="15" rows="4" required></textarea>
               </div>
             </div>
             <div className="col-lg-12" style={{ height: '80px' }}>
               <p style={{ marginLeft: '35px' }}>
-                注: 时间用 'YYYY-MM-DD hh:mm:ss'' 或者 'YYYY-MM-DD' 字符串表示, 多个条件用&&连接
+                {localMessage.schedule_tooltip}
               </p>
               <a
                 style={{ marginLeft: '200px' }}
                 target="_blank" href="http://debugo.com/apscheduler/"
-              >
-                cron表达式详情链接
+                >
+                {localMessage.cron_help_href}
               </a>
             </div>
             <div className="col-lg-12">
-              <button className="btn btn-primary" type="submit">保存</button>
+              <button className="btn btn-primary" type="submit">{localMessage.save}
+              </button>
             </div>
           </fieldset>
         </form>
 
         <form onSubmit={this.submitCondition.bind(this)}>
           <fieldset id="conditionFieldSet" disabled style={{ width: '600px' }}>
-            <legend>条件设置</legend>
+            <legend>{localMessage.condition_setting}</legend>
             <div className="col-lg-12">
-              <div className="col-lg-3 text-right">监测仪表盘:</div>
+              <div className="col-lg-3 text-right">{localMessage.monitor_dashboard}:
+              </div>
               <div className="col-lg-9">
                 <Select
                   multi={false}
                   name="select-column"
-                  placeholder="选择仪表盘"
+                  placeholder={localMessage.choose_dash}
                   options={this.state.dashboards.map((m) => ({ value: m.id, label: m.name }))}
                   value={this.state.dashboard}
                   autosize={false}
                   onChange={this.changeDashboard.bind(this)}
-                />
+                  />
               </div>
             </div>
             <div className="col-lg-12">
-              <div className="col-lg-3 text-right">监测切片:</div>
+              <div className="col-lg-3 text-right">{localMessage.monitor_slice}:</div>
               <div className="col-lg-9">
                 <Select
                   multi={false}
                   name="select-column"
-                  placeholder="选择监测切片"
+                  placeholder={localMessage.choose_monitor_slice}
                   options={this.state.slices.map((m) => ({ value: m.id, label: m.name }))}
                   value={this.state.slice}
                   autosize={false}
                   onChange={this.changeSlice.bind(this)}
-                />
+                  />
               </div>
             </div>
             <div className="col-lg-12">
-              <div className="col-lg-3 text-right">监测指标:</div>
+              <div className="col-lg-3 text-right">{localMessage.monitor_metric}:</div>
               <div className="col-lg-9">
                 <Select
                   multi={false}
                   name="select-column"
-                  placeholder="选择指标"
+                  placeholder={localMessage.choose_metric}
                   options={this.state.metrics.map((m) => ({ value: m, label: m }))}
                   value={this.state.metric}
                   autosize={false}
                   onChange={this.changeMetric.bind(this)}
-                />
+                  />
               </div>
             </div>
             <div className="col-lg-12">
-              <div className="col-lg-3 text-right">指定表达式:</div>
+              <div className="col-lg-3 text-right">{localMessage.specifies_expression}:
+              </div>
               <div className="col-lg-9">
                 <input id="conditionExpr" type="text" required style={{ width: '413px' }} />
               </div>
             </div>
             <div className="col-lg-12">
-              <div className="col-lg-3 text-right">邮件发送切片:</div>
+              <div className="col-lg-3 text-right">{localMessage.mail_send_slice}:</div>
               <div className="col-lg-9">
                 <Select
                   multi={false}
                   name="select-column"
-                  placeholder="选择发送切片"
+                  placeholder={localMessage.choose_send_slice}
                   options={this.state.sendSlices.map((m) => ({ value: m.id, label: m.name }))}
                   value={this.state.sendSlice}
                   autosize={false}
                   onChange={this.changeSendSlice.bind(this)}
-                />
+                  />
               </div>
             </div>
             <div className="col-lg-12">
-              <div className="col-lg-3 text-right">收件人地址:</div>
+              <div className="col-lg-3 text-right">{localMessage.receiver_address}:
+              </div>
               <div className="col-lg-9">
                 <input id="receiveAddress" type="text" required style={{ width: '413px' }} />
               </div>
             </div>
             <div className="col-lg-12">
-              <button className="btn btn-primary" type="submit">保存</button>
+              <button className="btn btn-primary" type="submit">{localMessage.save}
+              </button>
             </div>
           </fieldset>
         </form>

@@ -9,7 +9,8 @@ const propTypes = {
   localMessage: PropTypes.object.isRequired,
 };
 
-function SliceCell({ expandedSlices, removeSlice, slice, doPrint, isManager, localMessage }) {
+function SliceCell({ expandedSlices, removeSlice, slice, doPrint,
+  getCsv, isManager, localMessage }) {
   return (
     <div className="slice-cell" id={`${slice.token}-cell`}>
       <div className="chart-header">
@@ -62,8 +63,11 @@ function SliceCell({ expandedSlices, removeSlice, slice, doPrint, isManager, loc
                       onClick={() => { doPrint(slice); }}
                     />
                   </a>
-                  <a title={localMessage.export_csv} data-toggle="tooltip" href={slice.csv_endpoint}>
-                    <i className="fa fa-download" />
+                  <a title={localMessage.export_csv} data-toggle="tooltip">
+                    <i
+                      className="fa fa-download"
+                      onClick={() => { getCsv(slice); }}
+                    />
                   </a>
                 </span>
               }

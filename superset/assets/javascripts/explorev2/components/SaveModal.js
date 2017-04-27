@@ -26,7 +26,7 @@ class SaveModal extends React.Component {
       newSliceName: '',
       dashboards: [],
       alert: null,
-      action: 'overwrite',
+      action: 'saveas',
       addToDash: 'noSave',
     };
   }

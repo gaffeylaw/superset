@@ -321,7 +321,7 @@ class Slice(Model, AuditMixinNullable, ImportMixin):
     def edit_url(self):
         return "/slicemodelview/edit/{}".format(self.id)
 
-    @property
+    @renders('slice_name')
     def slice_link(self):
         url = self.slice_url
         name = escape(self.slice_name)
@@ -460,6 +460,7 @@ class Dashboard(Model, AuditMixinNullable, ImportMixin):
         metadata = MetaData(bind=self.get_sqla_engine())
         return metadata.reflect()
 
+    @renders('dashboard_title')
     def dashboard_link(self):
         title = escape(self.dashboard_title)
         return Markup(
@@ -2697,11 +2698,11 @@ class Portal(Model, AuditMixinNullable, ImportMixin):
     def __repr__(self):
         return self.portal_name
 
-    @property
+    @renders('portal_name')
     def portal_link(self):
          return Markup('<a href="/superset/portal/{self.id}/edit">{self.portal_name}</a>'.format(**locals()))
 
-    @property
+    @renders('portal_name')
     def portal_link2(self):
          return Markup('<a target="_blank" href="/superset/portal/{self.id}/show">{self.portal_name}</a>'.format(**locals()))
 

@@ -207,7 +207,7 @@ def sync_role_definitions():
         if (
                 p.view_menu.name in {'Dashboards'} or
                 p.permission.name in {
-                    'can_explore', 'can_explore_json', 'can_slice', 'can_created_dashboards', 'can_fave_dashboards',
+                    'can_explore', 'can_explore_json', 'can_slice', 'can_dashboard', 'can_created_dashboards', 'can_fave_dashboards',
                     'all_datasource_access', 'all_database_access', 'can_profile'} or
                 (p.permission.name in {'can_list', 'can_show', 'can_download'} and p.view_menu.name in {'DashboardModelView'}) or
                 (p.permission.name in {'can_list', 'can_show', 'can_download'} and p.view_menu.name in {'DashboardModelViewAsync'}) or

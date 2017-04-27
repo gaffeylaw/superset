@@ -307,6 +307,15 @@ class DashboardFilter(SupersetFilter):
         return query
 
 
+class PortalFilter(SupersetFilter):
+    def apply(self, query, func):  # noqa
+        if self.has_all_datasource_access():
+            return query
+        portal_perms = self.get_view_menus('portal_access')
+        query = query.filter(models.Portal.portal_name.in_(portal_perms))
+        return query
+
+
 def validate_json(form, field):  # noqa
     try:
         json.loads(field.data)
@@ -334,7 +343,7 @@ class DeleteMixin(object):
 
 
 class SupersetModelView(ModelView):
-    page_size = 500
+    page_size = 10
 
 
 class TableColumnInlineView(CompactCRUDMixin, SupersetModelView):  # noqa
@@ -349,16 +358,28 @@ class TableColumnInlineView(CompactCRUDMixin, SupersetModelView):  # noqa
     list_columns = [
         'column_name', 'type', 'groupby', 'filterable', 'count_distinct',
         'sum', 'min', 'max', 'is_dttm']
-    page_size = 500
+    page_size = 10
     description_columns = {
         'is_dttm': (_(
             "Whether to make this column available as a "
             "[Time Granularity] option, column has to be DATETIME or "
             "DATETIME-like")),
-        'expression': utils.markdown(
+        # 'expression': utils.markdown(
+        #     "a valid SQL expression as supported by the underlying backend. "
+        #     "Example: `substr(name, 1, 1)`", True),
+        'expression': (_(
             "a valid SQL expression as supported by the underlying backend. "
-            "Example: `substr(name, 1, 1)`", True),
-        'python_date_format': utils.markdown(Markup(
+            "Example: `substr(name, 1, 1)`")),
+        # 'python_date_format': utils.markdown(Markup(
+        #     "The pattern of timestamp format, use "
+        #     "<a href='https://docs.python.org/2/library/"
+        #     "datetime.html#strftime-strptime-behavior'>"
+        #     "python datetime string pattern</a> "
+        #     "expression. If time is stored in epoch "
+        #     "format, put `epoch_s` or `epoch_ms`. Leave `Database Expression` "
+        #     "below empty if timestamp is stored in "
+        #     "String or Integer(epoch) type"), True),
+        'python_date_format': (_(
             "The pattern of timestamp format, use "
             "<a href='https://docs.python.org/2/library/"
             "datetime.html#strftime-strptime-behavior'>"
@@ -366,8 +387,9 @@ class TableColumnInlineView(CompactCRUDMixin, SupersetModelView):  # noqa
             "expression. If time is stored in epoch "
             "format, put `epoch_s` or `epoch_ms`. Leave `Database Expression` "
             "below empty if timestamp is stored in "
-            "String or Integer(epoch) type"), True),
-        'database_expression': utils.markdown(
+            "String or Integer(epoch) type")),
+        # 'database_expression': utils.markdown(
+            'database_expression': (_(
             "The database expression to cast internal datetime "
             "constants to database date/timestamp type according to the DBAPI. "
             "The expression should follow the pattern of "
@@ -375,7 +397,7 @@ class TableColumnInlineView(CompactCRUDMixin, SupersetModelView):  # noqa
             "The string should be a python string formatter \n"
             "`Ex: TO_DATE('{}', 'YYYY-MM-DD HH24:MI:SS')` for Oracle"
             "Superset uses default expression based on DB URI if this "
-            "field is blank.", True),
+            "field is blank.")),
     }
     label_columns = {
         'column_name': _("Column"),
@@ -391,7 +413,8 @@ class TableColumnInlineView(CompactCRUDMixin, SupersetModelView):  # noqa
         'expression': _("Expression"),
         'is_dttm': _("Is temporal"),
         'python_date_format': _("Datetime Format"),
-        'database_expression': _("Database Expression")
+        'database_expression': _("Database Expression"),
+        'type': _("Type")
     }
 appbuilder.add_view_no_menu(TableColumnInlineView)
 
@@ -406,7 +429,7 @@ class DruidColumnInlineView(CompactCRUDMixin, SupersetModelView):  # noqa
         'column_name', 'type', 'groupby', 'filterable', 'count_distinct',
         'sum', 'min', 'max']
     can_delete = False
-    page_size = 500
+    page_size = 10
     label_columns = {
         'column_name': _("Column"),
         'type': _("Type"),
@@ -417,16 +440,23 @@ class DruidColumnInlineView(CompactCRUDMixin, SupersetModelView):  # noqa
         'sum': _("Sum"),
         'min': _("Min"),
         'max': _("Max"),
+        'created_by': _("Created By"),
+        'created_on': _("Created On"),
+        'changed_by': _("Changed By"),
+        'changed_on': _("Changed On"),
+        'description': _("Description"),
+        'dimension_spec_json': _("Dimension Spec Json")
+
     }
     description_columns = {
-        'dimension_spec_json': utils.markdown(
+        # 'dimension_spec_json': utils.markdown(
+            'dimension_spec_json': (_(
             "this field can be used to specify  "
             "a `dimensionSpec` as documented [here]"
             "(http://druid.io/docs/latest/querying/dimensionspecs.html). "
             "Make sure to input valid JSON and that the "
             "`outputName` matches the `column_name` defined "
-            "above.",
-            True),
+            "above.")),
     }
 
     def post_update(self, col):
@@ -446,23 +476,24 @@ class SqlMetricInlineView(CompactCRUDMixin, SupersetModelView):  # noqa
         'metric_name', 'description', 'verbose_name', 'metric_type',
         'expression', 'table', 'd3format', 'is_restricted']
     description_columns = {
-        'expression': utils.markdown(
+        # 'expression': utils.markdown(
+            'expression': (_(
             "a valid SQL expression as supported by the underlying backend. "
-            "Example: `count(DISTINCT userid)`", True),
+            "Example: `count(DISTINCT userid)`")),
         'is_restricted': _("Whether the access to this metric is restricted "
                            "to certain roles. Only roles with the permission "
                            "'metric access on XXX (the name of this metric)' "
                            "are allowed to access this metric"),
-        'd3format': utils.markdown(
+        # 'd3format': utils.markdown(
+        'd3format': (_(
             "d3 formatting string as defined [here]"
             "(https://github.com/d3/d3-format/blob/master/README.md#format). "
             "For instance, this default formatting applies in the Table "
             "visualization and allow for different metric to use different "
-            "formats", True
-        ),
+            "formats")),
     }
     add_columns = edit_columns
-    page_size = 500
+    page_size = 10
     label_columns = {
         'metric_name': _("Metric"),
         'description': _("Description"),
@@ -488,16 +519,16 @@ class DruidMetricInlineView(CompactCRUDMixin, SupersetModelView):  # noqa
         'metric_name', 'description', 'verbose_name', 'metric_type', 'json',
         'datasource', 'd3format', 'is_restricted']
     add_columns = edit_columns
-    page_size = 500
+    page_size = 10
     validators_columns = {
         'json': [validate_json],
     }
     description_columns = {
-        'metric_type': utils.markdown(
+        # 'metric_type': utils.markdown(
+        'metric_type': (_(
             "use `postagg` as the metric type if you are defining a "
             "[Druid Post Aggregation]"
-            "(http://druid.io/docs/latest/querying/post-aggregations.html)",
-            True),
+            "(http://druid.io/docs/latest/querying/post-aggregations.html)")),
         'is_restricted': _("Whether the access to this metric is restricted "
                            "to certain roles. Only roles with the permission "
                            "'metric access on XXX (the name of this metric)' "
@@ -510,6 +541,8 @@ class DruidMetricInlineView(CompactCRUDMixin, SupersetModelView):  # noqa
         'metric_type': _("Type"),
         'json': _("JSON"),
         'datasource': _("Druid Datasource"),
+        'd3format': _("D3format"),
+        'is_restricted': _("Is Restricted"),
     }
 
     def post_add(self, metric):
@@ -548,13 +581,15 @@ class DatabaseView(SupersetModelView, DeleteMixin):  # noqa
     add_template = "superset/models/database/add.html"
     edit_template = "superset/models/database/edit.html"
     base_order = ('changed_on', 'desc')
+    page_size = 10
     description_columns = {
-        'sqlalchemy_uri': utils.markdown(
+        # 'sqlalchemy_uri': utils.markdown(
+        'sqlalchemy_uri': (_(
             "Refer to the "
             "[SqlAlchemy docs]"
             "(http://docs.sqlalchemy.org/en/rel_1_0/core/engines.html#"
             "database-urls) "
-            "for more information on how to structure your URI.", True),
+            "for more information on how to structure your URI.")),
         'expose_in_sqllab': _("Expose this DB in SQL Lab"),
         'allow_run_sync': _(
             "Allow users to run synchronous queries, this is the default "
@@ -572,7 +607,8 @@ class DatabaseView(SupersetModelView, DeleteMixin):  # noqa
         'force_ctas_schema': _(
             "When allowing CREATE TABLE AS option in SQL Lab, "
             "this option forces the table to be created in this schema"),
-        'extra': utils.markdown(
+        # 'extra': utils.markdown(
+        'extra': (_(
             "JSON string containing extra configuration elements. "
             "The ``engine_params`` object gets unpacked into the "
             "[sqlalchemy.create_engine]"
@@ -580,7 +616,7 @@ class DatabaseView(SupersetModelView, DeleteMixin):  # noqa
             "sqlalchemy.create_engine) call, while the ``metadata_params`` "
             "gets unpacked into the [sqlalchemy.MetaData]"
             "(http://docs.sqlalchemy.org/en/rel_1_0/core/metadata.html"
-            "#sqlalchemy.schema.MetaData) call. ", True),
+            "#sqlalchemy.schema.MetaData) call. ")),
     }
     label_columns = {
         'expose_in_sqllab': _("Expose in SQL Lab"),
@@ -593,6 +629,16 @@ class DatabaseView(SupersetModelView, DeleteMixin):  # noqa
         'sqlalchemy_uri': _("SQLAlchemy URI"),
         'cache_timeout': _("Cache Timeout"),
         'extra': _("Extra"),
+        'backend': _("Backend"),
+        'allow_run_sync': _("Allow Run Sync"),
+        'allow_run_async': _("Allow Run Async"),
+        'allow_dml': _("Allow DML"),
+        'perm': _("Perm"),
+        'tables': _("Tables"),
+        'created_by': _("Created By"),
+        'created_on': _("Created On"),
+        'changed_by': _("Changed By"),
+        'changed_on': _("Changed On")
     }
 
     def pre_add(self, db):
@@ -657,6 +703,7 @@ class TableModelView(SupersetModelView, DeleteMixin):  # noqa
     show_columns = edit_columns + ['perm']
     related_views = [TableColumnInlineView, SqlMetricInlineView]
     base_order = ('changed_on', 'desc')
+    page_size = 10
     description_columns = {
         'offset': _("Timezone offset (in hours) for this datasource"),
         'table_name': _(
@@ -664,7 +711,8 @@ class TableModelView(SupersetModelView, DeleteMixin):  # noqa
         'schema': _(
             "Schema, as used only in some databases like Postgres, Redshift "
             "and DB2"),
-        'description': Markup(
+        # 'description': Markup(
+        'description': _(
             "Supports <a href='https://daringfireball.net/projects/markdown/'>"
             "markdown</a>"),
         'sql': _(
@@ -683,6 +731,11 @@ class TableModelView(SupersetModelView, DeleteMixin):  # noqa
         'default_endpoint': _("Default Endpoint"),
         'offset': _("Offset"),
         'cache_timeout': _("Cache Timeout"),
+        'perm': _("Perm"),
+        'description': _("Description"),
+        'table_name': _("Table Name"),
+        'main_dttm_col': _("Main Dttm Col"),
+        'owner': _("Owner")
     }
 
     def pre_add(self, table):
@@ -740,6 +793,7 @@ class AccessRequestsModelView(SupersetModelView, DeleteMixin):
         'roles_with_datasource', 'created_on']
     order_columns = ['username', 'datasource_link']
     base_order = ('changed_on', 'desc')
+    page_size = 10
     label_columns = {
         'username': _("User"),
         'user_roles': _("User Roles"),
@@ -747,6 +801,11 @@ class AccessRequestsModelView(SupersetModelView, DeleteMixin):
         'datasource_link': _("Datasource"),
         'roles_with_datasource': _("Roles to grant"),
         'created_on': _("Created On"),
+        'created_by': _("Created By"),
+        'changed_on': _('Changed On'),
+        'changed_by': _("Changed By"),
+        'datasource_id': _("Datasource Id"),
+        'datasource_type': _("Datasource Type")
     }
 
 appbuilder.add_view(
@@ -775,6 +834,13 @@ class DruidClusterModelView(SupersetModelView, DeleteMixin):  # noqa
         'broker_host': _("Broker Host"),
         'broker_port': _("Broker Port"),
         'broker_endpoint': _("Broker Endpoint"),
+        'cache_timeout': _("Cache Timeout"),
+        'metadata_last_refreshed': _("Metadata Last Refreshed"),
+        'created_by': _("Created By"),
+        'created_on': _("Created On"),
+        'changed_by': _("Changed By"),
+        'changed_on': _("Changed On"),
+        'datasources': _("Druid Datasources"),
     }
 
     def pre_add(self, cluster):
@@ -807,8 +873,11 @@ class SliceModelView(SupersetModelView, DeleteMixin):  # noqa
         'slice_name', 'description', 'viz_type', 'owners', 'dashboards',
         'params', 'cache_timeout']
     base_order = ('changed_on', 'desc')
+    order_columns = ['creator','modified']
+    page_size = 10
     description_columns = {
-        'description': Markup(
+        # 'description': Markup(
+        'description': _(
             "The content here can be displayed as widget headers in the "
             "dashboard view. Supports "
             "<a href='https://daringfireball.net/projects/markdown/'>"
@@ -836,6 +905,14 @@ class SliceModelView(SupersetModelView, DeleteMixin):  # noqa
         'slice_name': _("Name"),
         'table': _("Table"),
         'viz_type': _("Visualization Type"),
+        'datasource_id': _("Datasource Id"),
+        'datasource_type': _("Datasource Type"),
+        'datasource_name': _("Datasource Name"),
+        'created_by': _("Created By"),
+        'created_on': _("Created On"),
+        'changed_by': _("Changed By"),
+        'changed_on': _("Changed On"),
+        'perm': _("Perm"),
     }
 
     def pre_update(self, obj):
@@ -900,6 +977,7 @@ class DashboardModelView(SupersetModelView, DeleteMixin):  # noqa
     show_columns = edit_columns + ['table_names']
     add_columns = edit_columns
     base_order = ('changed_on', 'desc')
+    page_size = 10
     description_columns = {
         'position_json': _(
             "This json object describes the positioning of the widgets in "
@@ -998,11 +1076,15 @@ class LogModelView(SupersetModelView):
     list_columns = ('user', 'action', 'dttm')
     edit_columns = ('user', 'action', 'dttm', 'json')
     base_order = ('dttm', 'desc')
+    page_size = 10
     label_columns = {
         'user': _("User"),
         'action': _("Action"),
         'dttm': _("dttm"),
         'json': _("JSON"),
+        'dashboard_id': _("Dashboard Id"),
+        'dt': _("DT"),
+        'slice_id': _("Slice Id"),
     }
 
 appbuilder.add_view(
@@ -1017,6 +1099,30 @@ appbuilder.add_view(
 class QueryView(SupersetModelView):
     datamodel = SQLAInterface(models.Query)
     list_columns = ['user', 'database', 'status', 'start_time', 'end_time']
+    label_columns = {
+        'user': _("User"),
+        'database': _("Database"),
+        'status': _("Status"),
+        'start_time': _("Start Time"),
+        'end_time': _("End Time"),
+        'ctas': _("Select As Cta"),
+        'results_key': _("Results Key"),
+        'error_message': _("Error Message"),
+        'changed_on': _("Changed On"),
+        'tmp_table_name': _("Tmp Table Name"),
+        'rows': _("Rows"),
+        'client_id': _("Client Id"),
+        'limit': _("Row limit"),
+        'executed_sql': _("Executed Sql"),
+        'limit_reached': _("Limit reached"),
+        'progress': _("Progress"),
+        'sql_editor_id': _("Sql Editor Id"),
+        'tab_name': _("Tab Name"),
+        'limit_used': _("Limit Used"),
+        'select_as_cta_used': _("Select As Cta Used"),
+        'select_sql': _("Select Sql"),
+
+    }
 
 appbuilder.add_view(
     QueryView,
@@ -1041,11 +1147,12 @@ class DruidDatasourceModelView(SupersetModelView, DeleteMixin):  # noqa
         'cache_timeout']
     add_columns = edit_columns
     show_columns = add_columns + ['perm']
-    page_size = 500
     base_order = ('datasource_name', 'asc')
+    page_size = 10
     description_columns = {
         'offset': _("Timezone offset (in hours) for this datasource"),
-        'description': Markup(
+        # 'description': Markup(
+        'description': _(
             "Supports <a href='"
             "https://daringfireball.net/projects/markdown/'>markdown</a>"),
     }
@@ -1060,6 +1167,10 @@ class DruidDatasourceModelView(SupersetModelView, DeleteMixin):  # noqa
         'default_endpoint': _("Default Endpoint"),
         'offset': _("Time Offset"),
         'cache_timeout': _("Cache Timeout"),
+        'datasource_name': _("Datasource Name"),
+        'changed_on_': _("Changed On"),
+        'changed_by_': _("Changed By"),
+        'perm': _("Perm"),
     }
 
     def pre_add(self, datasource):
@@ -1113,7 +1224,7 @@ class PortalModelManageView(SupersetModelView, DeleteMixin):  # noqa
         'footer', 'portal_href']
     add_columns = edit_columns
     show_columns = add_columns
-    page_size = 500
+    page_size = 10
     label_columns = {
         'portal_link': _("portal_name"),
         'portal_name': _("portal_name"),
@@ -1125,6 +1236,12 @@ class PortalModelManageView(SupersetModelView, DeleteMixin):  # noqa
         'portal_href': _("portal_href"),
     }
 
+    def pre_add(self, portal):
+        security.merge_perm(sm, 'portal_access', portal.portal_name)
+
+    def pre_update(self, portal):
+        self.pre_add(portal)
+
 
 class PortalModelView(SupersetModelView, DeleteMixin):  # noqa
     datamodel = SQLAInterface(models.Portal)
@@ -1135,7 +1252,8 @@ class PortalModelView(SupersetModelView, DeleteMixin):  # noqa
         'footer', 'portal_href']
     add_columns = edit_columns
     show_columns = add_columns
-    page_size = 500
+    base_filters = [['portal_name', PortalFilter, lambda: []]]
+    page_size = 10
     label_columns = {
         'portal_link2': _("portal_name"),
         'portal_name': _("portal_name"),
@@ -1146,6 +1264,7 @@ class PortalModelView(SupersetModelView, DeleteMixin):  # noqa
         'footer': _("footer"),
         'portal_href': _("portal_href"),
     }
+    
 
 appbuilder.add_view(
     PortalModelManageView,
@@ -1554,7 +1673,8 @@ class Superset(BaseSupersetView):
                 mimetype="application/csv")
         elif request.args.get("standalone") == "true":
             return self.render_template("superset/standalone.html", viz=viz_obj, standalone_mode=True)
-        elif request.args.get("V2") == "true" or is_in_explore_v2_beta:
+        else:
+        ## elif request.args.get("V2") == "true" or is_in_explore_v2_beta:
             slices = db.session.query(models.Slice).all()
             dashboards = db.session.query(models.Dashboard).all()
             
@@ -1581,14 +1701,14 @@ class Superset(BaseSupersetView):
                 bootstrap_data=json.dumps(bootstrap_data),
                 slice=slc,
                 table_name=table_name)
-        else:
-            return self.render_template(
-                "superset/explore.html",
-                viz=viz_obj, slice=slc, datasources=datasources,
-                can_add=slice_add_perm, can_edit=slice_edit_perm,
-                can_download=slice_download_perm,
-                userid=g.user.get_id() if g.user else ''
-            )
+        # else:
+        #     return self.render_template(
+        #         "superset/explore.html",
+        #         viz=viz_obj, slice=slc, datasources=datasources,
+        #         can_add=slice_add_perm, can_edit=slice_edit_perm,
+        #         can_download=slice_download_perm,
+        #         userid=g.user.get_id() if g.user else ''
+        #     )
 
     def save_or_overwrite_slice(
             self, args, slc, slice_add_perm, slice_edit_perm):
@@ -1603,7 +1723,10 @@ class Superset(BaseSupersetView):
             del d['previous_viz_type']
 
         as_list = ('metrics', 'groupby', 'columns', 'all_columns',
-                   'mapbox_label', 'order_by_cols')
+                   'mapbox_label', 'order_by_cols','y_metrics',
+                   'y_left_metrics', 'y_right_metrics', 'x_metrics',
+                   'x_bottom_metrics', 'x_top_metrics', 'line_choice',
+                   'bar_choice')
         for k in d:
             v = d.get(k)
             if k in as_list and not isinstance(v, list):
@@ -1615,7 +1738,7 @@ class Superset(BaseSupersetView):
         datasource_id = args.get('datasource_id')
 
         if action in ('saveas'):
-            d.pop('slice_id')  # don't save old slice_id
+            ## d.pop('slice_id')  # don't save old slice_id
             slc = models.Slice(owners=[g.user] if g.user else [])
 
         slc.params = json.dumps(d, indent=4, sort_keys=True)
@@ -2581,6 +2704,14 @@ class Superset(BaseSupersetView):
         field_options = {
             'datasource': [(d.id, d.full_name) for d in datasources],
             'metrics': datasource.metrics_combo,
+            'y_metrics': datasource.metrics_combo,
+            'y_left_metrics': datasource.metrics_combo,
+            'y_right_metrics': datasource.metrics_combo,
+            'x_metrics': datasource.metrics_combo,
+            'x_bottom_metrics': datasource.metrics_combo,
+            'x_top_metrics': datasource.metrics_combo,
+            'line_choice': datasource.metrics_combo,
+            'bar_choice': datasource.metrics_combo,
             'line': datasource.metrics_combo,
             'bar': datasource.metrics_combo,
             'area': datasource.metrics_combo,
@@ -3386,6 +3517,13 @@ class CssTemplateModelView(SupersetModelView, DeleteMixin):
     list_columns = ['template_name']
     edit_columns = ['template_name', 'css']
     add_columns = edit_columns
+    label_columns = {
+        'template_name': _("Template Name"),
+        'created_by': _("Created By"),
+        'created_on': _("Created On"),
+        'changed_by': _("Changed By"),
+        'changed_on': _("Changed On"),
+    }
 
 
 class CssTemplateAsyncModelView(CssTemplateModelView):

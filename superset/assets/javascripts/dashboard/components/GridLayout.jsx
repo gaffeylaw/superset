@@ -107,6 +107,25 @@ class GridLayout extends React.Component {
     }
   }
 
+  getCsv(slice) {
+    const params = JSON.parse(this.getQueryString("preselect_filters"));
+    var filter = {};
+    for(var k in params) {
+      for(var m in params[k]) {
+        filter[m] = params[k][m];
+      }
+    }
+    var filterStr = JSON.stringify(filter);
+    location.href = slice.csv_endpoint + '&extra_filters=' + filterStr;
+  }
+
+  // get url param
+  getQueryString(name) {
+    const reg = new RegExp('(^|&)' + name + '=([^&]*)(&|$)', 'i');
+    const r = window.location.search.substr(1).match(reg);
+    if (r != null) return unescape(decodeURI(r[2]));
+    return null;
+  }
   
 
   serialize() {
@@ -145,6 +164,7 @@ class GridLayout extends React.Component {
               removeSlice={this.removeSlice.bind(this, slice.slice_id)}
               expandedSlices={this.props.dashboard.metadata.expanded_slices}
               doPrint={this.doPrint.bind(this, slice)}
+              getCsv={this.getCsv.bind(this, slice)}
               isManager={this.props.isManager}
               localMessage={this.props.localMessage}
             />
