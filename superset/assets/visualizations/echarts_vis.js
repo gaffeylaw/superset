@@ -10,8 +10,6 @@ require('./roma.js');
 require('./infographic.js');
 require('./shine.js');
 
-// CSS
-
 const minBarWidth = 15;
 const animationTime = 1000;
 
@@ -78,6 +76,24 @@ function echartsVis(slice) {
 
       let line_choice = [];
       let bar_choice = [];
+
+      let is_groupby = '';
+      let circle_setup = [];
+      let label_position = '';
+      let label_format = '';
+      let pie_data = [];
+      let circle_type = '';
+      let rose_type = '';
+
+      let inner_mertics = [];
+      let outer_metrics = [];
+      let inner_label_position = '';
+      let outer_label_format = '';
+      let outer_label_position = '';
+      let inner_label_format = '';
+      let inner_data = [];
+      let outer_data = [];
+
 
       const drawGraph = function () {
         switch (vizType) {
@@ -235,6 +251,7 @@ function echartsVis(slice) {
                 
               }
             }
+
             // 4.setup the series from the fd.metrics and dt.records
             // 4.0.the axis
             if (y_metrics && only_left) {
@@ -242,9 +259,14 @@ function echartsVis(slice) {
                 const yAxisValue = [];
 
                 dt.records.forEach(d => {
-                  yAxisValue.push(d[y_metrics[i]])
+                  if (!isNaN(d[y_metrics[i]])) {
+                    yAxisValue.push(slice.d3format(y_metrics[i], d[y_metrics[i]]))
+                  } else {
+                    yAxisValue.push(d[y_metrics[i]])
+                  }
+                  // yAxisValue.push(d[y_metrics[i]])
                 })
-                
+
                 if (is_avg) {
                   series.push({
                     name: y_metrics[i],
@@ -306,7 +328,12 @@ function echartsVis(slice) {
                 const yAxisValue = [];
 
                 dt.records.forEach(d => {
-                  yAxisValue.push(d[y_left_metrics[i]])
+                  if (!isNaN(d[y_left_metrics[i]])) {
+                    yAxisValue.push(slice.d3format(y_left_metrics[i], d[y_left_metrics[i]]))
+                  } else {
+                    yAxisValue.push(d[y_left_metrics[i]])
+                  }
+                  // yAxisValue.push(d[y_left_metrics[i]])
                 })
                 
                 if (is_avg) {
@@ -373,7 +400,12 @@ function echartsVis(slice) {
                 const yAxisValue = [];
 
                 dt.records.forEach(d => {
-                  yAxisValue.push(d[y_right_metrics[i]])
+                  if (!isNaN(d[y_right_metrics[i]])) {
+                    yAxisValue.push(slice.d3format(y_right_metrics[i], d[y_right_metrics[i]]))
+                  } else {
+                    yAxisValue.push(d[y_right_metrics[i]])
+                  }
+                  // yAxisValue.push(d[y_right_metrics[i]])
                 })
                 
                 if (is_avg) {
@@ -434,7 +466,11 @@ function echartsVis(slice) {
                 
               }
             }
-
+            console.log('******************');
+            console.log(dt);
+            console.log('******************');
+            console.log(series);
+            console.log('******************');
             var option = {
                 height: height * 0.8 - steps,
                 grid: {
@@ -632,7 +668,11 @@ function echartsVis(slice) {
                 const xAxisValue = [];
 
                 dt.records.forEach(d => {
-                  xAxisValue.push(d[x_metrics[i]])
+                  if (!isNaN(d[x_metrics[i]])) {
+                    xAxisValue.push(slice.d3format(x_metrics[i], d[x_metrics[i]]))
+                  } else {
+                    xAxisValue.push(d[x_metrics[i]])
+                  }
                 })
                 
                 if (is_avg) {
@@ -696,7 +736,11 @@ function echartsVis(slice) {
                 const xAxisValue = [];
 
                 dt.records.forEach(d => {
-                  xAxisValue.push(d[x_bottom_metrics[i]])
+                  if (!isNaN(d[x_bottom_metrics[i]])) {
+                    xAxisValue.push(slice.d3format(x_bottom_metrics[i], d[x_bottom_metrics[i]]))
+                  } else {
+                    xAxisValue.push(d[x_bottom_metrics[i]])
+                  }
                 })
                 
                 if (is_avg) {
@@ -763,7 +807,11 @@ function echartsVis(slice) {
                 const xAxisValue = [];
 
                 dt.records.forEach(d => {
-                  xAxisValue.push(d[x_top_metrics[i]])
+                  if (!isNaN(d[x_top_metrics[i]])) {
+                    xAxisValue.push(slice.d3format(x_top_metrics[i], d[x_top_metrics[i]]))
+                  } else {
+                    xAxisValue.push(d[x_top_metrics[i]])
+                  }
                 })
                 
                 if (is_avg) {
@@ -1022,7 +1070,11 @@ function echartsVis(slice) {
                 const yAxisValue = [];
 
                 dt.records.forEach(d => {
-                  yAxisValue.push(d[y_metrics[i]])
+                  if (!isNaN(d[y_metrics[i]])) {
+                    yAxisValue.push(slice.d3format(y_metrics[i], d[y_metrics[i]]))
+                  } else {
+                    yAxisValue.push(d[y_metrics[i]])
+                  }
                 })
                 
                 if (is_avg) {
@@ -1086,7 +1138,11 @@ function echartsVis(slice) {
                 const yAxisValue = [];
 
                 dt.records.forEach(d => {
-                  yAxisValue.push(d[y_left_metrics[i]])
+                  if (!isNaN(d[y_left_metrics[i]])) {
+                    yAxisValue.push(slice.d3format(y_left_metrics[i], d[y_left_metrics[i]]))
+                  } else {
+                    yAxisValue.push(d[y_left_metrics[i]])
+                  }
                 })
                 
                 if (is_avg) {
@@ -1153,7 +1209,11 @@ function echartsVis(slice) {
                 const yAxisValue = [];
 
                 dt.records.forEach(d => {
-                  yAxisValue.push(d[y_right_metrics[i]])
+                  if (!isNaN(d[y_right_metrics[i]])) {
+                    yAxisValue.push(slice.d3format(y_right_metrics[i], d[y_right_metrics[i]]))
+                  } else {
+                    yAxisValue.push(d[y_right_metrics[i]])
+                  }
                 })
                 
                 if (is_avg) {
@@ -1414,7 +1474,11 @@ function echartsVis(slice) {
                 const yAxisValue = [];
 
                 dt.records.forEach(d => {
-                  yAxisValue.push(d[y_metrics[i]])
+                  if (!isNaN(d[y_metrics[i]])) {
+                    yAxisValue.push(slice.d3format(y_metrics[i], d[y_metrics[i]]))
+                  } else {
+                    yAxisValue.push(d[y_metrics[i]])
+                  }
                 })
                 
                 if (is_avg) {
@@ -1478,7 +1542,11 @@ function echartsVis(slice) {
                 const yAxisValue = [];
 
                 dt.records.forEach(d => {
-                  yAxisValue.push(d[y_left_metrics[i]])
+                  if (!isNaN(d[y_left_metrics[i]])) {
+                    yAxisValue.push(slice.d3format(y_left_metrics[i], d[y_left_metrics[i]]))
+                  } else {
+                    yAxisValue.push(d[y_left_metrics[i]])
+                  }
                 })
                 
                 if (is_avg) {
@@ -1545,7 +1613,11 @@ function echartsVis(slice) {
                 const yAxisValue = [];
 
                 dt.records.forEach(d => {
-                  yAxisValue.push(d[y_right_metrics[i]])
+                  if (!isNaN(d[y_right_metrics[i]])) {
+                    yAxisValue.push(slice.d3format(y_right_metrics[i], d[y_right_metrics[i]]))
+                  } else {
+                    yAxisValue.push(d[y_right_metrics[i]])
+                  }
                 })
                 
                 if (is_avg) {
@@ -1644,6 +1716,241 @@ function echartsVis(slice) {
 
             break;
 
+          case 'echarts_pie_m':
+
+            label_position = fd.label_position;
+            label_format = fd.label_format;
+            circle_type = fd.circle_type;
+            rose_type = fd.rose_type;
+
+            if (circle_type == 'none') {
+              circle_setup = ['0%', '55%'];
+            } else if (circle_type == 'big') {
+              circle_setup = ['40%', '55%'];
+            } else if (circle_type == 'medium') {
+              circle_setup = ['20%', '55%'];
+            } else {
+              circle_setup = ['10%', '55%'];
+            }
+
+            if ($.trim(fd.label_format)) {
+              try{
+                label_format = $.trim(fd.label_format);
+              } catch(err){
+                alert('Invalid format of label!')
+              }
+            } else {
+              label_format = '{b} : {c} ({d}%)';
+            }
+
+            // set the height step
+            if (height <= 200){
+              steps = 40;
+            } else if (height >200 && height <= 320) {
+              steps = 30;
+            } else {
+              steps = 15;
+            }
+
+            legend = fd.metrics;
+
+            for (var i = 0; i < fd.metrics.length; i++) {
+              dt.records.forEach(d => {
+                pie_data.push({
+                  value: slice.d3format(fd.metrics[i], d[fd.metrics[i]]),
+                  name: fd.metrics[i]
+                })
+              })
+            }
+
+            series.push({
+              name: '',
+              type: 'pie',
+              data: pie_data,
+              radius : circle_setup,
+              roseType : rose_type == 'none' ? '' : rose_type,
+              label: {
+                   normal: {
+                       show: true,
+                       position: label_position, 
+                       formatter: label_format,
+                   },
+                   emphasis: {
+                       show: true,
+                       textStyle: {
+                           fontSize: '20',
+                           fontWeight: 'bold'
+                       }
+                   }
+              },
+              itemStyle: {
+                  emphasis: {
+                      shadowBlur: 10,
+                      shadowOffsetX: 0,
+                      shadowColor: 'rgba(0, 0, 0, 0.5)'
+                  }
+              }
+            });
+
+            var option = {
+                height: height * 0.8 - steps,
+                grid: {
+                    right: fd.right_padding == null ? '0%' : fd.right_padding,
+                    left: fd.left_padding == null ? '0%' : fd.left_padding,
+                    top: fd.top_padding == null ? '0%' : fd.top_padding,
+                    bottom: fd.bottom_padding == null ? '0%' : fd.bottom_padding,
+                    containLabel: true,
+                },
+                tooltip: {
+                    trigger: 'item',
+                    formatter: "{a} <br/>{b} : {c} ({d}%)",
+                },
+                toolbox: {
+                    feature: {
+                        restore: {show: true},
+                        saveAsImage: {show: true}
+                    }
+                },
+                legend: {
+                    orient: 'vertical',
+                    left: 'left',
+                    data: legend
+                },
+                series: series
+            };
+
+            chart.setOption(option);
+
+            break;
+
+          case 'echarts_pie_h':
+
+            inner_mertics = fd.inner_mertics;
+            outer_metrics = fd.outer_metrics;
+            inner_label_position = fd.inner_label_position;
+            outer_label_position = fd.outer_label_position;
+
+            if ($.trim(fd.inner_label_format)) {
+              try{
+                inner_label_format = $.trim(fd.inner_label_format);
+              } catch(err){
+                alert('Invalid format of label!')
+              }
+            } else {
+              inner_label_format = '{b} : {c} ({d}%)';
+            }
+
+            if ($.trim(fd.outer_label_format)) {
+              try{
+                outer_label_format = $.trim(fd.outer_label_format);
+              } catch(err){
+                alert('Invalid format of label!')
+              }
+            } else {
+              outer_label_format = '{b} : {c} ({d}%)';
+            }
+
+            // set the height step
+            if (height <= 200){
+              steps = 40;
+            } else if (height >200 && height <= 320) {
+              steps = 30;
+            } else {
+              steps = 15;
+            }
+
+            legend = fd.inner_metrics.concat(fd.outer_metrics);
+
+            for (var i = 0; i < fd.inner_metrics.length; i++) {
+              dt.records.forEach(d => {
+                inner_data.push({
+                  value: slice.d3format(fd.inner_metrics[i], d[fd.inner_metrics[i]]),
+                  name: fd.inner_metrics[i]
+                })
+              })
+            }
+
+            for (var i = 0; i < fd.outer_metrics.length; i++) {
+              dt.records.forEach(d => {
+                outer_data.push({
+                  value: slice.d3format(fd.outer_metrics[i], d[fd.outer_metrics[i]]),
+                  name: fd.outer_metrics[i]
+                })
+              })
+            }
+
+            // inner circle
+            series.push({
+              name: '',
+              type: 'pie',
+              selectedMode: 'single',
+              data: inner_data,
+              radius: ['0', '30%'],
+              label: {
+                  normal: {
+                      position: inner_label_position,
+                      formatter: inner_label_format
+                  }
+              },
+              labelLine: {
+                  normal: {
+                      show: false
+                  }
+              }
+            });
+
+            // outer pie
+            series.push({
+              name:'',
+              type:'pie',
+              radius: ['40%', '55%'],
+              data: outer_data,
+              label: {
+                   normal: {
+                       show: true,
+                       position: outer_label_position, //center 
+                       formatter: outer_label_format
+                   },
+                   emphasis: {
+                       show: true,
+                       textStyle: {
+                           fontSize: '20',
+                           fontWeight: 'bold'
+                       }
+                   }
+               },
+            });
+
+            var option = {
+                height: height * 0.8 - steps,
+                grid: {
+                    right: fd.right_padding == null ? '0%' : fd.right_padding,
+                    left: fd.left_padding == null ? '0%' : fd.left_padding,
+                    top: fd.top_padding == null ? '0%' : fd.top_padding,
+                    bottom: fd.bottom_padding == null ? '0%' : fd.bottom_padding,
+                    containLabel: true,
+                },
+                tooltip: {
+                    trigger: 'item',
+                    formatter: "{a} <br/>{b}: {c} ({d}%)"
+                },
+                toolbox: {
+                    feature: {
+                        restore: {show: true},
+                        saveAsImage: {show: true}
+                    }
+                },
+                legend: {
+                    orient: 'vertical',
+                    left: 'left',
+                    data: legend
+                },
+                series: series
+            };
+
+            chart.setOption(option);
+
+            break;
 
           default:
             throw new Error('Unrecognized visualization for echarts' + vizType);

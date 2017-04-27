@@ -87,7 +87,10 @@ class BaseViz(object):
         self.form_data = defaults
 
         # if groupby is none, set it to []
-        self.form_data['groupby'] = (self.form_data['groupby'] == None and [] or self.form_data['groupby'])
+        try:
+            self.form_data['groupby'] = (self.form_data['groupby'] == None and [] or self.form_data['groupby'])
+        except Exception as e:
+            pass
 
         self.query = ""
         self.form_data['previous_viz_type'] = self.viz_type
@@ -99,6 +102,8 @@ class BaseViz(object):
 
     @classmethod
     def flat_form_fields(cls):
+        print("========")
+        print(cls)
         l = set()
         for d in cls.fieldsets:
             for obj in d['fields']:
@@ -106,6 +111,7 @@ class BaseViz(object):
                     l |= {a for a in obj if a}
                 elif obj:
                     l.add(obj)
+        print(l)
         return tuple(l)
 
     def reassignments(self):
@@ -1899,6 +1905,119 @@ class echartsLineBarViz(BaseViz):
     def json_dumps(self, obj):
         return json.dumps(obj, default=utils.json_iso_dttm_ser)
 
+class echartsPieMetricsViz(BaseViz):
+
+    viz_type = "echarts_pie_m"
+    verbose_name = _("echarts Pie Metrics View")
+    credits = 'a <a href="https://github.com/airbnb/superset">Superset</a> original'
+
+    fieldsets = ({
+        'label': _("Metrics"),
+        'description': _('Metrics'),
+        'fields': ('metrics',)
+    },{
+        'label': _("Other Options"),
+        'description': _('Other Options'),
+        'fields': (
+            ('label_position', 'label_format'),
+            ('circle_type', 'rose_type'), 
+        )
+    },{
+        'label': _("Padding"),
+        'description': _('Padding'),
+        'fields': (
+            ('top_padding', 'bottom_padding'),
+            ('left_padding', 'right_padding'),
+        )
+    })
+    
+    is_timeseries = False
+
+    def query_obj(self):
+        d = super(echartsPieMetricsViz, self).query_obj()
+        fd = self.form_data
+        order_by_cols = fd.get('order_by_cols') or []
+        d['orderby'] = [json.loads(t) for t in order_by_cols]
+        return d
+
+    def get_df(self, query_obj=None):
+        df = super(echartsPieMetricsViz, self).get_df(query_obj)
+        if (
+                self.form_data.get("granularity") == "all" and
+                DTTM_ALIAS in df):
+            del df[DTTM_ALIAS]
+        return df
+
+    def get_data(self):
+        df = self.get_df()
+        return dict(
+            records=df.to_dict(orient="records"),
+            columns=list(df.columns),
+        )
+
+    def json_dumps(self, obj):
+        return json.dumps(obj, default=utils.json_iso_dttm_ser)
+
+class echartsPieHViz(BaseViz):
+
+    viz_type = "echarts_pie_h"
+    verbose_name = _("echarts Pie Hierarchical View")
+    credits = 'a <a href="https://github.com/airbnb/superset">Superset</a> original'
+
+    fieldsets = ({
+        'label': _("Metrics"),
+        'description': _('Metrics'),
+        'fields': ('metrics',)
+    },{
+        'label': _("Inner Circle"),
+        'description': _('Inner Circle'),
+        'fields': (
+            ('inner_metrics',),
+            ('inner_label_position', 'inner_label_format'),
+        )
+    },{
+        'label': _("Outer Circle"),
+        'description': _('Outer Circle'),
+        'fields': (
+            ('outer_metrics',),
+            ('outer_label_position', 'outer_label_format'),
+        )
+    },{
+        'label': _("Padding"),
+        'description': _('Padding'),
+        'fields': (
+            ('top_padding', 'bottom_padding'),
+            ('left_padding', 'right_padding'),
+        )
+    })
+    
+    is_timeseries = False
+
+    def query_obj(self):
+        d = super(echartsPieHViz, self).query_obj()
+        fd = self.form_data
+        order_by_cols = fd.get('order_by_cols') or []
+        d['orderby'] = [json.loads(t) for t in order_by_cols]
+        return d
+
+    def get_df(self, query_obj=None):
+        df = super(echartsPieHViz, self).get_df(query_obj)
+        if (
+                self.form_data.get("granularity") == "all" and
+                DTTM_ALIAS in df):
+            del df[DTTM_ALIAS]
+        return df
+
+    def get_data(self):
+        df = self.get_df()
+        return dict(
+            records=df.to_dict(orient="records"),
+            columns=list(df.columns),
+        )
+
+    def json_dumps(self, obj):
+        return json.dumps(obj, default=utils.json_iso_dttm_ser)
+
 class SunburstViz(BaseViz):
 
     """A multi level sunburst chart"""
@@ -2580,6 +2699,8 @@ viz_types_list = [
     echartsBarHViz,
     echartsLineViz,
     echartsLineBarViz,
+    echartsPieMetricsViz,
+    echartsPieHViz,
 
 ]
 

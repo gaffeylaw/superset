@@ -14,7 +14,7 @@ const config = {
 
   entry: {
     vendor: ['react', 'd3', 'd3-cloud', 'd3-sankey', 'd3-scale', 'd3-tip', 
-             'bootstrap', 'jquery', 'nvd3', 'redux' ,'echarts'],
+              'jquery', 'nvd3', 'redux' ,'echarts'],
     aggrid: ['ag-grid', 'ag-grid-enterprise', 'ag-grid-react'],
     react1: ['react-ace', 'react-bootstrap', 'react-bootstrap-table',
             'react-dom', 'react-draggable', 'react-draggable-tab',

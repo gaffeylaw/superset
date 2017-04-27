@@ -37,5 +37,7 @@ const vizMap = {
   echarts_bar_h: require('./echarts_vis.js'),
   echarts_line: require('./echarts_vis.js'),
   echarts_line_bar: require('./echarts_vis.js'),
+  echarts_pie_m: require('./echarts_vis.js'),
+  echarts_pie_h: require('./echarts_vis.js'),
 };
 export default vizMap;

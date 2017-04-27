@@ -1299,6 +1299,84 @@ class FormFactory(object):
                 "default": [default_metric],
                 "description": _("One or many lines to display")
             }),
+            'label_position':(FreeFormSelectField, {
+                "label": _("Label Position"),
+                "default": 'outside',
+                "choices": [
+                    ('outside', 'Outside'),
+                    ('inside', 'Inside'),
+                    ('center', 'Center'),
+                ],
+                "description": _("Label Position"),
+            }),
+            'label_format':(TextField, {
+                "label": _("Label Format"),
+                "default": '{b}  : {c} ({d}%)',
+                "description": _("Label Format"),
+            }),
+            'circle_type':(FreeFormSelectField, {
+                "label": _("Circle Type"),
+                "default": 'none',
+                "choices": [
+                    ('none', 'None'),
+                    ('big', 'Big'),
+                    ('medium', 'Medium'),
+                    ('small', 'Small'),
+                ],
+                "description": _("Circle Type"),
+            }),
+            'rose_type':(FreeFormSelectField, {
+                "label": _("Rose Type"),
+                "default": 'none',
+                "choices": [
+                    ('none', 'None'),
+                    ('radius', 'Radius'),
+                    ('area', 'Area'),
+                ],
+                "description": _("Rose Type"),
+            }),
+            'inner_label_position':(FreeFormSelectField, {
+                "label": _("Inner Label Position"),
+                "default": 'outside',
+                "choices": [
+                    ('outside', 'Outside'),
+                    ('inside', 'Inside'),
+                    ('center', 'Center'),
+                ],
+                "description": _("Inner Label Position"),
+            }),
+            'inner_label_format':(TextField, {
+                "label": _("Inner Label Format"),
+                "default": '{b}  : {c} ({d}%)',
+                "description": _("Inner Label Format"),
+            }),
+            'outer_label_position':(FreeFormSelectField, {
+                "label": _("Outer Label Position"),
+                "default": 'outside',
+                "choices": [
+                    ('outside', 'Outside'),
+                    ('inside', 'Inside'),
+                    ('center', 'Center'),
+                ],
+                "description": _("Outer Label Position"),
+            }),
+            'outer_label_format':(TextField, {
+                "label": _("Outer Label Format"),
+                "default": '{b}  : {c} ({d}%)',
+                "description": _("Outer Label Format"),
+            }),
+            'inner_metrics': (SelectMultipleSortableField, {
+                "label": _("Inner metrics"),
+                "choices": datasource.metrics_combo,
+                "default": [default_metric],
+                "description": _("One or many lines to display")
+            }),
+            'outer_metrics': (SelectMultipleSortableField, {
+                "label": _("Outer metrics"),
+                "choices": datasource.metrics_combo,
+                "default": [default_metric],
+                "description": _("One or many lines to display")
+            }),
         }
 
         # Override default arguments with form overrides

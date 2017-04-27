@@ -1631,7 +1631,8 @@ class Superset(BaseSupersetView):
                    'mapbox_label', 'order_by_cols','y_metrics',
                    'y_left_metrics', 'y_right_metrics', 'x_metrics',
                    'x_bottom_metrics', 'x_top_metrics', 'line_choice',
-                   'bar_choice')
+                   'bar_choice', 'inner_metrics', 'outer_metrics')
+
         for k in d:
             v = d.get(k)
             if k in as_list and not isinstance(v, list):
@@ -2613,6 +2614,8 @@ class Superset(BaseSupersetView):
             'x_top_metrics': datasource.metrics_combo,
             'line_choice': datasource.metrics_combo,
             'bar_choice': datasource.metrics_combo,
+            'inner_metrics': datasource.metrics_combo,
+            'outer_metrics': datasource.metrics_combo,
             'line': datasource.metrics_combo,
             'bar': datasource.metrics_combo,
             'area': datasource.metrics_combo,

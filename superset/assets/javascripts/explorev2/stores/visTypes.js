@@ -346,6 +346,86 @@ const visTypes = {
       }, 
     },
   },
+
+  echarts_pie_m: {
+    label: localeMessage.echarts_pie_m,
+    controlPanelSections: [
+      {
+        label: localeMessage.metrics,
+        description: localeMessage.metrics_desc,
+        fieldSetRows: [
+          ['metrics'],
+        ],
+      },
+      {
+        label: localeMessage.other_option,
+        description: localeMessage.other_option_desc,
+        fieldSetRows: [
+          ['label_position', 'label_format'],
+          ['circle_type', 'rose_type'],
+        ],
+      },
+      {
+        label: localeMessage.padding,
+        description: localeMessage.padding_desc,
+        fieldSetRows: [
+          ['top_padding', 'bottom_padding'],
+          ['left_padding', 'right_padding'],
+        ],
+      },
+      {
+        label: localeMessage.row_limit,
+        description: localeMessage.row_limit,
+        fieldSetRows: [
+          ['row_limit'],
+        ],
+      },
+    ],
+  },
+
+  echarts_pie_h: {
+    label: localeMessage.echarts_pie_h,
+    controlPanelSections: [
+      {
+        label: localeMessage.metrics,
+        description: localeMessage.metrics_desc,
+        fieldSetRows: [
+          ['metrics'],
+        ],
+      },
+      {
+        label: localeMessage.inner_circle,
+        description: localeMessage.inner_circle_desc,
+        fieldSetRows: [
+          ['inner_metrics'],
+          ['inner_label_position', 'inner_label_format'],
+        ],
+      },
+      {
+        label: localeMessage.outer_circle,
+        description: localeMessage.outer_circle_desc,
+        fieldSetRows: [
+          ['outer_metrics'],
+          ['outer_label_position', 'outer_label_format'],
+        ],
+      },
+      {
+        label: localeMessage.padding,
+        description: localeMessage.padding_desc,
+        fieldSetRows: [
+          ['top_padding', 'bottom_padding'],
+          ['left_padding', 'right_padding'],
+        ],
+      },
+      {
+        label: localeMessage.row_limit,
+        description: localeMessage.row_limit,
+        fieldSetRows: [
+          ['row_limit'],
+        ],
+      },
+    ],
+  },
   // add new style
   ag_grid: {
     label: localeMessage.ag_grid,

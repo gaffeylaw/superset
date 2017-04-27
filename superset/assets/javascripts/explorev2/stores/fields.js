@@ -1212,6 +1212,73 @@ export const fields = {
     default: [],
     description: localeMessage.bar_choice_desc,
   },
+  label_position: {
+    type: 'FreeFormSelectField',
+    label: localeMessage.label_position,
+    default: 'outside',
+    choices: localeMessage.label_position_choices,
+    description: localeMessage.label_position_desc,
+  },
+  label_format: {
+    type: 'TextField',
+    label: localeMessage.label_format,
+    default:  '{b}  : {c} ({d}%)',
+    description: localeMessage.label_format_desc,
+  },
+  circle_type: {
+    type: 'FreeFormSelectField',
+    label: localeMessage.circle_type,
+    default: 'none',
+    choices: localeMessage.circle_type_choices,
+    description: localeMessage.circle_type_desc,
+  },
+  rose_type: {
+    type: 'FreeFormSelectField',
+    label: localeMessage.rose_type,
+    default: 'none',
+    choices: localeMessage.rose_type_choices,
+    description: localeMessage.rose_type_desc,
+  },
+  inner_metrics: {
+    type: 'SelectMultipleSortableField',
+    label: localeMessage.inner_metrics,
+    choices: [],
+    default: [],
+    description: localeMessage.inner_metrics_desc,
+  }, 
+  outer_metrics: {
+    type: 'SelectMultipleSortableField',
+    label: localeMessage.outer_metrics,
+    choices: [],
+    default: [],
+    description: localeMessage.outer_metrics_desc,
+  },
+  inner_label_position: {
+    type: 'FreeFormSelectField',
+    label: localeMessage.label_position,
+    default: 'inside',
+    choices: localeMessage.label_position_choices,
+    description: localeMessage.label_position_desc,
+  },
+  outer_label_position: {
+    type: 'FreeFormSelectField',
+    label: localeMessage.label_position,
+    default: 'outside',
+    choices: localeMessage.label_position_choices,
+    description: localeMessage.label_position_desc,
+  },
+  inner_label_format: {
+    type: 'TextField',
+    label: localeMessage.label_format,
+    default:  '{b}  : {c} ({d}%)',
+    description: localeMessage.label_format_desc,
+  },
+  outer_label_format: {
+    type: 'TextField',
+    label: localeMessage.label_format,
+    default:  '{b}  : {c} ({d}%)',
+    description: localeMessage.label_format_desc,
+  },
 };
 export default fields;
 

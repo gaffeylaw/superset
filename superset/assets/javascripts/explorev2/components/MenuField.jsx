@@ -185,6 +185,18 @@ export default class MenuField extends React.Component {
                 <font size="2">{localMessage.echarts_line_bar}</font>
               </span>
             </MenuItem>
+            <MenuItem key="echarts_pie_m">
+              <span>
+                <i className="fa fa-pie-chart icon-span"></i>
+                <font size="2">{localMessage.echarts_pie_m}</font>
+              </span>
+            </MenuItem>
+            <MenuItem key="echarts_pie_h">
+              <span>
+                <i className="fa fa-pie-chart icon-span"></i>
+                <font size="2">{localMessage.echarts_pie_h}</font>
+              </span>
+            </MenuItem>
           </SubMenu>
           <Divider />
           <MenuItem key="table">
